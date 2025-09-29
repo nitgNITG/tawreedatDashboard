@@ -7,10 +7,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "libraryapis.nitg-eg.com",
-      },
-      {
         protocol: "http",
         hostname: "localhost",
         port: "3100",
@@ -21,6 +17,10 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com",
         port: "",
         pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "tawreedatapis.nitg-eg.com",
       },
     ],
   },
