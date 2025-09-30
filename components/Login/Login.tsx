@@ -20,13 +20,13 @@ const Login = () => {
   return (
     <div className="w-full min-h-screen bg-[#241234] flex justify-center items-center">
       <div className="bg-white w-full max-w-[447px] rounded-[24px] p-8">
-        <div className="flex justify-center">
+        <div className="flex justify-center bg-black p-4 rounded-lg mb-6">
           <Image
             src="/imgs/logo.svg"
             alt="library Logo"
             width={120}
             height={40}
-            className="object-contain w-auto h-auto"
+            className="object-contain"
           />
         </div>
         {currentView === "login" ? (
