@@ -600,6 +600,8 @@
     }
   },
   "onBoarding": {
+    "subtitlePlaceholder": "أدخل عنوان فرعي لشاشة الترحيب",
+    "subtitleArPlaceholder": "أدخل عنوان فرعي لشاشة الترحيب (بالعربية)",
     "contentAr": "المحتوى (بالعربية)",
     "contentArPlaceholder": "أدخل المحتوى باللغة العربية",
     "noOnBoardingData": "لا توجد بيانات لشاشات الترحيب",

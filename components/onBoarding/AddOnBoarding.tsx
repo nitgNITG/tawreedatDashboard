@@ -52,18 +52,18 @@ const AddOnBoarding = ({
 
       const myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${token}`);
-
       const formdata = new FormData();
 
       // Add file if exists
       const file = fileInputRef.current?.files?.[0];
       if (file) {
-        formdata.append("imageUrl", file, "[PROXY]");
+        formdata.append("imageUrl", file);
       }
 
       formdata.append("title", formData.title);
       formdata.append("titleAr", formData.titleAr);
-
+      formdata.append("subtitle", formData.subtitle);
+      formdata.append("subtitleAr", formData.subtitleAr);
       formdata.append("content", formData.content);
       formdata.append("contentAr", formData.contentAr);
 
@@ -81,6 +81,7 @@ const AddOnBoarding = ({
 
         const textResult = await response.text();
         const jsonData = JSON.parse(textResult);
+        console.log("Edit Response:", jsonData);
 
         if (jsonData.onBoarding) {
           dispatch(updateOnBoarding(jsonData.onBoarding));
@@ -205,6 +206,28 @@ const AddOnBoarding = ({
             placeholder={t("titleArPlaceholder")}
           />
           <ErrorMsg message={errors?.titleAr?.message as string} />
+        </div>
+        <div>
+          <input
+            {...register("subtitle", {
+              value: board?.subtitle,
+            })}
+            type="text"
+            className="border py-3 px-2 w-full outline-none"
+            placeholder={t("subtitlePlaceholder")}
+          />
+          <ErrorMsg message={errors?.subtitle?.message as string} />
+        </div>
+        <div>
+          <input
+            {...register("subtitleAr", {
+              value: board?.subtitleAr,
+            })}
+            type="text"
+            className="border py-3 px-2 w-full outline-none"
+            placeholder={t("subtitleArPlaceholder")}
+          />
+          <ErrorMsg message={errors?.subtitleAr?.message as string} />
         </div>
         <div>
           <textarea

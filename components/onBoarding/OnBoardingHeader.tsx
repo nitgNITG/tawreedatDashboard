@@ -94,8 +94,15 @@ const OnBoardingHeader = ({ data }: { data: any }) => {
 
             {/* Content */}
             <div className="p-4">
-              <h3 className="font-semibold text-lg mb-2">{locale === "ar" ? board.titleAr : board.title}</h3>
-              <p className="text-gray-600 text-sm">{locale === "ar" ? board.contentAr : board.content}</p>
+              <h3 className="font-semibold text-lg mb-2">
+                {locale === "ar" ? board.titleAr ?? board.title : board.title}
+              </h3>
+              <h5 className="text-gray-600 text-sm">
+                {locale === "ar" ? board.subtitleAr : board.subtitle ?? "----"}
+              </h5>
+              <p className="text-gray-600 text-sm">
+                {locale === "ar" ? board.contentAr : board.content ?? "----"}
+              </p>
             </div>
 
             {/* Actions */}

@@ -974,6 +974,8 @@
     "deleteSectionConfirmation": "⚠️ Are you sure you want to delete the entire \"{section}\" section?\n\n This will permanently remove ALL translations in this section from both English and Arabic files.\n\n This action cannot be undone (except from backups)."
   },
   "onBoarding": {
+    "subtitlePlaceholder": "Enter a subtitle for the onboarding screen",
+    "subtitleArPlaceholder": "Enter a subtitle for the onboarding screen (Arabic)",
     "contentAr": "Content (Arabic)",
     "contentArPlaceholder": "Enter content in Arabic",
     "noOnBoardingData": "No on boarding data available",
