@@ -32,7 +32,8 @@ const UserOrders = ({
     { name: "cost", sortable: true, key: "totalAmount" },
     { name: "address", sortable: true, key: "shippingAddress" },
     { name: "delivered", sortable: true, key: "updatedAt" },
-    { name: "action", className: "flex justify-center items-center" },
+    { name: "action", colSpan: 2 },
+    // { name: "action", colSpan: 2, className: "flex justify-center items-center" },
   ];
 
   useEffect(() => {
@@ -87,17 +88,20 @@ const UserOrders = ({
                 ? DateToText(order.updatedAt, locale)
                 : "-"}
             </td>
-            <td className="px-6 py-4 flex justify-center">
-              <button
-                onClick={() => {
-                  setOrderDetails(order);
-                  setOpenOrderDetails(true);
-                }}
-                type="button"
-                className="text-primary hover:text-gray-700 transition-colors"
-              >
-                <EyeIcon className="size-5" />
-              </button>
+            {/* <td colSpan={2} className="px-6 py-4 flex justify-center"> */}
+            <td colSpan={2} className="px-6 py-4 whitespace-nowrap">
+              <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    setOrderDetails(order);
+                    setOpenOrderDetails(true);
+                  }}
+                  type="button"
+                  className="text-primary hover:text-gray-700 transition-colors"
+                >
+                  <EyeIcon className="size-5" />
+                </button>
+              </div>
             </td>
           </tr>
         ))}

@@ -152,7 +152,13 @@
     "recentActivity": "Recent Activity"
   },
   "user": {
+    "product": "Product",
+    "review": "Review",
+    "reviews": "Reviews",
+    "rating": "Rating",
     "PENDING": "Pending",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
     "CONFIRMED": "Confirmed",
     "PROCESSING": "Processing",
     "SHIPPED": "Shipped",
@@ -348,6 +354,9 @@
     "successAdd": "Brand added successfully"
   },
   "Tablecomponent": {
+    "product": "Product",
+    "review": "Review",
+    "rating": "Rating",
     "clearSort": "Clear Sort",
     "paymentStatus": "Payment Status",
     "filter": "Filter",

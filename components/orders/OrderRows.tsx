@@ -296,7 +296,7 @@ const OrderRows = ({
               {DateToText(order.createdAt, lang)}
             </td>
             <td className="px-3 py-2 whitespace-nowrap">
-                {(order.status !== order.dbSavedData?.status ||
+              {(order.status !== order.dbSavedData?.status ||
                 order?.paymentStatus !== order.dbSavedData?.paymentStatus) && (
                 <Button
                   variant="ghost"
@@ -306,12 +306,12 @@ const OrderRows = ({
                   disabled={loading === order.id}
                 >
                   {loading === order.id ? (
-                  <LoadingIcon className="size-5 animate-spin" />
+                    <LoadingIcon className="size-5 animate-spin" />
                   ) : (
-                  <Save className="size-5" />
+                    <Save className="size-5" />
                   )}
                 </Button>
-                )}
+              )}
 
               <Button
                 onClick={() => setOrderDetails(order)}

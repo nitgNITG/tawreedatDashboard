@@ -10,7 +10,6 @@ const usePushQuery = () => {
   const pushQuery = (key: string, term: string, scroll: boolean = false) => {
     // Create a new URLSearchParams object from the current params
     const params = new URLSearchParams(searchParams.toString());
-
     // Handle clearing all filters
     if (key === "clear") {
       // Get all param keys except pagination ones we want to keep
@@ -63,6 +62,12 @@ const usePushQuery = () => {
     // Reset to skip 0 when filters change
     if (key !== "skip" && key !== "limit" && params.has("skip")) {
       params.set("skip", "0");
+    }
+    if (key === "tab") {
+      const newParams = new URLSearchParams();
+      newParams.set("tab", term);
+      router.push(`${pathname}?${newParams.toString()}`, { scroll });
+      return;
     }
     // Navigate to the new URL
     router.push(`${pathname}?${params.toString()}`, { scroll });

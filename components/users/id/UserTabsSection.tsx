@@ -1,15 +1,20 @@
 "use client";
 import SearchBar from "@/components/Searchbar";
+import usePushQuery from "@/hooks/usePushQuery";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const TabsSection = ({ children }: { children: React.ReactNode[] }) => {
   const t = useTranslations("user");
-  const [activeTab, setActiveTab] = useState("orders");
+  const params = useSearchParams();
+  const [activeTab, setActiveTab] = useState(params.get("tab") || "orders");
+  const pushQuery = usePushQuery();
 
   const tabs = [
     { id: "orders", label: t("orders") },
     { id: "notifications", label: t("notifications") },
+    { id: "reviews", label: t("reviews") },
   ];
 
   useEffect(() => {
@@ -49,6 +54,7 @@ const TabsSection = ({ children }: { children: React.ReactNode[] }) => {
                 onClick={() => {
                   setActiveTab(tab.id);
                   history.replaceState(null, "", window.location.pathname);
+                  if (tab.id !== "orders") pushQuery("tab", tab.id);
                 }}
                 className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
                   activeTab === tab.id
@@ -65,9 +71,10 @@ const TabsSection = ({ children }: { children: React.ReactNode[] }) => {
       </div>
 
       {/* Tab Content */}
-      <div className="pt-4">
+      <div className="pt-4 min-h-svh">
         {activeTab === "orders" && children[0]}
         {activeTab === "notifications" && children[1]}
+        {activeTab === "reviews" && children[2]}
       </div>
     </div>
   );

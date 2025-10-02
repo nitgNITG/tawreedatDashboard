@@ -22,6 +22,7 @@ import CardGridItem from "../ui/CardGridItem";
 import Pagination from "../ui/Pagination";
 import DownloadButton from "../ui/DownloadButton";
 import FilterDropdown, { FilterOption } from "../FilterDropdown";
+import { Star } from "lucide-react";
 
 const Products = ({
   products: initProducts,
@@ -133,7 +134,7 @@ const Products = ({
                     <div className="text-sm font-bold mb-1 truncate w-full">
                       {locale === "ar" ? product.nameAr : product.name}
                     </div>
-                    <div className="text-[0.7rem] truncate text-gray-500 flex gap-2 items-center justify-center">
+                    <div className="text-[0.7rem] truncate max-w-[100px] text-gray-500 flex gap-2 items-center justify-center">
                       {locale === "ar"
                         ? product.descriptionAr
                         : product.description}
@@ -145,28 +146,36 @@ const Products = ({
                 </>
               }
               cardFooter={
-                <>
-                  <div className="">
-                    {product.price} {t("egp")}
+                <div className="flex flex-col gap-1 size-full">
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    <Star className="size-4" />
+                    <span className="text-sm font-medium flex items-center">
+                      {product.rating.toFixed(1)} ({product.totalReviews})
+                    </span>
                   </div>
-                  <div className="flex gap-2 justify-center items-center">
-                    <button
-                      onClick={() => {
-                        setOpen(true);
-                        setProUpdate(product);
-                      }}
-                      aria-label={t("editProduct")}
-                    >
-                      <EditIcon className="size-4 text-primary hover:text-gray-700" />
-                    </button>
-                    <button
-                      onClick={() => setOpenDelete(product.id)}
-                      aria-label={t("deleteProduct")}
-                    >
-                      <DeleteIcon className="size-4 text-red-500 hover:text-red-700" />
-                    </button>
+                  <div className="flex items-center justify-between">
+                    <span>
+                      {product.price} {t("egp")}
+                    </span>
+                    <div className="flex gap-2 justify-center items-center">
+                      <button
+                        onClick={() => {
+                          setOpen(true);
+                          setProUpdate(product);
+                        }}
+                        aria-label={t("editProduct")}
+                      >
+                        <EditIcon className="size-4 text-primary hover:text-gray-700" />
+                      </button>
+                      <button
+                        onClick={() => setOpenDelete(product.id)}
+                        aria-label={t("deleteProduct")}
+                      >
+                        <DeleteIcon className="size-4 text-red-500 hover:text-red-700" />
+                      </button>
+                    </div>
                   </div>
-                </>
+                </div>
               }
               image={{
                 alt: product.name,

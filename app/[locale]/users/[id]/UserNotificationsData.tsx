@@ -95,6 +95,7 @@ const UserNotificationsData = async ({
   searchParams: SearchParams;
   params: { id: string };
 }) => {
+  console.log('\x1b[33m hi from user notifications data \x1b[0m');
   const lang = await getLocale();
   const { data, error } = await fetchUserNotifications({
     searchParams,

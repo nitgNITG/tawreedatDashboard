@@ -1,21 +1,28 @@
-import UserOrders from "@/components/users/id/userOrders/UserOrders";
 import { cookies } from "next/headers";
-import { Order, OrderStatus } from "../../orders/OrdersData";
 import { getLocale } from "next-intl/server";
 import { SearchParams } from "@/types/common";
+import { Review } from "../../products/productsData";
+import UserReviews from "@/components/users/id/UserReviews";
 
-export type orderSums = {
-  [key in OrderStatus]?: number;
-};
-
-interface UserOrdersApiResponse {
-  orders: Order[];
-  totalCount: number;
-  totalPages: number;
-  orderSums: orderSums;
+export interface UserReview extends Review {
+  product: {
+    id: number;
+    name: string;
+    nameAr?: string;
+    images?: string[];
+  };
+  dbSavedData: {
+    status: "PENDING" | "APPROVED" | "REJECTED";
+  };
 }
 
-const fetchUserOrders = async ({
+interface UserReviewsApiResponse {
+  reviews: UserReview[];
+  totalCount: number;
+  totalPages: number;
+}
+
+const fetchUserReviews = async ({
   searchParams,
   userId,
   lang,
@@ -23,22 +30,23 @@ const fetchUserOrders = async ({
   searchParams: SearchParams;
   userId: string;
   lang: string;
-}): Promise<{ data: UserOrdersApiResponse | null; error: string | null }> => {
+}): Promise<{ data: UserReviewsApiResponse | null; error: string | null }> => {
   try {
     const cookieStore = cookies();
     const token = cookieStore.get("token")?.value;
     if (!token) return { data: null, error: "No token provided" };
+    console.log('\x1b[33m searchParams: \x1b[0m', searchParams);
+    
 
     const queryParams = new URLSearchParams({
       limit: searchParams.limit?.toString() ?? "10",
-      // items: "brand.name",
-      sort: searchParams.sort?.toString() ?? "-createdAt",
+      sort: searchParams["reviews.sort"]?.toString() ?? "-createdAt",
       fields:
-        "id,orderNumber,totalAmount,shippingCost,discount,taxAmount,status,paymentMethod,paymentStatus,shippingAddress,notes,createdAt,items=id-quantity-price-product=id-name-nameAr-images",
+        "id,rating,comment,createdAt,status,product=id-name-nameAr-images",
     });
 
-    if (searchParams.keyword)
-      queryParams.append("keyword", searchParams.keyword.toString());
+    if (searchParams["reviews.keyword"])
+      queryParams.append("keyword", searchParams["reviews.keyword"].toString());
     if (searchParams.skip)
       queryParams.append("skip", searchParams.skip.toString());
     if (searchParams.items)
@@ -53,12 +61,17 @@ const fetchUserOrders = async ({
         "createdAt[lte]",
         searchParams["createdAt[lte]"].toString()
       );
+      console.log('\x1b[33m queryParams: \x1b[0m', queryParams.toString());
+      
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${userId}/orders?${queryParams}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${userId}/reviews?${queryParams}`,
       {
         method: "GET",
         credentials: "include",
+        next: {
+          tags: [`user-reviews-${userId}`, `${JSON.stringify(searchParams)}`],
+        },
         headers: {
           Authorization: `Bearer ${token}`,
           "accept-language": lang,
@@ -84,37 +97,39 @@ const fetchUserOrders = async ({
   }
 };
 
-const UserOrdersData = async ({
+const UserReviewsData = async ({
   params,
   searchParams,
 }: {
   searchParams: SearchParams;
   params: { id: string };
 }) => {
+  console.log('\x1b[33m hi from user reviews data \x1b[0m');
+
   const lang = await getLocale();
-  const { data, error } = await fetchUserOrders({
+  const { data, error } = await fetchUserReviews({
     searchParams,
     userId: params.id,
     lang,
   });
+
   if (error && error !== "walletNotFound")
     return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <UserOrders
+    <UserReviews
       totalPages={data?.totalPages ?? 0}
-      orders={data?.orders ?? []}
-      totalCount={data?.totalCount ?? 0}
-      sumOrders={
-        data?.orderSums ?? {
-          PENDING: 0,
-          CONFIRMED: 0,
-          DELIVERED: 0,
-          CANCELLED: 0,
-        }
+      reviews={
+        data?.reviews
+          ? data.reviews.map((review) => ({
+              ...review,
+              dbSavedData: { status: review.status },
+            }))
+          : []
       }
+      totalCount={data?.totalCount ?? 0}
     />
   );
 };
 
-export default UserOrdersData;
+export default UserReviewsData;

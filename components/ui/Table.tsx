@@ -13,6 +13,7 @@ export interface TableHeader {
   label?: string;
   exclude?: boolean;
   sortable?: boolean;
+  colSpan?: number;
 }
 
 interface TableProps {
@@ -33,7 +34,6 @@ const Table = ({
   const t = useTranslations("Tablecomponent");
   const pushQuery = usePushQuery();
   const searchParams = useSearchParams();
-
   const currentSort = searchParams.get(archive ? "sortArchive" : "sort") ?? "";
   const currentOrder = currentSort.startsWith("-") ? "desc" : "asc";
   const currentSortField = currentSort.replace("-", "");
@@ -70,10 +70,11 @@ const Table = ({
             )}
           >
             <tr>
-              {headers.map(({ name, className, key, sortable }) => (
+              {headers.map(({ name, className, key, sortable, colSpan }) => (
                 <th
                   key={name}
                   scope="col"
+                  colSpan={colSpan ?? 1}
                   className={clsx(
                     "px-6 py-4 whitespace-nowrap select-none font-bold",
                     className,
@@ -82,7 +83,12 @@ const Table = ({
                   )}
                   onClick={() => sortable && key && handleSort(key)}
                 >
-                  <div className="flex items-center gap-1">
+                  <div
+                    className={clsx(
+                      "flex items-center gap-1",
+                      colSpan && "justify-center"
+                    )}
+                  >
                     {t(name)}
                     {sortable && key && (
                       <div className="flex flex-col">

@@ -237,7 +237,11 @@
     "recentActivity": "النشاط الأخير"
   },
   "user": {
+    "product": "المنتج",
+    "review": "المراجعة",
+    "rating": "تقييم",
     "PENDING": "قيد الانتظار",
+    "APPROVED": "تم الموافقة",
     "CONFIRMED": "تم التأكيد",
     "PROCESSING": "جاري المعالجة",
     "SHIPPED": "تم الشحن",
@@ -711,6 +715,9 @@
     "successUpdate": "تم تحديث الإعلان بنجاح!"
   },
   "Tablecomponent": {
+    "product": "المنتج",
+    "review": "المراجعة",
+    "rating": "تقييم",
     "clearSort": "مسح الترتيب",
     "paymentStatus": "حالة الدفع",
     "filter": "تصفية",

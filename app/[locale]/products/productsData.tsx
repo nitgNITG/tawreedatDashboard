@@ -10,6 +10,17 @@ interface AttributesItem {
   id: number;
 }
 
+export interface Review {
+  id: number;
+  rating: number;
+  comment?: string;
+  userId: number;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  productId: number;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -38,7 +49,9 @@ export interface Product {
   supplier?: any;
   orderItems?: OrderItem[];
   cartItems?: any[];
-  reviews?: any[];
+  rating: number;
+  totalReviews: number;
+  reviews?: Review[];
   wishlist?: any[];
   bookDetails?: any;
   attributes?: AttributesItem[];
@@ -69,9 +82,8 @@ export const fetchProducts = async (
           ? searchParams.sortArchive?.toString()
           : searchParams.sort?.toString()) ?? "-createdAt",
       fields:
-        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl",
+        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl",
     });
-    // "id,name,nameAr,description,price,costPrice,stock,minStock,sku,barcode,images,weight,dimensions,isActive,isFeatured,categoryId,supplierId,createdAt,updatedAt,category,supplier,orderItems,cartItems,reviews,wishlist,bookDetails"
 
     if (searchParams.skip && !categoryName)
       queryParams.append("skip", searchParams.skip.toString());
@@ -140,6 +152,7 @@ const ProductsData = async ({
   );
 
   if (error) return <div className="text-red-500">Error: {error}</div>;
+  
   return (
     <Products
       products={data?.products ?? []}

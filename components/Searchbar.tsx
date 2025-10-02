@@ -9,46 +9,50 @@ import { X } from "lucide-react";
 export default function SearchBar() {
   const t = useTranslations("navbar");
   const searchParams = useSearchParams();
+  const tab = searchParams.get("tab");
   const pushQuery = usePushQuery();
   const [search, setSearch] = useState(searchParams.get("keyword") ?? "");
+  let key = "keyword";
+  // if (tab) key = `${tab}.keyword`;
 
   // Sync local state with URL changes (e.g., back/forward navigation)
   useEffect(() => {
-    const currentKeyword = searchParams.get("keyword") ?? "";
+    const currentKeyword = searchParams.get(key) ?? "";
     setSearch(currentKeyword);
   }, [searchParams]);
 
   // Debounced search effect
   useEffect(() => {
-    const currentKeyword = searchParams.get("keyword") ?? "";
+    const currentKeyword = searchParams.get(key) ?? "";
+    const trimmedSearch = search.trim();
+    // No change → do nothing
+    if (trimmedSearch === currentKeyword) return;
 
-    // Only proceed if the search value is different from current URL parameter
-    if (search.trim() !== currentKeyword) {
-      const timer = setTimeout(() => {
-        if (search.trim()) {
-          pushQuery("keyword", search.trim());
-        } else if (currentKeyword) {
-          // Only clear if there was a keyword before
-          pushQuery("keyword", "");
-        }
-      }, 500); // 500ms debounce delay
+    const timer = setTimeout(() => {
+      if (trimmedSearch) {
+        pushQuery(key, trimmedSearch);
+      } else if (currentKeyword) {
+        // Clear keyword only if it existed before
+        pushQuery(key, "");
+      }
+    }, 500); // debounce delay
 
-      return () => clearTimeout(timer);
-    }
+    return () => clearTimeout(timer);
   }, [search, searchParams, pushQuery]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // Immediate search on form submit
     if (search.trim()) {
-      pushQuery("keyword", search.trim());
+      pushQuery(key, search.trim());
     } else {
-      pushQuery("keyword", "");
+      pushQuery(key, "");
     }
   };
 
   const handleClear = () => {
     setSearch("");
-    pushQuery("keyword", "");
+    pushQuery(key, "");
   };
   return (
     <form
