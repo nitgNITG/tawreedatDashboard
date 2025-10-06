@@ -90,7 +90,7 @@ const handler = NextAuth({
         if (account?.id_token) {
           try {
             const response = await fetch(
-              "http://localhost:3120/api/auth/google/verify",
+              `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google/verify`,
               {
                 method: "POST",
                 headers: {
@@ -131,15 +131,16 @@ const handler = NextAuth({
         if (account?.id_token) {
           try {
             const response = await fetch(
-              "http://localhost:3120/api/auth/apple/verify",
+              `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/apple/verify`,
               {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ idToken: account.id_token,
+                body: JSON.stringify({
+                  idToken: account.id_token,
                   // nonce: 'nonce_sent_from_client' // send the nonce generated on client here for verification
-                 }),
+                }),
               }
             );
             if (!response.ok)
