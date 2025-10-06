@@ -25,6 +25,8 @@ export default async function RootLayout({
 }>) {
   const messages = await getMessages();
   const token = cookies().get("token")?.value;
+  console.log("Token from cookies:", token);
+  
 
   const fetchUser = async () => {
     try {

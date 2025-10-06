@@ -5,6 +5,8 @@ import { useState } from "react";
 import ChangeLanguage from "./ChangeLanguage";
 import LoginForm from "./LoginForm";
 import ForgotPassword from "./ForgotPassword";
+import SignInWithGoogle from "./SignInWithGoogle";
+import SignInWithApple from "./SignInWithApple";
 
 const Login = () => {
   const t = useTranslations("login");
@@ -29,6 +31,8 @@ const Login = () => {
             className="object-contain"
           />
         </div>
+        <SignInWithGoogle />
+        <SignInWithApple />
         {currentView === "login" ? (
           <>
             <div className="space-y-1">

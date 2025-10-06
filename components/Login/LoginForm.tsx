@@ -10,7 +10,6 @@ import { toast } from "react-hot-toast";
 import { LoadingIcon, PasswordIcon, PhoneIcon } from "../icons";
 import { ShowPassword } from "../users/AddUserForm";
 import UserInput from "../users/UserInput";
-
 interface LoginFormProps {
   onForgotPassword: () => void;
 }
@@ -165,6 +164,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       <button className="p-3 w-24 rounded-2xl bg-primary border text-sm text-white flex justify-center items-center hover:bg-white/90 hover:text-primary hover:border-primary transition-colors duration-200 mx-auto">
         {loading ? <LoadingIcon className="size-5 animate-spin" /> : t("btn")}
       </button>
+      
     </form>
   );
 };
