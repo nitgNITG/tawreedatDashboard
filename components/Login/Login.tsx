@@ -20,9 +20,9 @@ const Login = () => {
     setCurrentView("login");
   };
   return (
-    <div className="w-full min-h-screen bg-[#241234] flex justify-center items-center">
+    <div className="w-full min-h-screen bg-[#241234] flex-center">
       <div className="bg-white w-full max-w-[447px] rounded-[24px] p-8">
-        <div className="flex justify-center bg-black p-4 rounded-lg mb-6">
+        <div className="flex justify-center bg-black p-4 rounded-lg mb-3">
           <Image
             src="/imgs/logo.svg"
             alt="library Logo"
@@ -31,8 +31,10 @@ const Login = () => {
             className="object-contain"
           />
         </div>
-        <SignInWithGoogle />
-        <SignInWithApple />
+        <div className="flex-center gap-4 mb-3">
+          <SignInWithGoogle />
+          <SignInWithApple />
+        </div>
         {currentView === "login" ? (
           <>
             <div className="space-y-1">
