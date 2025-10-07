@@ -63,7 +63,7 @@ export default async function RootLayout({
         return { data: null, error: "No user data" };
       }
 
-      return { data: data, error: null };
+      return { data, error: null };
     } catch (error: any) {
       console.error("Verification Error:", error);
       return { data: null, error: error?.message };

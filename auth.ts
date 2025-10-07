@@ -65,6 +65,13 @@ const handler = NextAuth({
     Apple({
       clientId: process.env.AUTH_APPLE_ID!,
       clientSecret: process.env.AUTH_APPLE_SECRET!,
+      authorization: {
+        params: {
+          scope: "name email",
+          response_mode: "form_post",
+        },
+      },
+      checks: ["state"],
     }),
     // Facebook,
     Google({
@@ -73,19 +80,42 @@ const handler = NextAuth({
     }),
   ],
   session: { strategy: "jwt" },
-  //   cookies: {
-  //     sessionToken: {
-  //       name: "token", // 👈 custom cookie name
-  //       options: {
-  //         httpOnly: true,
-  //         sameSite: "lax",
-  //         path: "/",
-  //         secure: process.env.NODE_ENV === "production",
-  //       },
-  //     },
-  //   },
+  useSecureCookies: true, // Force secure cookies with ngrok
+  cookies: {
+    state: {
+      name: "__Secure-next-auth.state",
+      // process.env.NODE_ENV === "production"
+      //   ? "__Secure-next-auth.state"
+      //   : "next-auth.state",
+      options: {
+        httpOnly: true,
+        sameSite: "none", // Important for ngrok!
+        path: "/",
+        secure: true, // Must be true for ngrok HTTPS
+      },
+    },
+    //   sessionToken: {
+    //     name: "token", // 👈 custom cookie name
+    //     options: {
+    //       httpOnly: true,
+    //       sameSite: "lax",
+    //       path: "/",
+    //       secure: process.env.NODE_ENV === "production",
+    //     },
+    //   },
+    // pkceCodeVerifier: {
+    // name: "next-auth.pkce.code.verifier", // 👈 custom cookie name
+    // options: {
+    // httpOnly: true,
+    // sameSite: "lax",
+    // path: "/",
+    // secure: true,
+    // secure: process.env.NODE_ENV === "production",
+    // },
+    // },
+  },
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, profile }) {
       if (account && account.provider === "google") {
         if (account?.id_token) {
           try {
@@ -111,7 +141,7 @@ const handler = NextAuth({
             cookieStore.set({
               name: "token", // ✅ same name as NextAuth cookie
               value: data.token, // ✅ your backend token
-              path: "/",
+              // path: "/",
               // httpOnly: true,
               // sameSite: "lax",
               // secure: process.env.NODE_ENV === "production",
@@ -139,6 +169,7 @@ const handler = NextAuth({
                 },
                 body: JSON.stringify({
                   idToken: account.id_token,
+                  fullname: profile?.name ,
                   // nonce: 'nonce_sent_from_client' // send the nonce generated on client here for verification
                 }),
               }
