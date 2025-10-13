@@ -204,7 +204,7 @@ const PopupProduct = ({
     try {
       setLoading(true);
       const params =
-        "id,name,nameAr,description,descriptionAr,images,price,stock,createdAt,isActive,isFeatured,offer,category=id-name-nameAr-productAttributes,attributes,brand=id-name-nameAr-logoUrl";
+        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl";
       const submitFormData = new FormData();
 
       // Basic form fields
