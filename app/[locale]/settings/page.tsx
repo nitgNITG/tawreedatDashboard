@@ -21,6 +21,10 @@ export default async function SettingsPage() {
       settingsData.numberOfLatestOffersOnHomepage ?? 3,
     numberOfNewArrivalsOnHomepage:
       settingsData.numberOfNewArrivalsOnHomepage ?? 3,
+    numberOfAdsOnHomepage:
+      settingsData.numberOfAdsOnHomepage ?? 3,
+    numberOfBrandsOnHomepage:
+      settingsData.numberOfBrandsOnHomepage ?? 3,
     loginAttemptDurationMinutes: settingsData.loginAttemptDurationMinutes ?? 20,
     loginAttempts: settingsData.loginAttempts ?? 5,
     permanentDelete: settingsData.permanentDelete ?? false,
@@ -42,6 +46,7 @@ export default async function SettingsPage() {
       latestOffers: settingsData.numberOfLatestOffersOnHomepage ?? 3,
       bestSellingBrands: settingsData.numberOfProductsOnHomepage ?? 3,
       newArrivals: settingsData.numberOfNewArrivalsOnHomepage ?? 3,
+      
     },
     // Keep backward compatibility fields
     latestOffers: settingsData.numberOfLatestOffersOnHomepage ?? 3,
@@ -69,7 +74,6 @@ async function fetchSettings(token: string | undefined, locale: string) {
         },
       }
     );
-    console.log("Settings response:", response.data);
 
     return response.data.settings;
   } catch (error) {
@@ -81,6 +85,8 @@ async function fetchSettings(token: string | undefined, locale: string) {
       numberOfCategoriesOnHomepage: 3,
       numberOfLatestOffersOnHomepage: 3,
       numberOfNewArrivalsOnHomepage: 3,
+      numberOfAdsOnHomepage: 3,
+      numberOfBrandsOnHomepage: 3,
       loginAttemptDurationMinutes: 20,
       loginAttempts: 5,
       permanentDelete: false,

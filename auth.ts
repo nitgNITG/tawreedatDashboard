@@ -169,7 +169,7 @@ const handler = NextAuth({
                 },
                 body: JSON.stringify({
                   idToken: account.id_token,
-                  fullname: profile?.name ,
+                  fullname: profile?.name,
                   // nonce: 'nonce_sent_from_client' // send the nonce generated on client here for verification
                 }),
               }

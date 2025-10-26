@@ -9,6 +9,8 @@ interface DisplaySettingsSectionProps {
     numberOfCategoriesOnHomepage: number;
     numberOfLatestOffersOnHomepage: number;
     numberOfNewArrivalsOnHomepage: number;
+    numberOfBrandsOnHomepage: number;
+    numberOfAdsOnHomepage: number;
   };
   onSettingsChange: (newSettings: any) => void;
 }
@@ -140,6 +142,35 @@ export function DisplaySettingsSection({
             min="0"
           />
         </div>
+        <div className="flex justify-between items-center">
+          <label className="text-gray-700">
+            {t("numberOfBrandsOnHomepage")}
+          </label>
+          <input
+            type="number"
+            value={settingsFormData.numberOfBrandsOnHomepage}
+            onChange={(e) =>
+              handleInputChange(
+                "numberOfBrandsOnHomepage",
+                Number(e.target.value)
+              )
+            }
+            className="px-3 py-2 border rounded-md w-48"
+            min="0"
+          />
+        </div>
+        <div className="flex justify-between items-center">
+          <label className="text-gray-700">{t("numberOfAdsOnHomepage")}</label>
+          <input
+            type="number"
+            value={settingsFormData.numberOfAdsOnHomepage}
+            onChange={(e) =>
+              handleInputChange("numberOfAdsOnHomepage", Number(e.target.value))
+            }
+            className="px-3 py-2 border rounded-md w-48"
+            min="0"
+          />
+        </div>
       </div>
     );
   }
@@ -167,6 +198,14 @@ export function DisplaySettingsSection({
       <InfoRow
         label={t("numberOfNewArrivals")}
         value={settingsFormData.numberOfNewArrivalsOnHomepage.toString()}
+      />
+      <InfoRow
+        label={t("numberOfBrandsOnHomepage")}
+        value={settingsFormData.numberOfBrandsOnHomepage.toString()}
+      />
+      <InfoRow
+        label={t("numberOfAdsOnHomepage")}
+        value={settingsFormData.numberOfAdsOnHomepage.toString()}
       />
     </div>
   );

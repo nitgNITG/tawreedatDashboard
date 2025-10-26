@@ -1186,6 +1186,8 @@
     "global": "Change Language"
   },
   "settings": {
+    "numberOfBrandsOnHomepage": "Number of Brand on Homepage",
+    "numberOfAdsOnHomepage": "Number of Ads on Homepage",
     "permanentDelete": "Permanent Delete",
     "loginAsGuest": "Login as Guest",
     "on": "On",

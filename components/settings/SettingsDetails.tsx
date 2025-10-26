@@ -16,6 +16,8 @@ interface SettingsData {
   numberOfCategoriesOnHomepage: number;
   numberOfLatestOffersOnHomepage: number;
   numberOfNewArrivalsOnHomepage: number;
+  numberOfAdsOnHomepage: number;
+  numberOfBrandsOnHomepage: number;
   loginAttemptDurationMinutes: number;
   loginAttempts: number;
   permanentDelete: boolean;
@@ -67,6 +69,8 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
     numberOfCategoriesOnHomepage: 3,
     numberOfLatestOffersOnHomepage: 3,
     numberOfNewArrivalsOnHomepage: 3,
+    numberOfBrandsOnHomepage: 3,
+    numberOfAdsOnHomepage: 3,
   });
 
   // Initialize form data from props instead of fetching from API
@@ -85,6 +89,8 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
         settings.numberOfLatestOffersOnHomepage ?? 3,
       numberOfNewArrivalsOnHomepage:
         settings.numberOfNewArrivalsOnHomepage ?? 3,
+      numberOfBrandsOnHomepage: settings.numberOfBrandsOnHomepage ?? 3,
+      numberOfAdsOnHomepage: settings.numberOfAdsOnHomepage ?? 3,
     });
   }, [settings]);
 
@@ -107,6 +113,12 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
           ),
           numberOfNewArrivalsOnHomepage: parseInt(
             settingsFormData.numberOfNewArrivalsOnHomepage.toString()
+          ),
+          numberOfBrandsOnHomepage: parseInt(
+            settingsFormData.numberOfBrandsOnHomepage.toString()
+          ),
+          numberOfAdsOnHomepage: parseInt(
+            settingsFormData.numberOfAdsOnHomepage.toString()
           ),
           loginAttemptDurationMinutes: parseInt(
             settingsFormData.loginAttemptDurationMinutes.toString()
@@ -162,6 +174,8 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
         settings.numberOfLatestOffersOnHomepage ?? 3,
       numberOfNewArrivalsOnHomepage:
         settings.numberOfNewArrivalsOnHomepage ?? 3,
+      numberOfBrandsOnHomepage: settings.numberOfBrandsOnHomepage ?? 3,
+      numberOfAdsOnHomepage: settings.numberOfAdsOnHomepage ?? 3,
     });
   };
 

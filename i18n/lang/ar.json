@@ -1034,6 +1034,8 @@
     }
   },
   "settings": {
+    "numberOfBrandsOnHomepage": "عدد العلامات التجارية في الصفحة الرئيسية",
+    "numberOfAdsOnHomepage": "عدد الإعلانات في الصفحة الرئيسية",
     "permanentDelete": "حذف دائم",
     "loginAsGuest": "تسجيل الدخول كزائر",
     "on": "تشغيل",
