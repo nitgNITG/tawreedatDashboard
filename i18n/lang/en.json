@@ -719,6 +719,11 @@
     "categories": "Categories"
   },
   "products": {
+    "offerValidFrom": "Offer valid from",
+    "offerValidFromRequired": "valid from is required",
+    "offerValidTo": "Offer valid to",
+    "offerValidToRequired": "valid to is required",
+    "offerValidToAfterFrom": "valid to must be after valid from",
     "brand": "Brand",
     "brandIsRequired": "Brand is required",
     "selectBrand": "Select Brand...",

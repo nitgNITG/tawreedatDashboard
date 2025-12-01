@@ -507,6 +507,11 @@
     }
   },
   "products": {
+    "offerValidFrom": "تاريخ بداية العرض",
+    "offerValidFromRequired": "تاريخ بداية العرض مطلوب",
+    "offerValidTo": "تاريخ نهاية العرض",
+    "offerValidToRequired": "تاريخ نهاية العرض مطلوب",
+    "offerValidToAfterFrom": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية",
     "brand": "العلامة التجارية",
     "brandIsRequired": "العلامة التجارية مطلوبة",
     "selectBrand": "اختر العلامة التجارية...",

@@ -31,6 +31,8 @@ export interface Product {
   price: number;
   costPrice?: number;
   offer: number;
+  offerValidFrom?: string;
+  offerValidTo?: string;
   stock: number;
   minStock?: number;
   sku: string;
@@ -82,7 +84,7 @@ export const fetchProducts = async (
           ? searchParams.sortArchive?.toString()
           : searchParams.sort?.toString()) ?? "-createdAt",
       fields:
-        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl",
+        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,offerValidFrom,offerValidTo,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl",
     });
 
     if (searchParams.skip && !categoryName)
@@ -152,6 +154,7 @@ const ProductsData = async ({
   );
 
   if (error) return <div className="text-red-500">Error: {error}</div>;
+  console.log(data?.products?.[0]);
 
   return (
     <Products

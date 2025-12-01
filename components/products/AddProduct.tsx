@@ -33,6 +33,8 @@ export interface ProductForm {
   price: number;
   //   costPrice?: number;
   offer?: number;
+  offerValidFrom?: string;
+  offerValidTo?: string;
   stock: number;
   //   minStock?: number;
   //   weight?: number;
@@ -61,12 +63,15 @@ const PopupProduct = ({
     formState: { errors },
     setValue,
     reset,
+    watch,
   } = useForm<ProductForm>({
     defaultValues: {
       name: product?.name || undefined,
       nameAr: product?.nameAr || undefined,
       price: product?.price || undefined,
       offer: product?.offer || undefined,
+      offerValidFrom: product?.offerValidFrom || undefined,
+      offerValidTo: product?.offerValidTo || undefined,
       stock: product?.stock || undefined,
       description: product?.description || undefined,
       descriptionAr: product?.descriptionAr || undefined,
@@ -101,6 +106,9 @@ const PopupProduct = ({
   const handleImageClick = () => imagesInputRef.current?.click();
   const t = useTranslations("products");
   const { token } = useAppContext();
+
+  const offerValue = watch("offer");
+  const validFromValue = watch("offerValidFrom");
 
   // Add new images (append)
   const handleAddImages = async (
@@ -204,7 +212,7 @@ const PopupProduct = ({
     try {
       setLoading(true);
       const params =
-        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl";
+        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,offerValidFrom,offerValidTo,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl";
       const submitFormData = new FormData();
 
       // Basic form fields
@@ -214,6 +222,7 @@ const PopupProduct = ({
         submitFormData.append("description", formData.description);
       if (formData.descriptionAr)
         submitFormData.append("descriptionAr", formData.descriptionAr);
+
       submitFormData.append("price", String(formData.price));
       submitFormData.append("stock", String(formData.stock));
       submitFormData.append("isActive", String(formData.isActive));
@@ -223,6 +232,17 @@ const PopupProduct = ({
 
       if (formData.offer) {
         submitFormData.append("offer", String(formData.offer));
+      }
+
+      if (formData.offerValidFrom) {
+        submitFormData.append(
+          "offerValidFrom",
+          String(formData.offerValidFrom)
+        );
+      }
+
+      if (formData.offerValidTo) {
+        submitFormData.append("offerValidTo", String(formData.offerValidTo));
       }
 
       // Filter out attributes with empty values
@@ -514,6 +534,38 @@ const PopupProduct = ({
           type="number"
           {...register("offer")}
           min={0}
+        />
+      </div>
+      <div className="flex justify-between items-center gap-8">
+        <OutlineInput
+          className="block"
+          defaultValue={product?.offerValidFrom}
+          label={t("offerValidFrom")}
+          id="product-offerValidFrom"
+          error={errors.offerValidFrom?.message as string}
+          type="date"
+          {...register("offerValidFrom", {
+            required: offerValue ? t("offerValidFromRequired") : false,
+          })}
+        />
+        <OutlineInput
+          className="block"
+          defaultValue={product?.offerValidTo}
+          label={t("offerValidTo")}
+          id="product-offerValidTo"
+          error={errors.offerValidTo?.message as string}
+          type="date"
+          {...register("offerValidTo", {
+            required: offerValue ? t("offerValidToRequired") : false,
+            validate: (value) => {
+              if (offerValue && validFromValue && value) {
+                return (
+                  new Date(value) >= new Date(validFromValue) ||
+                  t("offerValidToAfterFrom")
+                );
+              }
+            },
+          })}
         />
       </div>
       <OutlineInput
