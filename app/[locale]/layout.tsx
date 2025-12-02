@@ -12,8 +12,8 @@ import NotificationHandler from "@/components/notifications/NotificationHandler"
 import { fetchData } from "@/lib/fetchData";
 
 export const metadata: Metadata = {
-  title: "library App",
-  description: "investment payback app",
+  title: "TAWREEDAT - توريطات",
+  description: "TAWREEDAT app",
 };
 
 export default async function RootLayout({
@@ -26,7 +26,6 @@ export default async function RootLayout({
   const messages = await getMessages();
   const token = cookies().get("token")?.value;
   console.log("Token from cookies:", token);
-  
 
   const fetchUser = async () => {
     try {
@@ -35,15 +34,18 @@ export default async function RootLayout({
         return { data: null, error: "token is required" };
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-me`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json", // Add content type header
-        },
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-me`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Add content type header
+          },
+          cache: "no-store",
+        }
+      );
 
       if (!res.ok) {
         const errorText = await res.text();

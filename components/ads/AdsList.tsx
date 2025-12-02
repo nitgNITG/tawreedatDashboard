@@ -4,13 +4,13 @@ import { DeleteIcon, EditIcon, PlusCircleIcon } from "../icons";
 import { useLocale, useTranslations } from "next-intl";
 import ImageApi from "../ImageApi";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { Ad, setAds } from "@/redux/reducers/adsReducer";
-import AddAds from "./AddAds";
+import { Ad, setAds, setSelectedAd } from "@/redux/reducers/adsReducer";
 import { DateToText } from "@/lib/DateToText";
 import Table, { TableHeader } from "../ui/Table";
 import Pagination from "../ui/Pagination";
 import DownloadButton from "../ui/DownloadButton";
 import DeleteAds from "./DeleteAds";
+import { useRouter } from "@/i18n/routing";
 
 const AdsList = ({
   ads,
@@ -23,10 +23,9 @@ const AdsList = ({
 }) => {
   const t = useTranslations("ads");
   const locale = useLocale() as "en" | "ar";
-  const [open, setOpen] = useState<boolean>(false);
-  const [edit, setEdit] = useState<Ad | undefined>(undefined);
   const [deleteAd, setDeleteAd] = useState<Ad | null>(null);
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
+  const router = useRouter();
 
   const adsRedux = useAppSelector((s) => s.ads.ads);
   const adsCount = useAppSelector((s) => s.ads.totalCount);
@@ -34,6 +33,11 @@ const AdsList = ({
 
   const headers: TableHeader[] = [
     { name: "ad", sortable: true, key: "id" },
+    {
+      name: "title",
+      sortable: true,
+      key: locale === "en" ? "title" : "titleAr",
+    },
     { name: "logo" },
     { name: "viewType", sortable: true, key: "adType" },
     { name: "startDate", sortable: true, key: "startDate" },
@@ -50,9 +54,7 @@ const AdsList = ({
       <div className="flex justify-between items-center">
         <h4 className="font-bold text-lg md:text-xl lg:text-2xl">{t("ads")}</h4>
         <button
-          onClick={() => {
-            setOpen(!open);
-          }}
+          onClick={() => router.push("/ads/new")}
           className="px-5 py-2 bg-primary rounded-md text-white font-medium"
         >
           <div className="flex gap-3">
@@ -61,92 +63,94 @@ const AdsList = ({
           </div>
         </button>
       </div>
-      {!open && (
-        <Table
-          headers={headers}
-          pagination={
-            <Pagination
-              count={adsCount}
-              totalPages={totalPages}
-              downloadButton={
-                <DownloadButton<Ad>
-                  fields={["id", "title", "adType", "budget", "createdAt"]}
-                  model="ads"
-                />
-              }
-            />
-          }
-        >
-          {!adsRedux?.length && (
-            <tr className="odd:bg-white even:bg-primary/5 border-b">
-              <td
-                colSpan={headers.length}
-                scope="row"
-                className="px-6 py-4 text-center font-bold"
-              >
-                {t("no data yet")}
-              </td>
-            </tr>
-          )}
-          {adsRedux?.map((ad: Ad) => (
-            <tr key={ad.id} className="odd:bg-white even:bg-[#F0F2F5] border-b">
-              <td scope="row" className="px-6 py-4">
-                {ad.id}
-              </td>
-              <td scope="row" className="px-6 py-4">
-                <div className="size-16">
-                  <ImageApi
-                    src={ad.imageUrl}
-                    alt="ad"
-                    className="size-full rounded-full object-cover border-2"
-                    width={200}
-                    height={200}
-                  />
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">{ad.adType}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {DateToText(ad.startDate.toString(), locale)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {DateToText(ad.endDate.toString(), locale)}
-              </td>
-              <td className="px-6 py-4">
-                <div className="flex gap-2 items-center justify-center">
-                  <button
-                    onClick={() => {
-                      setEdit(ad);
-                      setOpen(true);
-                    }}
-                    className="text-primary hover:text-gray-700 transition-colors"
-                  >
-                    <EditIcon className="size-5" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setDeleteAd(ad);
-                      setDeletePopup(true);
-                    }}
-                    className="text-primary hover:text-gray-700 transition-colors"
-                  >
-                    <DeleteIcon className="size-5" />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </Table>
-      )}
+      <Table
+        headers={headers}
+        pagination={
+          <Pagination
+            count={adsCount}
+            totalPages={totalPages}
+            downloadButton={
+              <DownloadButton<Ad>
+                fields={[
+                  "id",
+                  locale === "en" ? "title" : "titleAr",
+                  "adType",
+                  "budget",
+                  "createdAt",
+                ]}
+                model="ads"
+              />
+            }
+          />
+        }
+      >
+        {!adsRedux?.length && (
+          <tr className="odd:bg-white even:bg-primary/5 border-b">
+            <td
+              colSpan={headers.length}
+              scope="row"
+              className="px-6 py-4 text-center font-bold"
+            >
+              {t("no data yet")}
+            </td>
+          </tr>
+        )}
+        {adsRedux?.map((ad: Ad) => (
+          <tr key={ad.id} className="odd:bg-white even:bg-[#F0F2F5] border-b">
+            <td scope="row" className="px-6 py-4 whitespace-nowrap">
+              {ad.id}
+            </td>
+            <td scope="row" className="px-6 py-4 whitespace-nowrap">
+              {locale === "en"
+                ? ad.title
+                : ad.titleAr === "" || ad.titleAr === undefined
+                ? ad.title
+                : ad.titleAr}
+            </td>
 
-      {open && (
-        <AddAds
-          handleClose={() => {
-            setOpen(false);
-            setEdit(undefined);
-          }}
-          ad={edit}
-        />
-      )}
+            <td scope="row" className="px-6 py-4 whitespace-nowrap">
+              <div className="size-16">
+                <ImageApi
+                  src={ad.imageUrl}
+                  alt="ad"
+                  className="size-full rounded-full object-cover border-2"
+                  width={200}
+                  height={200}
+                />
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">{ad.adType}</td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              {DateToText(ad.startDate.toString(), locale)}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              {DateToText(ad.endDate.toString(), locale)}
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex gap-2 items-center justify-center">
+                <button
+                  onClick={() => {
+                    dispatch(setSelectedAd(ad));
+                    router.push(`/ads/${ad.id}/edit`);
+                  }}
+                  className="text-primary hover:text-gray-700 transition-colors"
+                >
+                  <EditIcon className="size-5" />
+                </button>
+                <button
+                  onClick={() => {
+                    setDeleteAd(ad);
+                    setDeletePopup(true);
+                  }}
+                  className="text-primary hover:text-gray-700 transition-colors"
+                >
+                  <DeleteIcon className="size-5" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </Table>
 
       {deleteAd && (
         <DeleteAds

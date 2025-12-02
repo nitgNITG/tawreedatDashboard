@@ -20,7 +20,7 @@ const fetchAds = async (
 
     const queryParams = new URLSearchParams({
       fields:
-        "id,title,titleAr,description,descriptionAr,imageUrl,targetUrl,startDate,endDate,priority,status,adType,timing,displayDuration,createdAt",
+        "id,title,titleAr,description,descriptionAr,imageUrl,targetUrl,mobileScreen,startDate,endDate,priority,status,adType,timing,displayDuration,createdAt,closable",
       limit: searchParams.limit?.toString() ?? "10",
       sort: searchParams.sort?.toString() ?? "priority",
       skip: searchParams.skip?.toString() ?? "0",

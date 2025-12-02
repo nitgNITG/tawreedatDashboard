@@ -1,4 +1,3 @@
-import { Brand } from "@/components/users/BrandSelect";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 enum AdsStatus {
@@ -30,7 +29,8 @@ export type Ad = {
   description?: string;
   descriptionAr?: string;
   imageUrl: string;
-  targetUrl: string;
+  targetUrl?: string;
+  mobileScreen?: string;
   startDate: Date;
   endDate: Date;
   budget: number;
@@ -50,6 +50,7 @@ type InitialStateType = {
   adsSearch: Ad[];
   isLastPage: boolean;
   totalCount: number;
+  selectedAd: Ad | null;
 };
 
 const initialState: InitialStateType = {
@@ -57,6 +58,7 @@ const initialState: InitialStateType = {
   adsSearch: [],
   isLastPage: false,
   totalCount: 0,
+  selectedAd: null, // Initialize as null
 };
 
 export const adsSlice = createSlice({
@@ -83,7 +85,10 @@ export const adsSlice = createSlice({
       state.ads = state.ads.filter((i) => i.id !== action.payload);
       state.totalCount -= 1;
     },
+    setSelectedAd(state, action: PayloadAction<Ad | null>) {
+      state.selectedAd = action.payload;
+    },
   },
 });
 
-export const { setAds, addAds, updateAds, deleteAds } = adsSlice.actions;
+export const { setAds, addAds, updateAds, deleteAds, setSelectedAd } = adsSlice.actions;

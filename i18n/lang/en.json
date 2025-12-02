@@ -354,6 +354,7 @@
     "successAdd": "Brand added successfully"
   },
   "Tablecomponent": {
+    "title": "Title",
     "product": "Product",
     "review": "Review",
     "rating": "Rating",
@@ -1024,6 +1025,8 @@
     "btn": "Submit"
   },
   "ads": {
+    "closable": "Closable",
+    "mobileScreen": "Mobile Screen",
     "titleAr": "Title (Arabic)",
     "descriptionAr": "Description (Arabic)",
     "userTypeRequired": "User Type is required",

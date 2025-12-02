@@ -49,9 +49,11 @@ const Products = ({
   useEffect(() => {
     dispatch(setProducts(initProducts));
   }, [initProducts]);
-
+  
+  
   const products: Product[] = useAppSelector((s) => s.products.products);
-
+  console.log(products[0]);
+  
   const handleDelete = async () => {
     try {
       setLoading(true);
@@ -130,8 +132,8 @@ const Products = ({
               isPriority={index < 6}
               cardContent={
                 <>
-                  <div className="flex flex-col items-start flex-1">
-                    <div className="text-sm font-bold mb-1 truncate w-full">
+                  <div className="flex flex-col items-start w-9/12">
+                    <div className="text-sm font-bold truncate w-full">
                       {locale === "ar" ? product.nameAr : product.name}
                     </div>
                     <div className="text-[0.7rem] truncate max-w-[100px] text-gray-500 flex gap-2 items-center justify-center">

@@ -642,6 +642,8 @@
     "updateButton": "تحديث شاشة الترحيب"
   },
   "ads": {
+    "closable": "قابل للإغلاق",
+    "mobileScreen": "شاشة موبايل",
     "titleAr": "العنوان (بالعربية)",
     "descriptionAr": "الوصف (بالعربية)",
     "userTypeRequired": "الرجاء اختيار نوع المستخدم",
@@ -720,6 +722,7 @@
     "successUpdate": "تم تحديث الإعلان بنجاح!"
   },
   "Tablecomponent": {
+    "title": "العنوان",
     "product": "المنتج",
     "review": "المراجعة",
     "rating": "تقييم",

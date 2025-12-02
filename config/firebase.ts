@@ -38,7 +38,6 @@ const initializeMessaging = () => {
   if (isBrowser && isNotificationSupported() && !messaging) {
     try {
       messaging = getMessaging(app);
-      console.log("Firebase messaging initialized successfully");
       return messaging;
     } catch (error) {
       console.error("Firebase messaging initialization error:", error);
@@ -100,7 +99,6 @@ export const requestNotificationPermission = async () => {
         });
 
         if (currentToken) {
-          console.log("FCM token:", currentToken);
           return currentToken;
         } else {
           console.log("No registration token available");

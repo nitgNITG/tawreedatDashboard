@@ -4,6 +4,27 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/api/revalidate",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "http://localhost:3100,https://tawreedatapis.nitg-eg.com", // list of allowed origins
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "POST",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

@@ -70,8 +70,12 @@ const PopupProduct = ({
       nameAr: product?.nameAr || undefined,
       price: product?.price || undefined,
       offer: product?.offer || undefined,
-      offerValidFrom: product?.offerValidFrom || undefined,
-      offerValidTo: product?.offerValidTo || undefined,
+      offerValidFrom: product?.offerValidFrom
+        ? new Date(product?.offerValidFrom).toISOString().split("T")[0]
+        : undefined,
+      offerValidTo: product?.offerValidTo
+        ? new Date(product?.offerValidTo).toISOString().split("T")[0]
+        : undefined,
       stock: product?.stock || undefined,
       description: product?.description || undefined,
       descriptionAr: product?.descriptionAr || undefined,
@@ -349,22 +353,6 @@ const PopupProduct = ({
       }
       reset(); // Reset form after submission
       setOpen(false);
-
-      // Revalidate cache
-      try {
-        await fetch("/api/revalidate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tag: "products",
-          }),
-        });
-        console.log("Cache revalidated successfully");
-      } catch (revalidateError) {
-        console.error("Failed to revalidate cache:", revalidateError);
-      }
     } catch (error: any) {
       console.error("Submit Error:", error);
       toast.error(error?.response?.data?.message || t("error.general"));

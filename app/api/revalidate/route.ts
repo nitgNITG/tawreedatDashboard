@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { tag } = await request.json();
+    const { tag, key } = await request.json();
 
     // You may want to add some authentication here
     // to ensure only authenticated requests can revalidate
-    if (!tag) {
+    if (!tag || key !== process.env.REVALIDATE_API_KEY) {
       return NextResponse.json(
         { message: "Missing tag parameter" },
         { status: 400 }

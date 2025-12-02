@@ -154,7 +154,6 @@ const ProductsData = async ({
   );
 
   if (error) return <div className="text-red-500">Error: {error}</div>;
-  console.log(data?.products?.[0]);
 
   return (
     <Products

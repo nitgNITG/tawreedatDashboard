@@ -203,20 +203,6 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
       }
 
       setOpen(false);
-      try {
-        await fetch("/api/revalidate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tag: "categories",
-          }),
-        });
-        console.log("Cache revalidated successfully");
-      } catch (revalidateError) {
-        console.error("Failed to revalidate cache:", revalidateError);
-      }
     } catch (error: any) {
       if (error.response?.data?.error.includes("categories_name_key")) {
         setError("name", {

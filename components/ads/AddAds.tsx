@@ -1,12 +1,13 @@
+"use client";
 import { useAppContext } from "@/context/appContext";
 import { useAppDispatch } from "@/hooks/redux";
 import { Ad, addAds, AdsType, updateAds } from "@/redux/reducers/adsReducer";
 import axios from "axios";
 import clsx from "clsx";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import AddImageInput from "../AddImageInput";
 import CustomDatePicker from "../CustomDatePicker";
@@ -15,6 +16,13 @@ import { LoadingIcon } from "../icons";
 import CustomSelect from "../users/CustomSelect";
 import UserInput from "../users/UserInput";
 import PrioritySelect from "./PrioritySelect";
+import { fetchBrands } from "@/lib/fetchBrands";
+import FetchSelect from "../FetchSelect";
+import { Brand } from "@/app/[locale]/brands/page";
+import { isArray } from "lodash";
+import { Switch } from "../ui/switch";
+import { X } from "lucide-react";
+import { Button } from "../ui/button";
 
 const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
   const t = useTranslations("ads");
@@ -25,6 +33,7 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
     reset,
     control,
     setError,
+    setValue,
   } = useForm();
 
   useEffect(() => {
@@ -40,11 +49,13 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
       endDate: ad?.endDate
         ? new Date(ad.endDate).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
-      targetUrl: ad?.targetUrl ?? "",
+      targetUrl: ad?.targetUrl ?? undefined,
+      mobileScreen: ad?.mobileScreen ?? undefined,
       adType: ad?.adType ?? AdsType.Home,
       displayDuration: ad?.displayDuration ?? 24,
       priority: ad?.priority?.toString() ?? "",
       imageFile: undefined,
+      closable: ad ? ad?.closable : true,
     });
     setImage(ad?.imageUrl ?? null);
   }, [ad, reset]);
@@ -53,6 +64,7 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
   const [image, setImage] = useState<string | null>(ad?.imageUrl ?? null);
   const { token } = useAppContext();
   const dispatch = useAppDispatch();
+  const lang = useLocale() as "en" | "ar";
 
   const onSubmit = handleSubmit(async (formData) => {
     try {
@@ -82,6 +94,7 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
+          "Accept-Language": lang,
         },
       });
       toast.success(ad ? t("successUpdate") : t("success"));
@@ -216,11 +229,94 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
           <UserInput
             fieldForm="targetUrl"
             register={register}
-            roles={{ value: ad?.targetUrl, required: t("targetUrlRequired") }}
-            defaultValue={ad?.targetUrl}
+            roles={{ value: ad?.targetUrl || undefined, required: false }}
+            defaultValue={ad?.targetUrl || undefined}
             errors={errors}
             label={t("targetUrl")}
           />
+          <div className="grid items-center grid-cols-1 h-min gap-y-2">
+            <label className="text-nowrap" htmlFor="mobileScreen">
+              {t("mobileScreen")}:
+            </label>
+            <div className="relative">
+              <textarea
+                defaultValue={ad?.mobileScreen}
+                readOnly
+                rows={5}
+                {...register("mobileScreen", {
+                  value: ad?.mobileScreen,
+                })}
+                id="mobileScreen"
+                className={clsx(
+                  "border-2 border-[#DADADA] p-2 rounded-xl bg-transparent shadow-[0px_0px_5px_-1px_#00000040] outline-none",
+                  "hover:border-primary focus:border-primary",
+                  "transition-colors duration-200 ease-in-out w-full"
+                )}
+              ></textarea>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setValue("mobileScreen", "")}
+                className="absolute top-2 end-4 text-gray-500 p-1 h-auto"
+              >
+                <X className="size-4" />
+              </Button>
+            </div>
+            <ErrorMsg message={errors?.mobileScreen?.message as string} />
+          </div>
+          <div className="w-full">
+            <FetchSelect<
+              Pick<
+                Brand,
+                | "id"
+                | "name"
+                | "nameAr"
+                | "logoUrl"
+                | "coverUrl"
+                | "description"
+                | "descriptionAr"
+              >
+            >
+              fieldForm={"brand"}
+              label={t("brand")}
+              fetchFunction={(params) =>
+                fetchBrands({
+                  ...params,
+                  token,
+                  lang,
+                  fields:
+                    "id,name,nameAr,logoUrl,coverUrl,description,descriptionAr",
+                })
+              }
+              getOptionValue={(item) => item.id}
+              // getOptionDisplayText={(item) =>
+              //   lang === "ar" ? item.nameAr : item.name
+              // }
+              getOptionLabel={(item) =>
+                lang === "ar" ? item.nameAr : item.name
+              }
+              placeholder={t("selectBrand")}
+              className="w-full"
+              onChange={(value) => {
+                if (value.length > 0) {
+                  const brand = value[0];
+                  setValue(
+                    "mobileScreen",
+                    `tawreedat://products?id=${
+                      brand.id || null
+                    }&isBrand=true&name=${brand.name || null}&nameAr=${
+                      brand.nameAr || null
+                    }&imageUrl=${brand.coverUrl || null}&iconUrl=${
+                      brand.logoUrl || null
+                    }&description=${brand.description || null}&descriptionAr=${
+                      brand.descriptionAr || null
+                    }`
+                  );
+                }
+              }}
+            />
+          </div>
+
           <CustomSelect
             errors={errors}
             fieldForm="adType"
@@ -254,6 +350,22 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
             register={register}
             errors={errors}
             currentAd={ad}
+          />
+          <Controller
+            control={control}
+            name="closable"
+            defaultValue={true}
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <label htmlFor="closable">{t("closable")}</label>
+                <Switch
+                  id="closable"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  onBlur={field.onBlur}
+                />
+              </div>
+            )}
           />
           <div className="grid grid-cols-2 gap-10">
             <button

@@ -42,15 +42,11 @@ const PrioritySelect = ({
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("data.ads", data.ads);
 
         // Get used priorities excluding current ad
         const usedPriorities = data.ads
           .filter((ad: Ad) => ad?.id !== currentAd?.id)
           .map((ad: Ad) => ad.priority);
-          console.log("usedPriorities", usedPriorities);
-          console.log("totalCount", data.totalCount);
-
           
 
         // Create options array with disabled state
