@@ -327,7 +327,7 @@
     "confirmOrderUpdateTitle": "Confirm Order Update",
     "confirmOrderUpdateDesc": "Do you want to save the new category order?",
     "save": "Save",
-    "cancel":"Cancel",
+    "cancel": "Cancel",
     "resetOrder": "Reset Order",
     "saveOrder": "Save Order",
     "orderSaved": "Brand order saved successfully",
@@ -634,6 +634,7 @@
     "endDateError": "End date must be after start date"
   },
   "category": {
+    "sortId": "Sort Id",
     "confirmOrderUpdateTitle": "Confirm Order Update",
     "confirmOrderUpdateDesc": "Do you want to save the new category order?",
     "save": "Save",

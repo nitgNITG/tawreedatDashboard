@@ -41,7 +41,18 @@ function InfoRow({ label, value, color }: Readonly<InfoRowProps>) {
 function Pill({ text, color }: Readonly<{ text: string; color?: string }>) {
   return (
     <span
-      className={`inline-block px-3 py-1 rounded-full text-sm bg-[#f3f4f6]`}
+      title={text}
+      className="
+        inline-block
+        px-3 py-1
+        rounded-full
+        text-sm
+        bg-[#f3f4f6]
+        max-w-[220px]
+        truncate
+        whitespace-nowrap
+        overflow-hidden
+      "
       style={{
         backgroundColor: color ? `${color}20` : "#f3f4f6",
         color: color ?? "#374151",
@@ -178,13 +189,14 @@ export function BasicInfoSection({
         {/* Paymob API Key */}
         <div className="flex justify-between items-center">
           <label className="text-gray-700">{t("paymob_api_key")}</label>
-          <input
-            type="text"
+
+          <textarea
             value={settingsFormData.paymob_api_key}
             onChange={(e) =>
               handleInputChange("paymob_api_key", e.target.value)
             }
-            className="px-3 py-2 border rounded-md w-48"
+            rows={5}
+            className="px-3 py-2 border rounded-md w-48 resize-none"
           />
         </div>
 

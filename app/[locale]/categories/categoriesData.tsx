@@ -119,7 +119,7 @@ export const fetchCategories = async (
       {
         method: "GET",
         credentials: "include",
-        // cache: "force-cache", // or "default"
+        cache: "no-store", // or "default"
         // next: { tags: [`categories`, `${JSON.stringify(searchParams)}`] },
         headers: {
           "accept-language": locale,

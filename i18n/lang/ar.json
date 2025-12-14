@@ -430,6 +430,7 @@
     "successAdd": "تمت إضافة العلامة التجارية بنجاح"
   },
   "category": {
+    "sortId": "ترتيب المعرف",
     "confirmOrderUpdateTitle": "تأكيد تحديث الترتيب",
     "confirmOrderUpdateDesc": "هل تريد حفظ ترتيب الفئات الجديد؟",
     "save": "حفظ",

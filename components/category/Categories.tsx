@@ -82,11 +82,10 @@ const Categories: React.FC<CategoriesProps> = ({
   const t = useTranslations("category");
   const locale = useLocale();
   const dispatch = useAppDispatch();
-  const sortableId = React.useId();
   const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
+    useSensor(MouseSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
   );
   const categories: Category[] = useAppSelector(
     (state) => state.category.categories
@@ -133,6 +132,11 @@ const Categories: React.FC<CategoriesProps> = ({
       queryParam: "hasBrands",
     },
   ];
+  useEffect(() => {
+    dispatch(setCategories(initCategories));
+    setInitialOrder(initCategories.map((c) => c.id));
+  }, [initCategories]);
+  console.log(initCategories);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -205,7 +209,7 @@ const Categories: React.FC<CategoriesProps> = ({
       toast.success("Order saved successfully!");
 
       // Reset change state
-      setInitialOrder(categories.map((c) => c.sortId));
+      setInitialOrder(categories.map((c) => c.id));
       setHasChanges(false);
       setConfirmSave(false);
     } catch (err) {
@@ -218,13 +222,6 @@ const Categories: React.FC<CategoriesProps> = ({
     dispatch(setCategories(initCategories));
     setHasChanges(false);
   }
-
-  useEffect(() => {
-    dispatch(setCategories(initCategories));
-
-    // Save initial order
-    setInitialOrder(initCategories.map((c) => c.id));
-  }, [initCategories, dispatch]);
 
   return (
     <div className="space-y-6">
@@ -239,6 +236,7 @@ const Categories: React.FC<CategoriesProps> = ({
           <FilterDropdown options={filterOptions} placeholder="filter" />
           <SortDropdown
             options={[
+              { label: t("sortId"), value: "sortId" },
               { label: t("name"), value: "name" },
               { label: t("nameAr"), value: "nameAr" },
               { label: t("createdAt"), value: "createdAt" },
@@ -262,7 +260,6 @@ const Categories: React.FC<CategoriesProps> = ({
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
           sensors={sensors}
-          id={sortableId}
           modifiers={[restrictToParentElement]}
         >
           <div className="grid grid-cols-[repeat(auto-fit,_minmax(270px,_1fr))] gap-8 bg-white rounded-3xl px-5 py-8">

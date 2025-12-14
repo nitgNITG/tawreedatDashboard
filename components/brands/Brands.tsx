@@ -80,7 +80,12 @@ const Brands = ({
   );
 
   const headers: TableHeader[] = [
-    { name: "sortId", className: "!px-3 !py-2 flex justify-center" },
+    {
+      name: "sortId",
+      sortable: true,
+      key: "sortId",
+      className: "!px-3 !py-2 flex justify-center",
+    },
     { name: "image", className: "!px-3 !py-2" },
     {
       name: "name",
@@ -123,7 +128,7 @@ const Brands = ({
       const body = brands.map((b) => ({ id: b.id, sortId: b.sortId }));
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/brands/reorder`,
+        "/api/brands/reorder",
         { brands: body },
         {
           headers: { Authorization: `Bearer ${token}` },
