@@ -21,10 +21,8 @@ export default async function SettingsPage() {
       settingsData.numberOfLatestOffersOnHomepage ?? 3,
     numberOfNewArrivalsOnHomepage:
       settingsData.numberOfNewArrivalsOnHomepage ?? 3,
-    numberOfAdsOnHomepage:
-      settingsData.numberOfAdsOnHomepage ?? 3,
-    numberOfBrandsOnHomepage:
-      settingsData.numberOfBrandsOnHomepage ?? 3,
+    numberOfAdsOnHomepage: settingsData.numberOfAdsOnHomepage ?? 3,
+    numberOfBrandsOnHomepage: settingsData.numberOfBrandsOnHomepage ?? 3,
     loginAttemptDurationMinutes: settingsData.loginAttemptDurationMinutes ?? 20,
     loginAttempts: settingsData.loginAttempts ?? 5,
     permanentDelete: settingsData.permanentDelete ?? false,
@@ -34,6 +32,15 @@ export default async function SettingsPage() {
     offerLimit: settingsData.offerLimit ?? 0,
     upToLimit: settingsData.upToLimit ?? 0,
     paymentAmountValidity: settingsData.paymentAmountValidity ?? 0,
+    app_android_version: settingsData.app_android_version ?? "",
+    app_android_url: settingsData.app_android_url ?? "",
+    app_ios_version: settingsData.app_ios_version ?? "",
+    app_ios_url: settingsData.app_ios_url ?? "",
+    paymob_api_key: settingsData.paymob_api_key ?? "",
+    paymob_secret_key: settingsData.paymob_secret_key ?? "",
+    paymob_public_key: settingsData.paymob_public_key ?? "",
+    paymob_base_url: settingsData.paymob_base_url ?? "",
+    paymob_payment_methods: settingsData.paymob_payment_methods ?? "",
     basicInfo: {
       vatPercentage: settingsData.vat ?? 5,
       applicationPoints: {
@@ -46,7 +53,6 @@ export default async function SettingsPage() {
       latestOffers: settingsData.numberOfLatestOffersOnHomepage ?? 3,
       bestSellingBrands: settingsData.numberOfProductsOnHomepage ?? 3,
       newArrivals: settingsData.numberOfNewArrivalsOnHomepage ?? 3,
-      
     },
     // Keep backward compatibility fields
     latestOffers: settingsData.numberOfLatestOffersOnHomepage ?? 3,
@@ -56,7 +62,7 @@ export default async function SettingsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl p-container">
       <SettingsDetails settings={formattedData} />
     </div>
   );

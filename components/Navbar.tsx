@@ -60,13 +60,15 @@ const Navbar = ({
   const updateProfile = async (newLocale: string, token: string) => {
     try {
       await axios.put(
-        `/api/users/profile`,
+        `/api/profile`,
         {
-          lang: newLocale,
+          lang: newLocale.toUpperCase(),
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "accept-language": newLocale,
           },
         }
       );
@@ -102,7 +104,7 @@ const Navbar = ({
       {/*       
       
       {!showSearchBar && <SearchBar />} */}
-      
+
       <SearchBar />
 
       <div className="flex items-center gap-4">
@@ -143,7 +145,10 @@ const Navbar = ({
                 </div>
               </div>
               <div className="py-1">
-                <Link href={`/${locale}/profile`} className="px-4 py-3 hover:bg-gray-100 w-full flex gap-1 duration-100">
+                <Link
+                  href={`/${locale}/profile`}
+                  className="px-4 py-3 hover:bg-gray-100 w-full flex gap-1 duration-100"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -159,7 +164,6 @@ const Navbar = ({
                     />
                   </svg>
                   {t("profile")}
-
                 </Link>
                 <button
                   onClick={logout}
@@ -176,9 +180,9 @@ const Navbar = ({
         <Link
           href={`/${locale}/notifications`}
           onClick={handleBellClick}
-          className="flex items-center p-1 rounded-full justify-center hover:opacity-80 transition-opacity text-primary bg-white relative"
+          className="flex-center  p-1 rounded-full hover:opacity-80 transition-opacity text-primary bg-white relative"
         >
-          <span className="absolute top-0 z-10 -right-1 rounded-full bg-red-500 text-white text-[8px] flex items-center justify-center px-1 py-0.5">
+          <span className="absolute -top-2 z-10 -end-2 bg-red-500 text-white text-[8px] rounded-full size-4 flex-center">
             {notifications}
           </span>
           <BellIcon className="size-5 text-primary" />

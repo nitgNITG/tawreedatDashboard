@@ -27,6 +27,15 @@ interface SettingsData {
   offerLimit: number;
   upToLimit: number;
   paymentAmountValidity: number;
+  app_android_version: string;
+  app_android_url: string;
+  app_ios_version: string;
+  app_ios_url: string;
+  paymob_api_key: string;
+  paymob_secret_key: string;
+  paymob_public_key: string;
+  paymob_base_url: string;
+  paymob_payment_methods: string;
   basicInfo: {
     vatPercentage: number;
     applicationPoints: {
@@ -71,6 +80,15 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
     numberOfNewArrivalsOnHomepage: 3,
     numberOfBrandsOnHomepage: 3,
     numberOfAdsOnHomepage: 3,
+    app_android_version: "",
+    app_android_url: "",
+    app_ios_version: "",
+    app_ios_url: "",
+    paymob_api_key: "",
+    paymob_secret_key: "",
+    paymob_public_key: "",
+    paymob_base_url: "",
+    paymob_payment_methods: "",
   });
 
   // Initialize form data from props instead of fetching from API
@@ -91,6 +109,15 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
         settings.numberOfNewArrivalsOnHomepage ?? 3,
       numberOfBrandsOnHomepage: settings.numberOfBrandsOnHomepage ?? 3,
       numberOfAdsOnHomepage: settings.numberOfAdsOnHomepage ?? 3,
+      app_android_version: settings.app_android_version ?? "",
+      app_android_url: settings.app_android_url ?? "",
+      app_ios_version: settings.app_ios_version ?? "",
+      app_ios_url: settings.app_ios_url ?? "",
+      paymob_api_key: settings.paymob_api_key ?? "",
+      paymob_secret_key: settings.paymob_secret_key ?? "",
+      paymob_public_key: settings.paymob_public_key ?? "",
+      paymob_base_url: settings.paymob_base_url ?? "",
+      paymob_payment_methods: settings.paymob_payment_methods ?? "",
     });
   }, [settings]);
 
@@ -129,6 +156,15 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
           ),
           permanentDelete: settingsFormData.permanentDelete,
           loginAsGuest: settingsFormData.loginAsGuest,
+          app_android_version: settingsFormData.app_android_version,
+          app_android_url: settingsFormData.app_android_url,
+          app_ios_version: settingsFormData.app_ios_version,
+          app_ios_url: settingsFormData.app_ios_url,
+          paymob_api_key: settingsFormData.paymob_api_key,
+          paymob_secret_key: settingsFormData.paymob_secret_key,
+          paymob_public_key: settingsFormData.paymob_public_key,
+          paymob_base_url: settingsFormData.paymob_base_url,
+          paymob_payment_methods: settingsFormData.paymob_payment_methods,
         },
         {
           headers: {
@@ -176,6 +212,15 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
         settings.numberOfNewArrivalsOnHomepage ?? 3,
       numberOfBrandsOnHomepage: settings.numberOfBrandsOnHomepage ?? 3,
       numberOfAdsOnHomepage: settings.numberOfAdsOnHomepage ?? 3,
+      app_android_version: settings.app_android_version ?? "",
+      app_android_url: settings.app_android_url ?? "",
+      app_ios_version: settings.app_ios_version ?? "",
+      app_ios_url: settings.app_ios_url ?? "",
+      paymob_api_key: settings.paymob_api_key ?? "",
+      paymob_secret_key: settings.paymob_secret_key ?? "",
+      paymob_public_key: settings.paymob_public_key ?? "",
+      paymob_base_url: settings.paymob_base_url ?? "",
+      paymob_payment_methods: settings.paymob_payment_methods ?? "",
     });
   };
 

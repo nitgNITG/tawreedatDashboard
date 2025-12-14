@@ -391,6 +391,15 @@
     "notfoundSuppliers": "لا يوجد موردين"
   },
   "brands": {
+    "confirmOrderUpdateTitle": "تأكيد تحديث الترتيب",
+    "confirmOrderUpdateDesc": "هل تريد حفظ ترتيب الفئات الجديد؟",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "resetOrder": "إعادة ترتيب",
+    "saveOrder": "حفظ الترتيب",
+    "orderSaved": "تم حفظ ترتيب العلامات التجارية بنجاح",
+    "orderSaveFailed": "فشل حفظ ترتيب العلامات التجارية",
+    "error": "حدث خطأ",
     "category": "الفئة",
     "selectCategories": "اختر الفئات",
     "categoryIsRequired": "الفئة مطلوبة",
@@ -421,6 +430,11 @@
     "successAdd": "تمت إضافة العلامة التجارية بنجاح"
   },
   "category": {
+    "confirmOrderUpdateTitle": "تأكيد تحديث الترتيب",
+    "confirmOrderUpdateDesc": "هل تريد حفظ ترتيب الفئات الجديد؟",
+    "save": "حفظ",
+    "resetOrder": "إعادة ترتيب",
+    "saveOrder": "حفظ الترتيب",
     "product_attributes": "سمات المنتج",
     "attribute_already_exists": "السمة موجودة بالفعل",
     "enum_value_already_exists": "قيمة التعداد موجودة بالفعل",
@@ -722,6 +736,7 @@
     "successUpdate": "تم تحديث الإعلان بنجاح!"
   },
   "Tablecomponent": {
+    "sortId": "ترتيب المعرف",
     "title": "العنوان",
     "product": "المنتج",
     "review": "المراجعة",
@@ -1042,6 +1057,15 @@
     }
   },
   "settings": {
+    "paymob_api_key": "مفتاح Paymob API",
+    "paymob_secret_key": "مفتاح Paymob السري",
+    "paymob_public_key": "مفتاح Paymob العام",
+    "paymob_base_url": "رابط Paymob الأساسي",
+    "paymob_payment_methods": "طرق الدفع الخاصة بـ Paymob",
+    "app_android_version": "إصدار تطبيق أندرويد",
+    "app_android_url": "رابط تطبيق أندرويد",
+    "app_ios_version": "إصدار تطبيق iOS",
+    "app_ios_url": "رابط تطبيق iOS",
     "numberOfBrandsOnHomepage": "عدد العلامات التجارية في الصفحة الرئيسية",
     "numberOfAdsOnHomepage": "عدد الإعلانات في الصفحة الرئيسية",
     "permanentDelete": "حذف دائم",

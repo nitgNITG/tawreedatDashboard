@@ -32,6 +32,26 @@ import Pagination from "../ui/Pagination";
 import DownloadButton from "../ui/DownloadButton";
 import CategoryBreadcrumb from "./CategoryBreadcrumb";
 import FilterDropdown, { FilterOption } from "../FilterDropdown";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
+
+import SortableCard from "../ui/SortableCard";
+import { Button } from "../ui/button";
 
 interface CategoriesProps {
   categories: Category[]; //
@@ -54,10 +74,20 @@ const Categories: React.FC<CategoriesProps> = ({
   const [openDelete, setOpenDelete] = useState<number | null>(null);
   const [cateUpdate, setCateUpdate] = useState<Category | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [initialOrder, setInitialOrder] = useState<number[]>([]);
+  const [confirmSave, setConfirmSave] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+
   const { token } = useAppContext();
   const t = useTranslations("category");
   const locale = useLocale();
   const dispatch = useAppDispatch();
+  const sortableId = React.useId();
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {})
+  );
   const categories: Category[] = useAppSelector(
     (state) => state.category.categories
   );
@@ -104,9 +134,26 @@ const Categories: React.FC<CategoriesProps> = ({
     },
   ];
 
-  useEffect(() => {
-    dispatch(setCategories(initCategories));
-  }, [initCategories, dispatch]);
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = categories.findIndex((c) => c.id === active.id);
+    const newIndex = categories.findIndex((c) => c.id === over.id);
+
+    const newOrder = arrayMove(categories, oldIndex, newIndex);
+
+    const updatedCategories = newOrder.map((cat, i) => ({
+      ...cat,
+      sortId: i + 1,
+    }));
+    dispatch(setCategories(updatedCategories));
+
+    // Detect change from initial
+    const newOrderIds = updatedCategories.map((c) => c.id);
+    setHasChanges(JSON.stringify(newOrderIds) !== JSON.stringify(initialOrder));
+  }
 
   const handleDeleteCate = async () => {
     try {
@@ -135,6 +182,49 @@ const Categories: React.FC<CategoriesProps> = ({
       setLoading(false);
     }
   };
+  async function handleSaveOrder() {
+    try {
+      setLoading(true);
+      const body = categories.map((c) => ({
+        id: c.id,
+        sortId: c.sortId,
+      }));
+
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/reorder`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ categories: body }),
+        }
+      );
+
+      toast.success("Order saved successfully!");
+
+      // Reset change state
+      setInitialOrder(categories.map((c) => c.sortId));
+      setHasChanges(false);
+      setConfirmSave(false);
+    } catch (err) {
+      toast.error("Failed to save order");
+    } finally {
+      setLoading(false);
+    }
+  }
+  function handleResetOrder() {
+    dispatch(setCategories(initCategories));
+    setHasChanges(false);
+  }
+
+  useEffect(() => {
+    dispatch(setCategories(initCategories));
+
+    // Save initial order
+    setInitialOrder(initCategories.map((c) => c.id));
+  }, [initCategories, dispatch]);
 
   return (
     <div className="space-y-6">
@@ -154,84 +244,107 @@ const Categories: React.FC<CategoriesProps> = ({
               { label: t("createdAt"), value: "createdAt" },
             ]}
           />
-          <button
+          <Button
             onClick={() => {
               setOpen(true);
             }}
-            className="px-5 py-2 bg-primary rounded-md text-white font-medium"
           >
-            <div className="flex gap-3">
-              <PlusCircleIcon className="size-6" />
-              <div className="flex-1">{t("addCategory")}</div>
-            </div>
-          </button>
+            <PlusCircleIcon className="size-6" />
+            <span className="flex-1">{t("addCategory")}</span>
+          </Button>
         </div>
       </div>
 
       {categories.length === 0 ? (
         <div className="text-center font-bold py-8">{t("no_data_yet")}</div>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fit,_minmax(270px,_1fr))] gap-8 bg-white rounded-3xl px-5 py-8">
-          {categories.map((category, index) => (
-            <CardGridItem
-              key={category.id}
-              isPriority={index < 6}
-              cardFooter={
-                <>
-                  <div className="w-full flex flex-col items-start px-2">
-                    <CardTitle className="text-base font-bold mb-1 truncate w-full">
-                      {locale === "ar" ? category.nameAr : category.name}
-                    </CardTitle>
-                    <CardDescription className="text-[0.7rem] text-gray-500 flex gap-2 items-center justify-center">
-                      <span>
-                        {category._count?.products || 0} {t("products")}
-                      </span>
-                      <span>
-                        {category._count?.children || 0} {t("subCategories")}
-                      </span>
-                      <span>
-                        {category._count?.brands || 0} {t("brands")}
-                      </span>
-                    </CardDescription>
-                  </div>
-                  <div className="flex gap-2 justify-center items-center">
-                    <Link
-                      href={`/categories/${
-                        categoryPath
-                          ? categoryPath
-                              .map((cat) => cat.replace(/ /g, "-"))
-                              .join("/") + "/"
-                          : ""
-                      }${category.name.replace(/ /g, "-")}`}
-                      aria-label={t("viewCategory")}
-                    >
-                      <EyeIcon className="size-4 text-primary hover:text-gray-700" />
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setOpen(true);
-                        setCateUpdate(category);
-                      }}
-                      aria-label={t("editCategory")}
-                    >
-                      <EditIcon className="size-4 text-primary hover:text-gray-700" />
-                    </button>
-                    <button
-                      onClick={() => setOpenDelete(category.id)}
-                      aria-label={t("deleteCategory")}
-                    >
-                      <DeleteIcon className="size-4 text-red-500 hover:text-red-700" />
-                    </button>
-                  </div>
-                </>
-              }
-              image={{
-                alt: category.name,
-                url: category.imageUrl,
-              }}
-            />
-          ))}
-        </div>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+          id={sortableId}
+          modifiers={[restrictToParentElement]}
+        >
+          <div className="grid grid-cols-[repeat(auto-fit,_minmax(270px,_1fr))] gap-8 bg-white rounded-3xl px-5 py-8">
+            <SortableContext
+              items={categories.map((c) => c.id)}
+              strategy={rectSortingStrategy}
+            >
+              {categories.map((category, index) => (
+                <SortableCard key={category.id} id={category.id}>
+                  <CardGridItem
+                    key={category.id}
+                    isPriority={index < 6}
+                    cardFooter={
+                      <>
+                        <div className="w-full flex flex-col items-start px-2">
+                          <CardTitle className="text-base font-bold mb-1 truncate w-full">
+                            {locale === "ar" ? category.nameAr : category.name}
+                          </CardTitle>
+                          <CardDescription className="text-[0.7rem] text-gray-500 flex gap-2 items-center justify-center">
+                            <span>
+                              {category._count?.products || 0} {t("products")}
+                            </span>
+                            <span>
+                              {category._count?.children || 0}{" "}
+                              {t("subCategories")}
+                            </span>
+                            <span>
+                              {category._count?.brands || 0} {t("brands")}
+                            </span>
+                          </CardDescription>
+                        </div>
+                        <div className="flex gap-2 justify-center items-center">
+                          <Button
+                            asChild={true}
+                            variant={"ghost"}
+                            className="!p-1 !h-auto"
+                          >
+                            <Link
+                              href={`/categories/${
+                                categoryPath
+                                  ? categoryPath
+                                      .map((cat) => cat.replace(/ /g, "-"))
+                                      .join("/") + "/"
+                                  : ""
+                              }${category.name.replace(/ /g, "-")}`}
+                              aria-label={t("viewCategory")}
+                            >
+                              <EyeIcon className="size-4 text-primary hover:text-gray-700" />
+                            </Link>
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setOpen(true);
+                              setCateUpdate(category);
+                            }}
+                            aria-label={t("editCategory")}
+                            variant={"ghost"}
+                            className="!p-1 !h-auto"
+                          >
+                            <EditIcon className="size-4 text-primary hover:text-gray-700" />
+                          </Button>
+                          <Button
+                            onClick={() => setOpenDelete(category.id)}
+                            aria-label={t("deleteCategory")}
+                            variant={"ghost"}
+                            className="!p-1 !h-auto"
+                          >
+                            <DeleteIcon className="size-4 text-red-500 hover:text-red-700" />
+                          </Button>
+                        </div>
+                      </>
+                    }
+                    image={{
+                      alt: category.name,
+                      url: category.imageUrl,
+                    }}
+                  />
+                </SortableCard>
+              ))}
+            </SortableContext>
+          </div>
+        </DndContext>
       )}
       <Pagination
         count={count}
@@ -245,6 +358,41 @@ const Categories: React.FC<CategoriesProps> = ({
           />
         }
       />
+
+      {hasChanges && (
+        <div className="fixed bottom-6 end-6 z-50 flex gap-3">
+          <Button variant="outline" onClick={handleResetOrder}>
+            {t("resetOrder") ?? "Reset Order"}
+          </Button>
+
+          <Button onClick={() => setConfirmSave(true)}>
+            {t("saveOrder") ?? "Save Order"}
+          </Button>
+        </div>
+      )}
+
+      <Dialog open={confirmSave} onOpenChange={setConfirmSave}>
+        <DialogContent className="bg-white rounded-lg">
+          <DialogHeader>
+            <DialogTitle>{t("confirmOrderUpdateTitle")}</DialogTitle>
+            <DialogDescription>{t("confirmOrderUpdateDesc")}</DialogDescription>
+          </DialogHeader>
+
+          <div className="flex justify-end gap-4 pt-4">
+            <Button onClick={() => setConfirmSave(false)} variant="outline">
+              {t("cancel")}
+            </Button>
+
+            <Button disabled={loading} onClick={handleSaveOrder}>
+              {loading ? (
+                <LoadingIcon className="size-5 animate-spin" />
+              ) : (
+                t("save")
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Add/Edit Category Dialog */}
       <Dialog
@@ -281,22 +429,16 @@ const Categories: React.FC<CategoriesProps> = ({
             </DialogHeader>
 
             <div className="flex justify-center gap-4 p-4">
-              <button
-                onClick={handleDeleteCate}
-                className="bg-teal-500 hover:bg-teal-600 px-8 py-2 rounded-3xl text-white transition-colors w-28"
-              >
+              <Button onClick={handleDeleteCate}>
                 {loading ? (
                   <LoadingIcon className="size-5 animate-spin" />
                 ) : (
                   t("yes")
                 )}
-              </button>
-              <button
-                onClick={() => setOpenDelete(null)}
-                className="bg-white border border-gray-700 drop-shadow-2xl font-bold hover:bg-gray-200 px-8 py-2 rounded-3xl text-black transition-colors w-28"
-              >
+              </Button>
+              <Button onClick={() => setOpenDelete(null)} variant="outline">
                 {t("no")}
-              </button>
+              </Button>
             </div>
           </div>
         </DialogContent>

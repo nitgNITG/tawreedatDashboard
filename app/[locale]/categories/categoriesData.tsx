@@ -16,6 +16,7 @@ export interface Category {
   createdAt: string;
   updatedAt?: string;
   isActive: boolean;
+  sortId: number;
   _count?: {
     children?: number;
     products?: number;
@@ -66,9 +67,9 @@ export const fetchCategories = async (
   try {
     const queryParams = new URLSearchParams({
       limit: searchParams.limit?.toString() ?? "10",
-      sort: searchParams.sort?.toString() ?? "-createdAt",
+      sort: searchParams.sort?.toString() ?? "sortId",
       fields:
-        "id,name,nameAr,description,descriptionAr,productAttributes,imageUrl,iconUrl,parent=id-name,createdAt,isActive,_count=children-products-brands",
+        "id,name,nameAr,description,descriptionAr,productAttributes,imageUrl,iconUrl,parent=id-name,createdAt,isActive,sortId,_count=children-products-brands",
     });
 
     if (searchParams.skip)
@@ -118,8 +119,8 @@ export const fetchCategories = async (
       {
         method: "GET",
         credentials: "include",
-        cache: "force-cache", // or "default"
-        next: { tags: [`categories`, `${JSON.stringify(searchParams)}`] },
+        // cache: "force-cache", // or "default"
+        // next: { tags: [`categories`, `${JSON.stringify(searchParams)}`] },
         headers: {
           "accept-language": locale,
         },

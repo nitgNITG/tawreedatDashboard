@@ -35,16 +35,22 @@ const SortDropdown = ({
   const currentSortField = currentSort.replace("-", "");
 
   const handleSort = (key: string) => {
-    if (!key) return;
+    const sortParam = archive ? "sortArchive" : "sort";
+
+    // Clear sort if key is empty
+    if (!key) {
+      pushQuery(sortParam, "");
+      return;
+    }
 
     if (currentSortField === key) {
       if (currentOrder === "asc") {
-        pushQuery(archive ? "sortArchive" : "sort", `-${key}`);
+        pushQuery(sortParam, `-${key}`);
       } else {
-        pushQuery(archive ? "sortArchive" : "sort", "");
+        pushQuery(sortParam, "");
       }
     } else {
-      pushQuery(archive ? "sortArchive" : "sort", key);
+      pushQuery(sortParam, key);
     }
   };
 

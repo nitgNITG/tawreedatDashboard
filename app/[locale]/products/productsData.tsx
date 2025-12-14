@@ -118,9 +118,8 @@ export const fetchProducts = async (
       {
         method: "GET",
         credentials: "include",
-        // cache: "no-cache",
-        cache: "force-cache", // or "default"
-        next: { tags: [`products`, `${JSON.stringify(searchParams)}`] }, // enables cache per searchParams
+        // cache: "force-cache", 
+        // next: { tags: [`products`, `${JSON.stringify(searchParams)}`] }, // enables cache per searchParams
         headers: {
           "accept-language": locale,
         },

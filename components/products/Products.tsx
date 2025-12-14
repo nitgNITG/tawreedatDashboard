@@ -49,11 +49,9 @@ const Products = ({
   useEffect(() => {
     dispatch(setProducts(initProducts));
   }, [initProducts]);
-  
-  
+
   const products: Product[] = useAppSelector((s) => s.products.products);
-  console.log(products[0]);
-  
+
   const handleDelete = async () => {
     try {
       setLoading(true);

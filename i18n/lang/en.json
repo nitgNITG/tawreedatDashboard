@@ -324,6 +324,15 @@
     "noMoreResults": "No more results"
   },
   "brands": {
+    "confirmOrderUpdateTitle": "Confirm Order Update",
+    "confirmOrderUpdateDesc": "Do you want to save the new category order?",
+    "save": "Save",
+    "cancel":"Cancel",
+    "resetOrder": "Reset Order",
+    "saveOrder": "Save Order",
+    "orderSaved": "Brand order saved successfully",
+    "orderSaveFailed": "Failed to save brand order",
+    "error": "There is an error",
     "category": "Category",
     "selectCategories": "Select Categories",
     "categoryIsRequired": "Category is required",
@@ -354,6 +363,7 @@
     "successAdd": "Brand added successfully"
   },
   "Tablecomponent": {
+    "sortId": "Sort Id",
     "title": "Title",
     "product": "Product",
     "review": "Review",
@@ -624,6 +634,11 @@
     "endDateError": "End date must be after start date"
   },
   "category": {
+    "confirmOrderUpdateTitle": "Confirm Order Update",
+    "confirmOrderUpdateDesc": "Do you want to save the new category order?",
+    "save": "Save",
+    "resetOrder": "Reset Order",
+    "saveOrder": "Save Order",
     "product_attributes": "Product Attributes",
     "attribute_already_exists": "Attribute already exists",
     "enum_value_already_exists": "Enum value already exists",
@@ -1194,6 +1209,15 @@
     "global": "Change Language"
   },
   "settings": {
+    "paymob_api_key": "Paymob API Key",
+    "paymob_secret_key": "Paymob Secret Key",
+    "paymob_public_key": "Paymob Public Key",
+    "paymob_base_url": "Paymob Base URL",
+    "paymob_payment_methods": "Paymob Payment Methods",
+    "app_android_version": "App Android Version",
+    "app_android_url": "App Android URL",
+    "app_ios_version": "App iOS Version",
+    "app_ios_url": "App iOS URL",
     "numberOfBrandsOnHomepage": "Number of Brand on Homepage",
     "numberOfAdsOnHomepage": "Number of Ads on Homepage",
     "permanentDelete": "Permanent Delete",

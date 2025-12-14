@@ -45,6 +45,7 @@ export interface Brand {
   isDeleted: boolean;
   isActive: boolean;
   isPopular: boolean;
+  sortId: number;
 }
 
 interface BrandsApiResponse {
@@ -66,9 +67,9 @@ const fetchBrands = async (
 
     const queryParams = new URLSearchParams({
       limit: searchParams.limit?.toString() ?? "10",
-      sort: searchParams.sort?.toString() ?? "-createdAt",
+      sort: searchParams.sort?.toString() ?? "sortId",
       fields:
-        "id,name,slug,nameAr,description,descriptionAr,logoUrl,coverUrl,isActive,isDeleted,isPopular,products=id-name-nameAr-images,createdAt,categories=id-category=id-name-nameAr-iconUrl",
+        "id,name,slug,nameAr,description,descriptionAr,logoUrl,coverUrl,isActive,sortId,isDeleted,isPopular,products=id-name-nameAr-images,createdAt,categories=id-category=id-name-nameAr-iconUrl",
     });
 
     if (searchParams.skip)
@@ -93,8 +94,8 @@ const fetchBrands = async (
           Authorization: `Bearer ${token}`,
           "accept-language": lang,
         },
-        cache: "force-cache",
-        next: { tags: ["brands", `${JSON.stringify(searchParams)}`] },
+        // cache: "force-cache",
+        // next: { tags: ["brands", `${JSON.stringify(searchParams)}`] },
       }
     );
     if (!res.ok) {
