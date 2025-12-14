@@ -94,7 +94,7 @@ const AddOrEditBrand = ({
 
       const fData: Omit<
         Brand,
-        "id" | "createdAt" | "updatedAt" | "slug" | "categories"
+        "id" | "createdAt" | "updatedAt" | "slug" | "categories" | "sortId"
       > = {
         ...rest,
       };
@@ -106,7 +106,9 @@ const AddOrEditBrand = ({
 
       const { data } = await axios({
         method: brand ? "PUT" : "POST",
-        url: brand ? `/api/brands/${brand.id}?fields=${fields}` : `/api/brands?fields=${fields}`,
+        url: brand
+          ? `/api/brands/${brand.id}?fields=${fields}`
+          : `/api/brands?fields=${fields}`,
         data: {
           ...fData,
           categories: rest.categories

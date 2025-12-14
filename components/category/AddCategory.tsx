@@ -382,6 +382,7 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
                   isActive: category.parent.isActive ?? true,
                   createdAt: category.parent.createdAt ?? "",
                   updatedAt: category.parent.updatedAt ?? "",
+                  sortId: category.parent.sortId ?? 0,
                 },
               ]
             : []
