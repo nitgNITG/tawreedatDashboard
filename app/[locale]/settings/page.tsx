@@ -25,6 +25,7 @@ export default async function SettingsPage() {
     numberOfBrandsOnHomepage: settingsData.numberOfBrandsOnHomepage ?? 3,
     loginAttemptDurationMinutes: settingsData.loginAttemptDurationMinutes ?? 20,
     loginAttempts: settingsData.loginAttempts ?? 5,
+    paymentAttempts: settingsData.paymentAttempts ?? 5,
     permanentDelete: settingsData.permanentDelete ?? false,
     loginAsGuest: settingsData.loginAsGuest ?? false,
     vat: settingsData.vat ?? 5,
@@ -41,6 +42,7 @@ export default async function SettingsPage() {
     paymob_public_key: settingsData.paymob_public_key ?? "",
     paymob_base_url: settingsData.paymob_base_url ?? "",
     paymob_payment_methods: settingsData.paymob_payment_methods ?? "",
+    paymob_Iframes: settingsData.paymob_Iframes ?? "",
     basicInfo: {
       vatPercentage: settingsData.vat ?? 5,
       applicationPoints: {

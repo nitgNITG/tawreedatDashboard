@@ -19,6 +19,8 @@ interface BasicInfoSectionProps {
     paymob_public_key: string;
     paymob_base_url: string;
     paymob_payment_methods: string;
+    paymentAttempts: number;
+    paymob_Iframes: string;
   };
   onSettingsChange: (newSettings: any) => void;
 }
@@ -114,6 +116,17 @@ export function BasicInfoSection({
             value={settingsFormData.loginAttempts}
             onChange={(e) =>
               handleInputChange("loginAttempts", Number(e.target.value))
+            }
+            className="px-3 py-2 border rounded-md w-48"
+          />
+        </div>
+        <div className="flex justify-between items-center">
+          <label className="text-gray-700">{t("paymentAttempts")}</label>
+          <input
+            type="number"
+            value={settingsFormData.paymentAttempts}
+            onChange={(e) =>
+              handleInputChange("paymentAttempts", Number(e.target.value))
             }
             className="px-3 py-2 border rounded-md w-48"
           />
@@ -251,6 +264,18 @@ export function BasicInfoSection({
             className="px-3 py-2 border rounded-md w-48"
           />
         </div>
+        {/* Paymob iframes */}
+        <div className="flex justify-between items-center">
+          <label className="text-gray-700">{t("paymob_Iframes")}</label>
+          <input
+            type="text"
+            value={settingsFormData.paymob_Iframes}
+            onChange={(e) =>
+              handleInputChange("paymob_Iframes", e.target.value)
+            }
+            className="px-3 py-2 border rounded-md w-48"
+          />
+        </div>
       </div>
     );
   }
@@ -265,6 +290,11 @@ export function BasicInfoSection({
       <InfoRow
         label={t("loginAttempts")}
         value={settingsFormData.loginAttempts.toString()}
+      />
+      
+      <InfoRow
+        label={t("paymentAttempts")}
+        value={settingsFormData.paymentAttempts.toString()}
       />
 
       <InfoRow
@@ -309,6 +339,10 @@ export function BasicInfoSection({
       <InfoRow
         label={t("paymob_payment_methods")}
         value={settingsFormData.paymob_payment_methods}
+      />
+      <InfoRow
+        label={t("paymob_Iframes")}
+        value={settingsFormData.paymob_Iframes}
       />
     </div>
   );

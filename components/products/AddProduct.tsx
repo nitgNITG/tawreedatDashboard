@@ -638,7 +638,7 @@ const PopupProduct = ({
           // getOptionDisplayText={(item) =>
           //   lang === "ar" ? item.nameAr : item.name
           // }
-          getOptionLabel={(item) => (lang === "ar" ? item.nameAr : item.name)}
+          getOptionLabel={(item) => (lang === "ar" ? (item.nameAr || item.name) : item.name)}
           placeholder={t("selectBrand")}
           className="w-full"
           errors={errors}

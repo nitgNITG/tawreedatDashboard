@@ -20,6 +20,7 @@ interface SettingsData {
   numberOfBrandsOnHomepage: number;
   loginAttemptDurationMinutes: number;
   loginAttempts: number;
+  paymentAttempts: number;
   permanentDelete: boolean;
   loginAsGuest: boolean;
   vat: number;
@@ -36,6 +37,7 @@ interface SettingsData {
   paymob_public_key: string;
   paymob_base_url: string;
   paymob_payment_methods: string;
+  paymob_Iframes: string;
   basicInfo: {
     vatPercentage: number;
     applicationPoints: {
@@ -71,6 +73,7 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
     vat: 5,
     loginAttemptDurationMinutes: 20,
     loginAttempts: 5,
+    paymentAttempts: 5,
     permanentDelete: false,
     loginAsGuest: false,
     numberOfProductsOnHomepage: 3,
@@ -89,6 +92,7 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
     paymob_public_key: "",
     paymob_base_url: "",
     paymob_payment_methods: "",
+    paymob_Iframes: "",
   });
 
   // Initialize form data from props instead of fetching from API
@@ -97,6 +101,7 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
       vat: settings.basicInfo.vatPercentage ?? 5,
       loginAttemptDurationMinutes: settings.loginAttemptDurationMinutes ?? 20,
       loginAttempts: settings.loginAttempts ?? 5,
+      paymentAttempts: settings.paymentAttempts ?? 5,
       permanentDelete: settings.permanentDelete ?? false,
       loginAsGuest: settings.loginAsGuest ?? false,
       numberOfProductsOnHomepage: settings.numberOfProductsOnHomepage ?? 3,
@@ -118,6 +123,7 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
       paymob_public_key: settings.paymob_public_key ?? "",
       paymob_base_url: settings.paymob_base_url ?? "",
       paymob_payment_methods: settings.paymob_payment_methods ?? "",
+      paymob_Iframes: settings.paymob_Iframes ?? "",
     });
   }, [settings]);
 
@@ -128,30 +134,32 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
       await axios.put(
         `/api/app-settings`,
         {
-          vat: parseInt(settingsFormData.vat.toString()),
-          numberOfLatestOffersOnHomepage: parseInt(
+          vat: Number.parseInt(settingsFormData.vat.toString()),
+          numberOfLatestOffersOnHomepage: Number.parseInt(
             settingsFormData.numberOfLatestOffersOnHomepage.toString()
           ),
-          numberOfProductsOnHomepage: parseInt(
+          numberOfProductsOnHomepage: Number.parseInt(
             settingsFormData.numberOfProductsOnHomepage.toString()
           ),
-          numberOfFeaturedProductsOnHomepage: parseInt(
+          numberOfFeaturedProductsOnHomepage: Number.parseInt(
             settingsFormData.numberOfFeaturedProductsOnHomepage.toString()
           ),
-          numberOfNewArrivalsOnHomepage: parseInt(
+          numberOfNewArrivalsOnHomepage: Number.parseInt(
             settingsFormData.numberOfNewArrivalsOnHomepage.toString()
           ),
-          numberOfBrandsOnHomepage: parseInt(
+          numberOfBrandsOnHomepage: Number.parseInt(
             settingsFormData.numberOfBrandsOnHomepage.toString()
           ),
-          numberOfAdsOnHomepage: parseInt(
+          numberOfAdsOnHomepage: Number.parseInt(
             settingsFormData.numberOfAdsOnHomepage.toString()
           ),
-          loginAttemptDurationMinutes: parseInt(
+          loginAttemptDurationMinutes: Number.parseInt(
             settingsFormData.loginAttemptDurationMinutes.toString()
           ),
-          loginAttempts: parseInt(settingsFormData.loginAttempts.toString()),
-          numberOfCategoriesOnHomepage: parseInt(
+          loginAttempts: Number.parseInt(
+            settingsFormData.loginAttempts.toString()
+          ),
+          numberOfCategoriesOnHomepage: Number.parseInt(
             settingsFormData.numberOfCategoriesOnHomepage.toString()
           ),
           permanentDelete: settingsFormData.permanentDelete,
@@ -165,6 +173,8 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
           paymob_public_key: settingsFormData.paymob_public_key,
           paymob_base_url: settingsFormData.paymob_base_url,
           paymob_payment_methods: settingsFormData.paymob_payment_methods,
+          paymentAttempts: settingsFormData.paymentAttempts,
+          paymob_Iframes: settingsFormData.paymob_Iframes,
         },
         {
           headers: {
@@ -221,6 +231,8 @@ export function SettingsDetails({ settings }: Readonly<Props>) {
       paymob_public_key: settings.paymob_public_key ?? "",
       paymob_base_url: settings.paymob_base_url ?? "",
       paymob_payment_methods: settings.paymob_payment_methods ?? "",
+      paymentAttempts: settings.paymentAttempts ?? 5,
+      paymob_Iframes: settings.paymob_Iframes ?? "",
     });
   };
 

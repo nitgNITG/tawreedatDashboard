@@ -12,7 +12,7 @@ import NotificationHandler from "@/components/notifications/NotificationHandler"
 import { fetchData } from "@/lib/fetchData";
 
 export const metadata: Metadata = {
-  title: "TAWREEDAT - توريطات",
+  title: "TAWREEDAT - توريدات",
   description: "TAWREEDAT app",
 };
 
