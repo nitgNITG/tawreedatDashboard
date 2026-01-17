@@ -4,7 +4,7 @@ import axios from "axios";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 
-export type User = {
+export type LoggedUser = {
   role: string;
   role_id?: string;
   roleStats: any;
@@ -27,14 +27,14 @@ export type User = {
 };
 
 type TypeContext = {
-  user: User;
+  user: LoggedUser;
   token: string;
-  updateUser: (updatedUser: Partial<User>) => void;
-  setUser: (user: User) => void;
+  updateUser: (updatedUser: Partial<LoggedUser>) => void;
+  setUser: (user: LoggedUser) => void;
 };
 
 const ProviderContext = createContext<TypeContext>({
-  user: {} as User,
+  user: {} as LoggedUser,
   token: "",
   updateUser: () => {},
   setUser: () => {},
@@ -49,14 +49,14 @@ const ProviderApp = ({
   token,
 }: {
   children: React.ReactNode;
-  user: User;
+  user: LoggedUser;
   token: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<User>(initialUser);
+  const [user, setUser] = useState<LoggedUser>(initialUser);
 
   // Function to update specific user fields
-  const updateUser = (updatedUser: Partial<User>) => {
+  const updateUser = (updatedUser: Partial<LoggedUser>) => {
     setUser((prevUser) => ({ ...prevUser, ...updatedUser }));
   };
 

@@ -81,13 +81,12 @@ const UserOrders = ({
             <td className="px-6 py-4 whitespace-nowrap">{order.orderNumber}</td>
             <td className="px-6 py-4 whitespace-nowrap">{order.totalAmount}</td>
             <td className="px-6 py-4 whitespace-nowrap">
-              {/* {order.shippingAddress as string} */}
-              "---"
+              {/* {order.shippingAddress as string} */}- - -
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
               {order.status === "DELIVERED" && order.updatedAt
                 ? DateToText(order.updatedAt, locale)
-                : "-"}
+                : "- - -"}
             </td>
             {/* <td colSpan={2} className="px-6 py-4 flex justify-center"> */}
             <td colSpan={2} className="px-6 py-4 whitespace-nowrap">

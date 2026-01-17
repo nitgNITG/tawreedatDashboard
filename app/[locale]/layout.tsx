@@ -3,11 +3,10 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Toaster } from "react-hot-toast";
-import ProviderApp from "@/context/appContext";
+import ProviderApp, { LoggedUser } from "@/context/appContext";
 import { cookies } from "next/headers";
 import ReduxProvider from "@/redux/ReduxProvider";
 import Login from "@/components/Login/Login";
-import { User } from "@/redux/reducers/usersReducer";
 import NotificationHandler from "@/components/notifications/NotificationHandler";
 import { fetchData } from "@/lib/fetchData";
 
@@ -27,7 +26,7 @@ export default async function RootLayout({
   const token = cookies().get("token")?.value;
 
   const fetchUser = async (): Promise<{
-    data: { user: User } | null;
+    data: { user: LoggedUser } | null;
     error: string | null;
   }> => {
     try {
