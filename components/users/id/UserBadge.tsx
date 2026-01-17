@@ -25,7 +25,7 @@ const UserBadge = ({
 }: userBadge) => {
   const userTypeCover = "#02161E";
 
-  const { fullname, email, phone, imageUrl } = user;
+  const { full_name, email, phone, image_url } = user;
 
   return (
     <div
@@ -81,17 +81,17 @@ const UserBadge = ({
               src={
                 deleteImage
                   ? "/imgs/avatar.png"
-                  : (imageUrl ?? "/imgs/avatar.png")
+                  : (image_url ?? "/imgs/avatar.png")
               }
               key={
                 deleteImage
                   ? "/imgs/avatar.png"
-                  : (imageUrl ?? "/imgs/avatar.png")
+                  : (image_url ?? "/imgs/avatar.png")
               }
               loader={() =>
                 deleteImage
                   ? "/imgs/avatar.png"
-                  : (imageUrl ?? "/imgs/avatar.png")
+                  : (image_url ?? "/imgs/avatar.png")
               }
               alt="user image"
               height={200}
@@ -105,7 +105,7 @@ const UserBadge = ({
             >
               <Edit className="size-4" />
             </label>
-            {imageUrl && onDeleteImage && !deleteImage && (
+            {image_url && onDeleteImage && !deleteImage && (
               <button
                 type="button"
                 onClick={onDeleteImage}
@@ -118,7 +118,7 @@ const UserBadge = ({
           </>
         )}
       </div>
-      <h4 className="text-white">{fullname}</h4>
+      <h4 className="text-white">{full_name}</h4>
       <h5 className="text-xs font-light text-white">{email}</h5>
       <h6 className="text-xs font-light text-white">{phone}</h6>
     </div>

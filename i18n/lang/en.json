@@ -86,7 +86,8 @@
     "orders": "Orders",
     "categories": "Categories",
     "settings": "Settings",
-    "profile": "Profile"
+    "profile": "Profile",
+    "userRoles": "User Roles"
   },
   "orders": {
     "no data yet": "No data to be Shown",
@@ -322,6 +323,37 @@
     "alreadyRepresentative": "This user is already a representative for this brand",
     "loadingMore": "Loading more...",
     "noMoreResults": "No more results"
+  },
+  "userRoles": {
+    "title": "User Roles",
+    "addRole": "Add Role",
+    "addTitle": "Add Role",
+    "updateTitle": "Update Role",
+    "name": "Name",
+    "description": "Description",
+    "nameIsRequired": "Name is required",
+    "edit": "Edit",
+    "add": "Add",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "restore": "Restore",
+    "viewUsers": "View users",
+    "empty": "No data yet",
+    "deleteRole": "Delete role",
+    "deleteMessage": "Are you sure you want to delete this role?",
+    "table": {
+      "id": "ID",
+      "name": "Name",
+      "usersCount": "Users count",
+      "action": "Action"
+    },
+    "toast": {
+      "createSuccess": "Role created successfully",
+      "updateSuccess": "Role updated successfully",
+      "deleteSuccess": "Role deleted successfully",
+      "restoreSuccess": "Role restored successfully",
+      "genericError": "There is an error"
+    }
   },
   "brands": {
     "confirmOrderUpdateTitle": "Confirm Order Update",

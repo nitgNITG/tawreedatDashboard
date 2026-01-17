@@ -19,11 +19,11 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 interface ProfileFormData {
-  fullname: string;
+  full_name: string;
   phone: string;
   email: string;
   gender: string;
-  birthDate: string;
+  birth_date: string;
   lang: string;
   imageFile?: FileList;
 }
@@ -34,7 +34,7 @@ const ProfileInfoSection = () => {
   const { user, updateUser, token } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    user.imageUrl
+    user.image_url
   );
   const [deleteImage, setDeleteImage] = useState(false);
 
@@ -46,12 +46,12 @@ const ProfileInfoSection = () => {
     resetField,
   } = useForm<ProfileFormData>({
     defaultValues: {
-      fullname: user.fullname || "",
+      full_name: user.full_name || "",
       phone: user.phone || "",
       email: user.email || "",
       gender: user.gender || "",
-      birthDate: user.birthDate
-        ? new Date(user.birthDate).toISOString().split("T")[0]
+      birth_date: user.birth_date
+        ? new Date(user.birth_date).toISOString().split("T")[0]
         : undefined,
       lang: user.lang ?? undefined,
       imageFile: undefined,
@@ -79,32 +79,32 @@ const ProfileInfoSection = () => {
     try {
       const formData = new FormData();
 
-      if (data.fullname !== user.fullname)
-        formData.append("fullname", data.fullname);
+      if (data.full_name !== user.full_name)
+        formData.append("full_name", data.full_name);
 
       if (data.gender !== user.gender) formData.append("gender", data.gender);
 
       // Compare birthDate properly
-      const userBirthDateFormatted = user.birthDate
-        ? new Date(user.birthDate).toISOString().split("T")[0]
+      const userBirthDateFormatted = user.birth_date
+        ? new Date(user.birth_date).toISOString().split("T")[0]
         : null;
 
-      if (data.birthDate && data.birthDate !== userBirthDateFormatted)
-        formData.append("birthDate", data.birthDate);
+      if (data.birth_date && data.birth_date !== userBirthDateFormatted)
+        formData.append("birth_date", data.birth_date);
 
       if (data.lang !== user.lang) formData.append("lang", data.lang);
 
       // Add image file if selected
       if (data.imageFile && data.imageFile.length > 0)
-        formData.append("imageUrl", data.imageFile[0]);
+        formData.append("image_url", data.imageFile[0]);
 
-      if (user.role === "ADMIN" && data.phone !== user.phone)
+      if (user.role === "admin" && data.phone !== user.phone)
         formData.append("phone", data.phone);
-      if (user.role === "ADMIN" && data.email !== user.email)
+      if (user.role === "admin" && data.email !== user.email)
         formData.append("email", data.email);
 
       // Add delete image flag if user wants to delete the image
-      if (deleteImage && user.imageUrl) formData.append("deleteImage", "true");
+      if (deleteImage && user.image_url) formData.append("deleteImage", "true");
 
       if (Array.from(formData.entries()).length === 0) {
         toast.error(t("noChangesMade"));
@@ -125,7 +125,7 @@ const ProfileInfoSection = () => {
         updateUser({
           ...response.data.updatedUser,
         });
-        if (response.data.updatedUser.imageUrl)
+        if (response.data.updatedUser.image_url)
           setImagePreview(response.data.updatedUser.imageUrl);
 
         setDeleteImage(false);
@@ -170,7 +170,7 @@ const ProfileInfoSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Full Name */}
             <UserInput
-              fieldForm="fullname"
+              fieldForm="full_name"
               labelIcon={<UserIcon className="size-4 text-gray-500" />}
               label={t("fullName")}
               register={register}
@@ -200,7 +200,7 @@ const ProfileInfoSection = () => {
                 required: false,
               }}
               errors={errors}
-              disabled={isLoading || user.role !== "ADMIN"}
+              disabled={isLoading || user.role !== "admin"}
             />
 
             {/* Email */}
@@ -214,7 +214,7 @@ const ProfileInfoSection = () => {
                 required: false,
               }}
               errors={errors}
-              disabled={isLoading || user.role !== "ADMIN"}
+              disabled={isLoading || user.role !== "admin"}
             />
 
             {/* Gender */}
@@ -250,7 +250,7 @@ const ProfileInfoSection = () => {
               errors={errors}
               label={t("birthDate")}
               labelIcon={<Calendar className="size-4 text-gray-500" />}
-              fieldForm="birthDate"
+              fieldForm="birth_date"
               control={control}
               disabled={isLoading}
             />

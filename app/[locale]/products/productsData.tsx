@@ -4,6 +4,8 @@ import { OrderItem } from "../orders/OrdersData";
 import { SearchParams } from "@/types/common";
 import { Brand } from "../brands/page";
 
+export const PRODUCTS_FIELDS =
+  "id,sortId,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,offerValidFrom,offerValidTo,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl" as const;
 interface AttributesItem {
   key: string;
   value: string;
@@ -57,6 +59,7 @@ export interface Product {
   wishlist?: any[];
   bookDetails?: any;
   attributes?: AttributesItem[];
+  sortId: number;
 }
 
 interface ProductApiResponse {
@@ -82,9 +85,8 @@ export const fetchProducts = async (
       sort:
         (categoryName
           ? searchParams.sortArchive?.toString()
-          : searchParams.sort?.toString()) ?? "-createdAt",
-      fields:
-        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,offerValidFrom,offerValidTo,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl",
+          : searchParams.sort?.toString()) ?? "sortId",
+      fields: PRODUCTS_FIELDS,
     });
 
     if (searchParams.skip && !categoryName)
@@ -118,7 +120,7 @@ export const fetchProducts = async (
       {
         method: "GET",
         credentials: "include",
-        // cache: "force-cache", 
+        // cache: "force-cache",
         // next: { tags: [`products`, `${JSON.stringify(searchParams)}`] }, // enables cache per searchParams
         headers: {
           "accept-language": locale,

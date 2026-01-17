@@ -22,10 +22,11 @@ const fetchUser = async (
     if (!token) return { data: null, error: "No token provided" };
 
     const queryParams = new URLSearchParams({
-      fields: "id,fullname,phone,imageUrl,email,isDeleted,createdAt,role",
+      fields:
+        "id,full_name,phone,image_url,email,deleted_at,created_at,role.name",
       limit: searchParams.limit?.toString() ?? "10",
-      items: "fullname,phone,email",
-      sort: searchParams.sort?.toString() ?? "-createdAt,-fullname",
+      items: "full_name,phone,email",
+      sort: searchParams.sort?.toString() ?? "-created_at",
     });
 
     if (searchParams.skip)
@@ -42,6 +43,9 @@ const fetchUser = async (
         "createdAt[lte]",
         searchParams["createdAt[lte]"].toString()
       );
+
+    if (searchParams.role)
+      queryParams.append("role[name]", searchParams.role.toString());
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/users?${queryParams}`,

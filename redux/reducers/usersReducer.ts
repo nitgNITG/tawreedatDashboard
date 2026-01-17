@@ -1,24 +1,26 @@
+import { UserRole } from "@/types/userRole";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
-  role?: string;
+  role: UserRole;
+  role_id: string;
   roleStats: any;
   email: string;
-  fullname: string;
+  full_name: string;
   id: string;
-  imageUrl: string | null;
+  image_url: string | null;
   phone: string;
-  createdAt?: string;
-  updatedAt?: string;
-  passwordLastUpdated?: string;
-  lastLoginAt?: string;
-  Address?: any[];
-  isActive?: boolean;
+  created_at?: string;
+  updated_at?: string;
+  password_last_updated?: string;
+  last_login_at?: string;
+  UserAddress?: any[];
+  is_confirmed?: boolean;
   lang?: string;
-  isConfirmed?: boolean;
-  birthDate?: string;
+  is_Active?: boolean;
+  birth_date?: string;
   gender: string;
-  isDeleted?: boolean;
+  deleted_at?: string;
 };
 
 type InitialStateType = {
@@ -58,12 +60,12 @@ export const usersReducer = createSlice({
     },
     deleteUser(state, action: PayloadAction<string>) {
       state.users = state.users.map((user) =>
-        user.id === action.payload ? { ...user, isDeleted: true } : user
+        user.id === action.payload ? { ...user, isDeleted: true } : user,
       );
     },
     updateUser(state, action: PayloadAction<User>) {
       state.users = state.users.map((user) =>
-        user.id === action.payload.id ? { ...user, ...action.payload } : user
+        user.id === action.payload.id ? { ...user, ...action.payload } : user,
       );
     },
   },

@@ -116,7 +116,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, account, profile }) {
-      if (account && account.provider === "google") {
+      if (account?.provider === "google") {
         if (account?.id_token) {
           try {
             const response = await fetch(
@@ -157,7 +157,7 @@ const handler = NextAuth({
         }
       }
 
-      if (account && account.provider === "apple") {
+      if (account?.provider === "apple") {
         if (account?.id_token) {
           try {
             const response = await fetch(
@@ -169,7 +169,7 @@ const handler = NextAuth({
                 },
                 body: JSON.stringify({
                   idToken: account.id_token,
-                  fullname: profile?.name,
+                  full_name: profile?.name,
                   // nonce: 'nonce_sent_from_client' // send the nonce generated on client here for verification
                 }),
               }

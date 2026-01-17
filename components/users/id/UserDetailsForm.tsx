@@ -42,14 +42,14 @@ const UserDetailsForm = ({
     <div className="flex flex-col gap-5">
       <UserInput
         roles={{
-          value: user.fullname,
+          value: user.full_name,
           minLength: { value: 2, message: t("fullNameMinLength") },
           maxLength: { value: 50, message: t("fullNameMaxLength") },
         }}
         errors={errors}
         onClick={handleFieldClick}
-        defaultValue={user.fullname}
-        fieldForm="fullname"
+        defaultValue={user.full_name}
+        fieldForm="full_name"
         register={register}
         label={t("fullName")}
       />
@@ -69,11 +69,11 @@ const UserDetailsForm = ({
       <CustomDatePicker
         errors={errors}
         label={t("birthday")}
-        fieldForm="birthDate"
+        fieldForm="birth_date"
         control={control}
         defaultValue={
-          user.birthDate
-            ? new Date(user.birthDate).toISOString().split("T")[0]
+          user.birth_date
+            ? new Date(user.birth_date).toISOString().split("T")[0]
             : undefined
         }
         onClick={handleFieldClick}
@@ -86,7 +86,7 @@ const UserDetailsForm = ({
         fieldForm="email"
         register={register}
         label={t("email")}
-        disabled={loggedUser.role !== "ADMIN"}
+        disabled={loggedUser.role !== "admin"}
         onClick={handleFieldClick}
       />
 
@@ -99,7 +99,7 @@ const UserDetailsForm = ({
         errors={errors}
         roles={{ value: user.phone }}
         defaultValue={user.phone}
-        disabled={loggedUser.role !== "ADMIN"}
+        disabled={loggedUser.role !== "admin"}
         onClick={handleFieldClick}
       />
 
@@ -122,11 +122,11 @@ const UserDetailsForm = ({
 
       <CustomSelect
         key={"isActive"}
-        roles={{ value: String(user.isActive) }}
+        roles={{ value: String(user.is_Active) }}
         errors={errors}
         label={t("status")}
-        defaultValue={String(user.isActive)}
-        fieldForm="isActive"
+        defaultValue={String(user.is_Active)}
+        fieldForm="is_Active"
         register={register}
         onClick={handleFieldClick}
         options={[
@@ -152,11 +152,11 @@ const UserDetailsForm = ({
 
       <CustomSelect
         key={"isConfirmed"}
-        roles={{ value: String(user.isConfirmed) }}
+        roles={{ value: String(user.is_confirmed) }}
         errors={errors}
         label={t("confirmed")}
-        defaultValue={String(user.isConfirmed)}
-        fieldForm="isConfirmed"
+        defaultValue={String(user.is_confirmed)}
+        fieldForm="is_confirmed"
         register={register}
         onClick={handleFieldClick}
         options={[

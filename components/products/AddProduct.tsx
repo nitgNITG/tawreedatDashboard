@@ -9,7 +9,7 @@ import { useAppContext } from "@/context/appContext";
 import { useAppDispatch } from "@/hooks/redux";
 import { addProduct, updateProduct } from "@/redux/reducers/productsReducer";
 import { OutlineInput, OutlineTextArea } from "../ui/OutlineInputs";
-import { Product } from "@/app/[locale]/products/productsData";
+import { Product, PRODUCTS_FIELDS } from "@/app/[locale]/products/productsData";
 import ImageApi from "../ImageApi";
 import fetchCategories from "@/lib/fetchCategories";
 import FetchSelect from "../FetchSelect";
@@ -215,8 +215,7 @@ const PopupProduct = ({
   const onSubmit = handleSubmit(async (formData) => {
     try {
       setLoading(true);
-      const params =
-        "id,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,offerValidFrom,offerValidTo,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl";
+      const params = PRODUCTS_FIELDS;
       const submitFormData = new FormData();
 
       // Basic form fields
@@ -638,7 +637,9 @@ const PopupProduct = ({
           // getOptionDisplayText={(item) =>
           //   lang === "ar" ? item.nameAr : item.name
           // }
-          getOptionLabel={(item) => (lang === "ar" ? (item.nameAr || item.name) : item.name)}
+          getOptionLabel={(item) =>
+            lang === "ar" ? item.nameAr || item.name : item.name
+          }
           placeholder={t("selectBrand")}
           className="w-full"
           errors={errors}

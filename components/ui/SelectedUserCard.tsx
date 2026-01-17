@@ -29,10 +29,10 @@ const SelectedUserCard: React.FC<SelectedUserCardProps> = ({
       <div className="flex items-start gap-3">
         <Link href={`/users/${user.id}`} className="group">
           <Image
-            alt={user.fullname}
+            alt={user.full_name}
             width={48}
             height={48}
-            src={user.imageUrl ?? "/imgs/notfound.png"}
+            src={user.image_url ?? "/imgs/notfound.png"}
             className="size-12 rounded-full object-cover border-2 border-teal-200 transition duration-200 group-hover:border-teal-500 group-hover:scale-105"
           />
         </Link>
@@ -43,7 +43,7 @@ const SelectedUserCard: React.FC<SelectedUserCardProps> = ({
               className="font-semibold truncate transition-colors duration-200 hover:text-teal-700 focus:text-teal-700"
               href={`/users/${user.id}`}
             >
-              {user.fullname}
+              {user.full_name}
             </Link>
           </div>
 

@@ -100,8 +100,8 @@ const DeleteUser = ({
           </DialogTitle>
           <DialogDescription className="pt-2 text-base">
             {deleteType === "permanent"
-              ? t("permanentDeleteMessageWithName", { name: user.fullname })
-              : t("archiveMessageWithName", { name: user.fullname })}
+              ? t("permanentDeleteMessageWithName", { name: user.full_name })
+              : t("archiveMessageWithName", { name: user.full_name })}
           </DialogDescription>
         </DialogHeader>
 

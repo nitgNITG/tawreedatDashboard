@@ -46,19 +46,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       const { data: loginData } = await axios.post(
         `/api/auth/login?lang=${lang}`,
         {
-          phone: !formattedPhone.includes("@") ? formattedPhone : undefined,
-          email: formattedPhone.includes("@") ? formattedPhone : undefined,
+          ...(formattedPhone.includes("@")
+            ? { email: formattedPhone }
+            : { phone: formattedPhone }),
           password: formData.password,
         }
       );
+      
 
-      const { data: userData } = await axios.get(`/api/verify-me`, {
-        headers: {
-          Authorization: `Bearer ${loginData.token}`,
-        },
-      });
+      if (loginData.user.role !== "admin") {
+        console.log("not admin");
 
-      if (userData.user.role !== "ADMIN") {
         throw new Error(
           "Only administrators or brand representative can access this portal"
         );
@@ -164,7 +162,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       <button className="p-3 w-24 rounded-2xl bg-primary border text-sm text-white flex justify-center items-center hover:bg-white/90 hover:text-primary hover:border-primary transition-colors duration-200 mx-auto">
         {loading ? <LoadingIcon className="size-5 animate-spin" /> : t("btn")}
       </button>
-      
     </form>
   );
 };

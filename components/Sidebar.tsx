@@ -23,6 +23,7 @@ import {
   UserIcon,
   UsersIcon,
 } from "./icons";
+import { UserCog } from "lucide-react";
 
 const Sidebar = ({
   open,
@@ -40,79 +41,85 @@ const Sidebar = ({
       label: t("dashboard"),
       icon: <DashboardIcon className="size-6" />,
       href: "/",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       href: "/users",
       label: t("users"),
       icon: <UsersIcon className="size-6" />,
-      role: "ADMIN",
+      role: "admin",
+    },
+    {
+      href: "/user-roles",
+      label: t("userRoles"),
+      icon: <UserCog className="size-6" />,
+      role: "admin",
     },
     {
       label: t("brands"),
       icon: <BrandIcon className="size-6" />,
       href: "/brands",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("categories"),
       icon: <CategoryIcon className="size-6" />,
       href: "/categories",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("products"),
       icon: <ShoppingCart className="size-6" />,
       href: "/products",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("orders"),
       icon: <ShoppingBag className="size-6" />,
       href: "/orders",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("ads"),
       icon: <AdsIcon className="size-6" />,
       href: "/ads",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("articles"),
       icon: <ArticlesIcon className="size-6" />,
       href: "/articles",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("faqs"),
       icon: <FaqIcon className="size-6" />,
       href: "/faqs",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("contacts"),
       icon: <UsersIcon className="size-6" />,
       href: "/contacts",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("aboutApp"),
       icon: <AboutAppIcon className="size-6" />,
       href: "/about-app",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("translateApp"),
       icon: <TranslateIcon className="size-6" />,
       href: "/translate-app",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("onBoarding"),
       icon: <OnBoardingIcon className="size-6" />,
       href: "/on-boarding",
-      role: "ADMIN",
+      role: "admin",
     },
     {
       label: t("profile"),
@@ -124,7 +131,7 @@ const Sidebar = ({
       label: t("settings"),
       icon: <DoubleGearIcon className="size-6" />,
       href: "/settings",
-      role: "ADMIN",
+      role: "admin",
     },
   ];
 
@@ -139,7 +146,7 @@ const Sidebar = ({
         className={clsx(
           "w-64 lg:w-72 bg-[#241234] h-lvh fixed top-0 z-[1000] flex flex-col",
           open && (locale === "en" ? "rtl" : "ar-ltr"),
-          !open && (locale === "en" ? "ltr" : "ar-rtl")
+          !open && (locale === "en" ? "ltr" : "ar-rtl"),
         )}
       >
         {/* Logo Section */}
@@ -167,7 +174,7 @@ const Sidebar = ({
         <div className="flex-2 overflow-y-auto px-2 sidebar-scrolling">
           {" "}
           {items
-            .filter((item) => item.role === "all" || user.role === "ADMIN")
+            .filter((item) => item.role === "all" || user.role === "admin")
             .map((item) => (
               <div key={item.label}>
                 <Link
@@ -183,7 +190,7 @@ const Sidebar = ({
                       "text-white hover:bg-primary": !(item.href == "/"
                         ? pathname == `/${locale}`
                         : pathname.includes(item.href)),
-                    }
+                    },
                   )}
                 >
                   {item.icon}

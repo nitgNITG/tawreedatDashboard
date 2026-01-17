@@ -11,7 +11,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "http://localhost:3100,https://tawreedatapis.nitg-eg.com", // list of allowed origins
+            value: "http://localhost:3120,https://tawreedatapis.nitg-eg.com", // list of allowed origins
           },
           {
             key: "Access-Control-Allow-Methods",

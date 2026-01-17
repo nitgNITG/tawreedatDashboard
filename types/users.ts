@@ -10,8 +10,8 @@ export type Wallet = {
   updatedAt: string;
   user?: {
     id: number;
-    fullname: string;
-    imageUrl: string;
+    full_name: string;
+    image_url: string;
   };
 };
 

@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingIcon } from "../icons";
 import { useTranslations, useLocale } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
@@ -23,7 +23,6 @@ import { useSearchParams } from "next/navigation";
 import { Category } from "@/app/[locale]/categories/categoriesData";
 import FetchSelect from "../FetchSelect";
 import fetchCategories from "@/lib/fetchCategories";
-import { method } from "lodash";
 
 interface AddOrEditBrandProps {
   onClose: () => void;
@@ -87,6 +86,24 @@ const AddOrEditBrand = ({
       categories: brand?.categories?.map((cat) => cat.category) || [],
     },
   });
+
+  const resetFormState = () => {
+    reset({
+      name: brand?.name || "",
+      nameAr: brand?.nameAr || undefined,
+      description: brand?.description || undefined,
+      descriptionAr: brand?.descriptionAr || undefined,
+      coverFile: undefined,
+      logoFile: undefined,
+      isActive: brand?.isActive ?? true,
+      isPopular: brand?.isPopular ?? false,
+      isDeleted: brand?.isDeleted ?? false,
+      categories: brand?.categories?.map((cat) => cat.category) || [],
+    });
+
+    setLogoPreview(brand?.logoUrl || null);
+    setCoverPreview(brand?.coverUrl || null);
+  };
 
   const onSubmit = async (formData: FormData) => {
     try {
@@ -161,6 +178,17 @@ const AddOrEditBrand = ({
       toast.error(error?.response?.data?.message || "An error occurred");
     }
   };
+  useEffect(() => {
+    if (isOpen) {
+      // When dialog opens → hydrate form
+      resetFormState();
+    } else {
+      // When dialog closes → clean everything
+      reset();
+      setLogoPreview(null);
+      setCoverPreview(null);
+    }
+  }, [isOpen, brand]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

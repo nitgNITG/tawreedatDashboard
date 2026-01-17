@@ -52,16 +52,16 @@ const UsersRows = ({
       name: "fullName",
       className: "px-3 py-2",
       sortable: true,
-      key: "fullname",
+      key: "full_name",
     },
     { name: "email", className: "px-3 py-2", sortable: true, key: "email" },
     { name: "mobile", className: "px-3 py-2", sortable: true, key: "phone" },
-    { name: "type", className: "px-3 py-2", sortable: true, key: "role" },
+    { name: "type", className: "px-3 py-2", sortable: true, key: "role.name" },
     {
       name: "createdAt",
       className: "px-3 py-2",
       sortable: true,
-      key: "createdAt",
+      key: "created_at",
     },
     { name: "action", className: "px-3 py-2 flex justify-center" },
   ];
@@ -71,7 +71,7 @@ const UsersRows = ({
       setPending(true);
       const { data } = await axios.put(
         `/api/users/${id}`,
-        { isDeleted: false },
+        { deleted_at: null },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -129,8 +129,8 @@ const UsersRows = ({
               downloadButton={
                 <DownloadButton<User>
                   model="user"
-                  fields={["fullname", "email", "phone", "createdAt"]}
-                  items={["fullname", "email", "phone"]}
+                  fields={["full_name", "email", "phone", "created_at"]}
+                  items={["full_name", "email", "phone"]}
                 />
               }
             />
@@ -152,13 +152,13 @@ const UsersRows = ({
               key={user.id}
               className={clsx(
                 "odd:bg-white even:bg-[#F0F2F5]  border-b",
-                user.isDeleted && "!text-red-500 font-bold"
+                user.deleted_at && "!text-red-500 font-bold"
               )}
             >
               <td className="px-3 py-2">
                 <div className="size-12">
                   <ImageApi
-                    src={user.imageUrl ?? "/imgs/notfound.png"}
+                    src={user.image_url ?? "/imgs/notfound.png"}
                     loading="lazy"
                     alt="Avatar"
                     className="size-full rounded-full object-cover border-2"
@@ -167,18 +167,20 @@ const UsersRows = ({
                   />
                 </div>
               </td>
-              <td className="px-3 py-2 whitespace-nowrap">{user.fullname}</td>
+              <td className="px-3 py-2 whitespace-nowrap">{user.full_name}</td>
               <td className="px-3 py-2 whitespace-nowrap">{user.email}</td>
               <td dir="ltr" className="px-3 py-2 whitespace-nowrap">
                 {user.phone}
               </td>
-              <td className={"px-3 py-2 whitespace-nowrap"}>{user.role}</td>
+              <td className={"px-3 py-2 whitespace-nowrap"}>
+                {user.role.name}
+              </td>
               <td className="px-3 py-2 whitespace-nowrap">
-                {DateToText(user.createdAt ?? "", locale)}
+                {DateToText(user.created_at ?? "", locale)}
               </td>
               <td className="px-3 py-2">
                 <div className="flex gap-2 justify-center items-center">
-                  {user.isDeleted ? (
+                  {user.deleted_at ? (
                     <button
                       onClick={() => handelRestore(user.id)}
                       className="flex gap-2 justify-center hover:text-gray-700 transition-colors"

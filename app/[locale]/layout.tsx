@@ -25,15 +25,16 @@ export default async function RootLayout({
 }>) {
   const messages = await getMessages();
   const token = cookies().get("token")?.value;
-  console.log("Token from cookies:", token);
 
-  const fetchUser = async () => {
+  const fetchUser = async (): Promise<{
+    data: { user: User } | null;
+    error: string | null;
+  }> => {
     try {
       if (!token) {
         console.log("No token found");
         return { data: null, error: "token is required" };
       }
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-me`,
         {
@@ -61,7 +62,7 @@ export default async function RootLayout({
         return { data: null, error: "No user data" };
       }
 
-      if (data.user.role !== "ADMIN") {
+      if (data.user.role !== "admin") {
         return { data: null, error: "No user data" };
       }
 
@@ -71,11 +72,28 @@ export default async function RootLayout({
       return { data: null, error: error?.message };
     }
   };
-  const { data } = (await fetchUser()) as { data: { user: User }; error: any };
-  const notification = await fetchData(`/api/users/notifications`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
 
+  const fetchNotification = async () => {
+    try {
+      if (!token) {
+        console.log("No token found");
+        return { data: null, error: "token is required" };
+      }
+      const { data, error } = await fetchData(`/api/users/notification`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return { data, error };
+    } catch (error: any) {
+      console.error("Verification Error:", error);
+      return { data: null, error: error?.message };
+    }
+  };
+
+  const [{ data }, notification] = await Promise.all([
+    fetchUser(),
+    fetchNotification(),
+  ]);
   if (!notification.data) {
     console.error("Failed to fetch notifications:", notification.error);
   }

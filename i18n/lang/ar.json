@@ -390,6 +390,37 @@
     "notfoundUser": "لا يوجد مستخدمين",
     "notfoundSuppliers": "لا يوجد موردين"
   },
+  "userRoles": {
+    "title": "أدوار المستخدمين",
+    "addRole": "إضافة دور",
+    "addTitle": "إضافة دور",
+    "updateTitle": "تعديل الدور",
+    "name": "الاسم",
+    "description": "الوصف",
+    "nameIsRequired": "الاسم مطلوب",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "restore": "استرجاع",
+    "viewUsers": "عرض المستخدمين",
+    "empty": "لا توجد بيانات بعد",
+    "deleteRole": "حذف الدور",
+    "deleteMessage": "هل أنت متأكد أنك تريد حذف هذا الدور؟",
+    "table": {
+      "id": "الرقم",
+      "name": "الاسم",
+      "usersCount": "عدد المستخدمين",
+      "action": "الإجراءات"
+    },
+    "toast": {
+      "createSuccess": "تم إنشاء الدور بنجاح",
+      "updateSuccess": "تم تحديث الدور بنجاح",
+      "deleteSuccess": "تم حذف الدور بنجاح",
+      "restoreSuccess": "تم استرجاع الدور بنجاح",
+      "genericError": "حدث خطأ"
+    }
+  },
   "brands": {
     "confirmOrderUpdateTitle": "تأكيد تحديث الترتيب",
     "confirmOrderUpdateDesc": "هل تريد حفظ ترتيب الفئات الجديد؟",

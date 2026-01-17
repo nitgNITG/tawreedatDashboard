@@ -45,8 +45,7 @@ import {
 import {
   arrayMove,
   rectSortingStrategy,
-  SortableContext,
-  useSortable,
+  SortableContext
 } from "@dnd-kit/sortable";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 
@@ -213,6 +212,7 @@ const Categories: React.FC<CategoriesProps> = ({
       setHasChanges(false);
       setConfirmSave(false);
     } catch (err) {
+      console.log(err);
       toast.error("Failed to save order");
     } finally {
       setLoading(false);

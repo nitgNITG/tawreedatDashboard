@@ -3,7 +3,28 @@ import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
-import { User } from "@/redux/reducers/usersReducer";
+
+export type User = {
+  role: string;
+  role_id?: string;
+  roleStats: any;
+  email: string;
+  full_name: string;
+  id: string;
+  image_url: string | null;
+  phone: string;
+  created_at?: string;
+  updated_at?: string;
+  password_last_updated?: string;
+  last_login_at?: string;
+  UserAddress?: any[];
+  is_confirmed?: boolean;
+  lang?: string;
+  is_Active?: boolean;
+  birth_date?: string;
+  gender: string;
+  deleted_at?: string;
+};
 
 type TypeContext = {
   user: User;

@@ -1,10 +1,10 @@
 import axios from "axios";
 export interface User {
   id: string;
-  fullname: string;
+  full_name: string;
   email: string;
   phone: string;
-  imageUrl?: string;
+  image_url?: string;
   Wallet?: {
     buyerAmount: number;
     point: number;
@@ -25,9 +25,9 @@ export const fetchUsers = async (params: FetchUsersParams) => {
   const { token, ...searchParams } = params;
 
   const queryParams = new URLSearchParams({
-    fields: searchParams.fields ?? "id,fullname,email,phone",
+    fields: searchParams.fields ?? "id,full_name,email,phone",
     limit: searchParams.limit?.toString() ?? "10",
-    sort: "fullname",
+    sort: "full_name",
   });
   if (searchParams.notIn)
     queryParams.append("id[notIn]", JSON.stringify(searchParams.notIn));

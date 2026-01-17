@@ -54,7 +54,7 @@ const authMiddleware = async (request: NextRequest) => {
     return Response.redirect(new URL("/", request.url));
   }
 
-  if (decodedToken.role !== "ADMIN") {
+  if (decodedToken.role !== "admin") {
     // Not authorized - redirect to unauthorized page
     return Response.redirect(new URL("/", request.url));
   }

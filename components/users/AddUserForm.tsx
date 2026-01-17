@@ -13,6 +13,9 @@ import AddImageInput from "../AddImageInput";
 import { useAppDispatch } from "@/hooks/redux";
 import { addUser } from "@/redux/reducers/usersReducer";
 import PhoneInput from "../PhoneInput";
+import FetchSelect from "../FetchSelect";
+import { fetchRoles } from "@/lib/fetchRoles";
+import { UserRole } from "@/types/userRole";
 
 export const ShowPassword: React.FC<{
   showPassword: boolean;
@@ -23,7 +26,13 @@ export const ShowPassword: React.FC<{
   </button>
 );
 
-const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
+const AddUserForm = ({
+  handelClose,
+  defaultRole,
+}: {
+  handelClose: () => void;
+  defaultRole?: UserRole;
+}) => {
   const {
     register,
     handleSubmit,
@@ -53,7 +62,7 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
       });
 
       if (fData.imageFile[0])
-        filteredData.append("imageUrl", fData.imageFile[0]);
+        filteredData.append("image_url", fData.imageFile[0]);
 
       const { data } = await axios.post("/api/users", filteredData, {
         headers: {
@@ -106,7 +115,7 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
             errors={errors}
             register={register}
             label={t("fullName")}
-            fieldForm="fullname"
+            fieldForm="full_name"
             type="text"
           />
           <UserInput
@@ -151,13 +160,13 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
             rules={{ required: false }}
             errors={errors}
             label={t("birthday")}
-            fieldForm="birthDate"
+            fieldForm="birth_date"
           />
           <CustomSelect
             roles={{ required: false, value: "true" }}
             errors={errors}
             label={t("status")}
-            fieldForm="isActive"
+            fieldForm="is_Active"
             register={register}
             options={[
               { value: "true", label: t("active") },
@@ -168,7 +177,7 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
             roles={{ required: false, value: "true" }}
             errors={errors}
             label={t("confirmed")}
-            fieldForm="isConfirmed"
+            fieldForm="is_confirmed"
             register={register}
             options={[
               { value: "true", label: t("true") },
@@ -186,16 +195,18 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
               { value: "EN", label: "English" },
             ]}
           />
-          <CustomSelect
-            roles={{ required: false, value: "CUSTOMER" }}
-            errors={errors}
+          <FetchSelect<UserRole>
+            fieldForm="role_id"
             label={t("role")}
-            fieldForm="role"
+            placeholder={""}
+            fetchFunction={(params) => fetchRoles({ ...params, token })}
+            getOptionLabel={(role) => role.name}
+            getOptionValue={(role) => role.id}
+            roles={{ required: t("roleRequired") }}
+            defaultValues={defaultRole ? [defaultRole] : undefined}
             register={register}
-            options={[
-              { value: "CUSTOMER", label: t("customer") },
-              { value: "ADMIN", label: t("admin") },
-            ]}
+            setValue={setValue}
+            errors={errors}
           />
         </div>
         <div className="flex flex-col gap-5">
@@ -206,7 +217,7 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
             setImagePreview={setImagePreview}
             text={t("userPicture")}
           />
-          <UserInput
+          {/* <UserInput
             roles={{ required: false }}
             errors={errors}
             register={register}
@@ -214,7 +225,7 @@ const AddUserForm = ({ handelClose }: { handelClose: () => void }) => {
             fieldForm="address"
             type={"text"}
             icon={<MapPin className="text-[#FFC106]" />}
-          />
+          /> */}
           <UserInput
             roles={{
               required: t("passwordRequired"),

@@ -8,7 +8,7 @@ const UserData = async ({ params }: { params: { id: string } }) => {
   const token = cookies().get("token")?.value;
   console.log(token);
 
-  const { data, error } = await fetchData(`/api/users/${params.id}`, {
+  const { data, error } = await fetchData(`/api/users/${params.id}?includes=role`, {
     headers: { Authorization: `Bearer ${token}`, "accept-language": locale },
   });
 

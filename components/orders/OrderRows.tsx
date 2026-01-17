@@ -64,7 +64,7 @@ const OrderRows = ({
       name: "users",
       className: "px-3 py-2",
       sortable: true,
-      key: "customer.fullname",
+      key: "customer.full_name",
     },
     {
       name: "totalAmount",
@@ -176,20 +176,20 @@ const OrderRows = ({
             downloadButton={
               <DownloadButton<
                 Order & {
-                  "customer=fullname-phone": string;
-                  "customer.fullname": string;
+                  "customer=full_name-phone": string;
+                  "customer.full_name": string;
                 }
               >
                 model="order"
                 fields={[
                   "id",
-                  "customer=fullname-phone",
+                  "customer=full_name-phone",
                   "totalAmount",
                   "status",
                   "paymentStatus",
                   "createdAt",
                 ]}
-                items={["customer.fullname"]}
+                items={["customer.full_name"]}
               />
             }
           />
@@ -216,7 +216,7 @@ const OrderRows = ({
               <div className="flex items-center gap-2">
                 <div className="size-12">
                   <ImageApi
-                    src={order?.customer?.imageUrl ?? "/imgs/notfound.png"}
+                    src={order?.customer?.image_url ?? "/imgs/notfound.png"}
                     alt="User Avatar"
                     className="size-full rounded-full object-cover border-2"
                     width={200}
@@ -227,7 +227,7 @@ const OrderRows = ({
                   href={`/users/${order?.customer?.id}`}
                   className="whitespace-nowrap font-medium text-primary hover:text-primary/80 transition-colors duration-200 hover:underline"
                 >
-                  {order?.customer?.fullname}
+                  {order?.customer?.full_name}
                 </Link>
               </div>
             </td>

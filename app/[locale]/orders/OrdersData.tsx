@@ -69,7 +69,7 @@ const fetchOrders = async (
       limit: searchParams.limit?.toString() ?? "10",
       sort: searchParams.sort?.toString() ?? "-createdAt",
       fields:
-        "id,orderNumber,totalAmount,shippingCost,discount,taxAmount,status,paymentMethod,paymentStatus,shippingAddress,notes,createdAt,customer=id-fullname-imageUrl,items=id-quantity-price-product=id-name-nameAr-images",
+        "id,orderNumber,totalAmount,shippingCost,discount,taxAmount,status,paymentMethod,paymentStatus,shippingAddress,notes,createdAt,customer=id-full_name-image_url,items=id-quantity-price-product=id-name-nameAr-images",
     });
     if (searchParams.keyword)
       queryParams.append("keyword", searchParams.keyword.toString());

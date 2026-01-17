@@ -16,6 +16,9 @@ import DeleteUser from "./DeleteUser";
 import UserBadge from "./UserBadge";
 import UserDetailsForm from "./UserDetailsForm";
 import CustomSelect from "../CustomSelect";
+import { fetchRoles } from "@/lib/fetchRoles";
+import FetchSelect from "@/components/FetchSelect";
+import { UserRole } from "@/types/userRole";
 
 const UserDetails = ({ user }: { user: User }) => {
   const t = useTranslations("user");
@@ -48,13 +51,13 @@ const UserDetails = ({ user }: { user: User }) => {
       delete userData.imageFile;
 
       if (formData.imageFile[0]) {
-        userData.imageUrl = formData.imageFile[0];
+        userData.image_url = formData.imageFile[0];
       }
 
-      if (loggedUser.role === "ADMIN" && formData.phone !== loggedUser.phone) {
+      if (loggedUser.role === "admin" && formData.phone !== loggedUser.phone) {
         userData.phone = formData.phone;
       }
-      if (loggedUser.role === "ADMIN" && formData.email !== loggedUser.email) {
+      if (loggedUser.role === "admin" && formData.email !== loggedUser.email) {
         userData.email = formData.email;
       }
 
@@ -62,7 +65,7 @@ const UserDetails = ({ user }: { user: User }) => {
         userData.password = formData.password;
       }
 
-      if (deleteImage && user.imageUrl) {
+      if (deleteImage && user.image_url) {
         userData.deleteImage = true;
       }
 
@@ -75,7 +78,7 @@ const UserDetails = ({ user }: { user: User }) => {
             Authorization: `Bearer ${token}`,
             "accept-language": locale,
           },
-        }
+        },
       );
       dispatch(updateUser(data.user));
       setCurrentUser(data.user); // Update current user state
@@ -106,7 +109,7 @@ const UserDetails = ({ user }: { user: User }) => {
 
   return (
     <div className="space-y-10 bg-white p-3 md:p-5 rounded-3xl">
-      <title>{currentUser?.fullname}</title>
+      <title>{currentUser?.full_name}</title>
       <form
         onSubmit={onSubmit}
         className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-7"
@@ -121,18 +124,19 @@ const UserDetails = ({ user }: { user: User }) => {
             onDeleteImage={handleDeleteImage}
             deleteImage={deleteImage}
           />
-          <CustomSelect
-            roles={{ required: false, value: user.role }}
-            errors={errors}
+          <FetchSelect<UserRole>
+            fieldForm="role_id"
             label={t("role")}
-            fieldForm="role"
+            placeholder={""}
+            fetchFunction={(params) => fetchRoles({ ...params, token })}
+            getOptionLabel={(role) => role.name}
+            getOptionValue={(role) => role.id}
+            roles={{ required: t("roleRequired") }}
+            defaultValues={[user.role]}
             register={register}
-            defaultValue={user.role}
-            options={[
-              { value: "CUSTOMER", label: t("customer") },
-              { value: "ADMIN", label: t("admin") },
-            ]}
-            onChange={(e) => setIsEditable(user.role !== e.target.value)}
+            setValue={setValue}
+            errors={errors}
+            onChange={(e) => setIsEditable(user.role.name !== e[0].name)}
           />
         </div>
         <div className="w-full contents">
@@ -154,7 +158,7 @@ const UserDetails = ({ user }: { user: User }) => {
                   CreatedAt:
                 </p>
                 <div className="text-sm text-nowrap">
-                  {DateToText(user?.createdAt ?? "", locale)}
+                  {DateToText(user?.created_at ?? "", locale)}
                 </div>
               </div>
               <div className="flex justify-between flex-wrap items-center">
@@ -162,7 +166,7 @@ const UserDetails = ({ user }: { user: User }) => {
                   UpdatedAt:
                 </p>
                 <div className="text-sm text-nowrap">
-                  {DateToText(user?.updatedAt ?? "", locale)}
+                  {DateToText(user?.updated_at ?? "", locale)}
                 </div>
               </div>
               <div className="flex justify-between flex-wrap items-center">
@@ -170,7 +174,7 @@ const UserDetails = ({ user }: { user: User }) => {
                   PasswordLastUpdated:
                 </p>
                 <div className="text-sm text-nowrap">
-                  {DateToText(user?.passwordLastUpdated ?? "", locale)}
+                  {DateToText(user?.password_last_updated ?? "", locale)}
                 </div>
               </div>
               <div className="flex justify-between flex-wrap items-center">
@@ -178,20 +182,20 @@ const UserDetails = ({ user }: { user: User }) => {
                   LastLoginAt:
                 </p>
                 <div className="text-sm text-nowrap">
-                  {DateToText(user?.lastLoginAt ?? "", locale)}
+                  {DateToText(user?.last_login_at ?? "", locale)}
                 </div>
               </div>
               <div className="flex justify-between flex-wrap items-center">
                 <p className={clsx("font-medium text-sm text-left")}>uuid:</p>
                 <div>{user.id}</div>
               </div>
-              {!user?.Address?.length ? (
-                " "
+              {/* {user?.UserAddress?.length ? (
+                "no addresses "
               ) : (
                 <div>
                   <h5>Addresses: </h5>
                   <ul>
-                    {user.Address.map((address: any, i: any) => (
+                    {user?.UserAddress.map((address: any, i: any) => (
                       <li key={address.id}>
                         <span>{i + 1} - </span>
                         <Link
@@ -205,7 +209,7 @@ const UserDetails = ({ user }: { user: User }) => {
                     ))}
                   </ul>
                 </div>
-              )}
+              )} */}
             </div>
             <div className="flex gap-1 justify-center w-full mt-auto max-md:mt-5 mb-5">
               {isEditable && (

@@ -140,7 +140,7 @@ const Navbar = ({
                   />
                 </div>
                 <div className="flex flex-col">
-                  <h5 className="font-semibold text-sm">{user?.fullname}</h5>
+                  <h5 className="font-semibold text-sm">{user?.full_name}</h5>
                   <h5 className="font-semibold text-xs">{t("admin")}</h5>
                 </div>
               </div>
