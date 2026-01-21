@@ -17,7 +17,7 @@ export type User = {
   UserAddress?: any[];
   is_confirmed?: boolean;
   lang?: string;
-  is_Active?: boolean;
+  is_active?: boolean;
   birth_date?: string;
   gender: string;
   deleted_at?: string;

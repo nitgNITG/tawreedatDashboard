@@ -122,10 +122,10 @@ const UserDetailsForm = ({
 
       <CustomSelect
         key={"isActive"}
-        roles={{ value: String(user.is_Active) }}
+        roles={{ value: String(user.is_active) }}
         errors={errors}
         label={t("status")}
-        defaultValue={String(user.is_Active)}
+        defaultValue={String(user.is_active)}
         fieldForm="is_Active"
         register={register}
         onClick={handleFieldClick}
