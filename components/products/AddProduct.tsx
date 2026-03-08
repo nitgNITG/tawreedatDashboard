@@ -29,20 +29,20 @@ export interface ProductForm {
   name: string;
   name_ar?: string;
   description?: string;
-  descriptionAr?: string;
+  description_ar?: string;
   images?: string[];
   price: number;
   //   costPrice?: number;
   offer?: number;
-  offerValidFrom?: string;
-  offerValidTo?: string;
+  // offerValidFrom?: string;
+  // offerValidTo?: string;
   stock: number;
   //   minStock?: number;
   //   weight?: number;
   //   dimensions?: string;
-  isActive: boolean;
+  is_active: boolean;
   category?: Pick<Category, "id" | "name" | "name_ar" | "product_attributes">;
-  isFeatured: boolean;
+  is_featured: boolean;
   attributes?: AttributesItem[];
   brand?: Pick<Brand, "id" | "name" | "name_ar" | "logo_url">;
   //   supplierId?: number;
@@ -79,10 +79,10 @@ const PopupProduct = ({
       //   : undefined,
       stock: product?.stock || undefined,
       description: product?.description || undefined,
-      descriptionAr: product?.description_ar || undefined,
+      description_ar: product?.description_ar || undefined,
       category: product?.category || undefined,
-      isActive: product?.is_active || true,
-      isFeatured: product?.is_featured || false,
+      is_active: product?.is_active || true,
+      is_featured: product?.is_featured || false,
       attributes: product?.attributes || [],
       brand: product?.brand || undefined,
     },
@@ -102,7 +102,7 @@ const PopupProduct = ({
       default?: string | number | boolean;
       enum?: string[] | number[];
     };
-  }>(product?.category?.productAttributes ?? {});
+  }>(product?.category?.product_attributes ?? {});
   const imagesInputRef = useRef<HTMLInputElement>(null);
   const replaceAllInputRef = useRef<HTMLInputElement>(null);
 
@@ -112,8 +112,8 @@ const PopupProduct = ({
   const t = useTranslations("products");
   const { token } = useAppContext();
 
-  const offerValue = watch("offer");
-  const validFromValue = watch("offerValidFrom");
+  // const offerValue = watch("offer");
+  // const validFromValue = watch("offerValidFrom");
 
   // Add new images (append)
   const handleAddImages = async (
@@ -224,30 +224,30 @@ const PopupProduct = ({
       if (formData.name_ar) submitFormData.append("name_ar", formData.name_ar);
       if (formData.description)
         submitFormData.append("description", formData.description);
-      if (formData.descriptionAr)
-        submitFormData.append("descriptionAr", formData.descriptionAr);
+      if (formData.description_ar)
+        submitFormData.append("description_ar", formData.description_ar);
 
       submitFormData.append("price", String(formData.price));
       submitFormData.append("stock", String(formData.stock));
-      submitFormData.append("is_active", String(formData.isActive));
+      submitFormData.append("is_active", String(formData.is_active));
       submitFormData.append("category_id", String(formData.category));
       submitFormData.append("brand_id", String(formData.brand));
-      submitFormData.append("is_featured", String(formData.isFeatured));
+      submitFormData.append("is_featured", String(formData.is_featured));
 
       if (formData.offer) {
         submitFormData.append("offer", String(formData.offer));
       }
 
-      if (formData.offerValidFrom) {
-        submitFormData.append(
-          "offerValidFrom",
-          String(formData.offerValidFrom),
-        );
-      }
+      // if (formData.offerValidFrom) {
+      //   submitFormData.append(
+      //     "offerValidFrom",
+      //     String(formData.offerValidFrom),
+      //   );
+      // }
 
-      if (formData.offerValidTo) {
-        submitFormData.append("offerValidTo", String(formData.offerValidTo));
-      }
+      // if (formData.offerValidTo) {
+      //   submitFormData.append("offerValidTo", String(formData.offerValidTo));
+      // }
 
       // Filter out attributes with empty values
       //       if (formData.attributes && formData.attributes.length > 0) {
@@ -514,7 +514,7 @@ const PopupProduct = ({
           })}
           min={0}
         />
-        <OutlineInput
+        {/* <OutlineInput
           iconStart={<span className="text-sm">%</span>}
           label={t("offer")}
           id="product-offer"
@@ -522,9 +522,9 @@ const PopupProduct = ({
           type="number"
           {...register("offer")}
           min={0}
-        />
+        /> */}
       </div>
-      <div className="flex justify-between items-center gap-8">
+      {/* <div className="flex justify-between items-center gap-8">
         <OutlineInput
           className="block"
           defaultValue={product?.offerValidFrom}
@@ -555,7 +555,7 @@ const PopupProduct = ({
             },
           })}
         />
-      </div>
+      </div> */}
       <OutlineInput
         label={t("stock")}
         id="product-stock"
@@ -576,11 +576,11 @@ const PopupProduct = ({
       <OutlineTextArea
         id="product-descriptionAr"
         label={t("descriptionAr")}
-        error={errors.descriptionAr?.message as string}
-        {...register("descriptionAr")}
+        error={errors.description_ar?.message as string}
+        {...register("description_ar")}
       />
       <FetchSelect<
-        Pick<Category, "id" | "name" | "name_ar" | "productAttributes">
+        Pick<Category, "id" | "name" | "name_ar" | "product_attributes">
       >
         fieldForm={"category"}
         label={t("category")}
@@ -605,7 +605,7 @@ const PopupProduct = ({
         register={register as any}
         setValue={setValue as any}
         onChange={(cat) =>
-          setCategoryAttributes(cat[0]?.productAttributes ?? {})
+          setCategoryAttributes(cat[0]?.product_attributes ?? {})
         }
         defaultValues={
           product?.category
@@ -614,15 +614,15 @@ const PopupProduct = ({
                   id: product?.category.id ?? 0,
                   name: product?.category.name ?? "",
                   name_ar: product?.category.name_ar ?? "",
-                  productAttributes:
-                    product?.category.productAttributes ?? undefined,
+                  product_attributes:
+                    product?.category.product_attributes ?? undefined,
                 },
               ]
             : []
         }
       />
       <div className="w-full">
-        <FetchSelect<Pick<Brand, "id" | "name" | "name_ar" | "logoUrl">>
+        <FetchSelect<Pick<Brand, "id" | "name" | "name_ar" | "logo_url">>
           fieldForm={"brand"}
           label={t("brand")}
           fetchFunction={(params) =>
@@ -694,11 +694,11 @@ const PopupProduct = ({
       <div className="flex items-center gap-2">
         <Controller
           control={control}
-          name="isActive"
+          name="is_active"
           render={({ field }) => (
             <Checkbox
               id="isActive"
-              defaultChecked={product?.isActive ?? true}
+              defaultChecked={product?.is_active ?? true}
               onCheckedChange={(checked) => field.onChange(checked)}
               checked={field.value}
             />
@@ -711,11 +711,11 @@ const PopupProduct = ({
       <div className="flex items-center gap-2">
         <Controller
           control={control}
-          name="isFeatured"
+          name="is_featured"
           render={({ field }) => (
             <Checkbox
               id="isFeatured"
-              defaultChecked={product?.isFeatured ?? false}
+              defaultChecked={product?.is_featured ?? false}
               onCheckedChange={(checked) => field.onChange(checked)}
               checked={field.value}
             />

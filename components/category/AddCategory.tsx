@@ -37,9 +37,9 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
   category,
   parentName,
 }) => {
-  const [previewImage, setPreviewImage] = useState(category?.imageUrl || "");
+  const [previewImage, setPreviewImage] = useState(category?.image_url || "");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewIcon, setPreviewIcon] = useState(category?.iconUrl || "");
+  const [previewIcon, setPreviewIcon] = useState(category?.icon_url || "");
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -55,12 +55,12 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
   } = useForm({
     defaultValues: {
       name: category?.name || "",
-      nameAr: category?.nameAr || "",
+      name_ar: category?.name_ar || "",
       description: category?.description || "",
-      descriptionAr: category?.descriptionAr || "",
-      isActive: category?.isActive ?? true,
+      description_ar: category?.description_ar || "",
+      is_active: category?.is_active ?? true,
       parent: category?.parent || undefined,
-      productAttributes: category?.productAttributes || {},
+      product_attributes: category?.product_attributes || {},
     },
   });
 
@@ -150,27 +150,27 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
 
       const submitFormData = new FormData();
       submitFormData.append("name", formData.name);
-      submitFormData.append("nameAr", formData.nameAr);
+      submitFormData.append("name_ar", formData.name_ar);
       submitFormData.append("description", formData.description || "");
-      submitFormData.append("descriptionAr", formData.descriptionAr || "");
-      submitFormData.append("isActive", String(formData.isActive));
+      submitFormData.append("description_ar", formData.description_ar || "");
+      submitFormData.append("is_active", String(formData.is_active));
       if (formData.parent)
-        submitFormData.append("parentId", String(formData.parent));
+        submitFormData.append("parent_id", String(formData.parent));
       if (imageFile) {
-        submitFormData.append("imageUrl", imageFile);
+        submitFormData.append("image_url", imageFile);
       }
       if (iconFile) {
-        submitFormData.append("iconUrl", iconFile);
+        submitFormData.append("icon_url", iconFile);
       }
-      if (Object.keys(formData.productAttributes || {}).length > 0) {
+      if (Object.keys(formData.product_attributes || {}).length > 0) {
         submitFormData.append(
-          "productAttributes",
-          JSON.stringify(formData.productAttributes)
+          "product_attributes",
+          JSON.stringify(formData.product_attributes)
         );
       }
 
       const fields =
-        "id,name,nameAr,description,descriptionAr,imageUrl,iconUrl,parent=id-name,createdAt,isActive,_count=children-products,productAttributes";
+        "id,name,name_ar,description,description_ar,image_url,icon_url,parent=id-name,created_at,is_active,_count=children-products,product_attributes";
 
       if (category?.id) {
         const { data } = await axios.put(
@@ -329,8 +329,8 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
       <OutlineInput
         label={t("nameAr")}
         id="nameAr"
-        error={errors.nameAr?.message as string}
-        {...register("nameAr")}
+        error={errors.name_ar?.message as string}
+        {...register("name_ar")}
       />
       <OutlineTextArea
         id="description"
@@ -342,8 +342,8 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
       <OutlineTextArea
         id="descriptionAr"
         label={t("descriptionAr")}
-        error={errors.descriptionAr?.message as string}
-        {...register("descriptionAr")}
+        error={errors.description_ar?.message as string}
+        {...register("description_ar")}
         rows={6}
       />
       <FetchSelect<Category>
@@ -373,16 +373,16 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
                 {
                   id: category.parent.id ?? 0,
                   name: category.parent.name ?? "",
-                  nameAr: category.parent.nameAr ?? "",
+                  name_ar: category.parent.name_ar ?? "",
                   description: category.parent.description ?? "",
-                  imageUrl: category.parent.imageUrl ?? "",
-                  parentId: category.parent.parentId ?? undefined,
+                  image_url: category.parent.image_url ?? "",
+                  parent_id: category.parent.parent_id ?? undefined,
                   parent: category.parent.parent ?? undefined,
                   children: category.parent.children ?? undefined,
-                  isActive: category.parent.isActive ?? true,
-                  createdAt: category.parent.createdAt ?? "",
-                  updatedAt: category.parent.updatedAt ?? "",
-                  sortId: category.parent.sortId ?? 0,
+                  is_active: category.parent.is_active ?? true,
+                  created_at: category.parent.created_at ?? "",
+                  updated_at: category.parent.updated_at ?? "",
+                  sort_id: category.parent.sort_id ?? 0,
                 },
               ]
             : []
@@ -395,7 +395,7 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
         </h3>
         <Controller
           control={control}
-          name="productAttributes"
+          name="product_attributes"
           render={({ field }) => (
             <ProductAttributesSection
               value={field.value || {}}
@@ -412,11 +412,11 @@ const PopupCategory: React.FC<PopupCategoryProps> = ({
       <div className="flex items-center gap-2">
         <Controller
           control={control}
-          name="isActive"
+          name="is_active"
           render={({ field }) => (
             <Checkbox
               id="isActive"
-              defaultChecked={category?.isActive ?? true}
+              defaultChecked={category?.is_active ?? true}
               onCheckedChange={(checked) => field.onChange(checked)}
               checked={field.value}
             />

@@ -35,15 +35,15 @@ interface AddOrEditBrandProps {
 
 interface FormData {
   name: string;
-  nameAr?: string;
+  name_ar?: string;
   description?: string;
-  descriptionAr?: string;
+  description_ar?: string;
   coverFile?: string;
   logoFile?: string;
-  isActive: boolean;
-  isPopular: boolean;
-  isDeleted: boolean;
-  categories?: Pick<Category, "id" | "name" | "nameAr" | "iconUrl">[];
+  is_active: boolean;
+  is_popular: boolean;
+  // isDeleted: boolean;
+  categories?: Pick<Category, "id" | "name" | "name_ar" | "image_url">[];
 }
 
 const AddOrEditBrand = ({
@@ -59,10 +59,10 @@ const AddOrEditBrand = ({
   const { token } = useAppContext();
   const limit = useSearchParams().get("limit") || "10";
   const [logoPreview, setLogoPreview] = useState<string | null>(
-    brand?.logoUrl || null
+    brand?.logo_url || null
   );
   const [coverPreview, setCoverPreview] = useState<string | null>(
-    brand?.coverUrl || null
+    brand?.cover_url || null
   );
 
   const {
@@ -75,14 +75,14 @@ const AddOrEditBrand = ({
   } = useForm<FormData>({
     defaultValues: {
       name: brand?.name || "",
-      nameAr: brand?.nameAr || undefined,
+      name_ar: brand?.name_ar || undefined,
       description: brand?.description || undefined,
-      descriptionAr: brand?.descriptionAr || undefined,
-      coverFile: brand?.coverUrl || undefined,
-      logoFile: brand?.logoUrl || undefined,
-      isActive: brand?.isActive || true,
-      isPopular: brand?.isPopular || false,
-      isDeleted: brand?.isDeleted || false,
+      description_ar: brand?.description_ar || undefined,
+      coverFile: brand?.cover_url || undefined,
+      logoFile: brand?.logo_url || undefined,
+      is_active: brand?.is_active || true,
+      is_popular: brand?.is_popular || false,
+      // isDeleted: brand?.deleted_at || false,
       categories: brand?.categories?.map((cat) => cat.category) || [],
     },
   });
@@ -90,19 +90,19 @@ const AddOrEditBrand = ({
   const resetFormState = () => {
     reset({
       name: brand?.name || "",
-      nameAr: brand?.nameAr || undefined,
+      name_ar: brand?.name_ar || undefined,
       description: brand?.description || undefined,
-      descriptionAr: brand?.descriptionAr || undefined,
+      description_ar: brand?.description_ar || undefined,
       coverFile: undefined,
       logoFile: undefined,
-      isActive: brand?.isActive ?? true,
-      isPopular: brand?.isPopular ?? false,
-      isDeleted: brand?.isDeleted ?? false,
+      is_active: brand?.is_active ?? true,
+      is_popular: brand?.is_popular ?? false,
+      // isDeleted: brand?.is_deleted ?? false,
       categories: brand?.categories?.map((cat) => cat.category) || [],
     });
 
-    setLogoPreview(brand?.logoUrl || null);
-    setCoverPreview(brand?.coverUrl || null);
+    setLogoPreview(brand?.logo_url || null);
+    setCoverPreview(brand?.cover_url || null);
   };
 
   const onSubmit = async (formData: FormData) => {
@@ -111,15 +111,15 @@ const AddOrEditBrand = ({
 
       const fData: Omit<
         Brand,
-        "id" | "createdAt" | "updatedAt" | "slug" | "categories" | "sortId"
+        "id" | "created_at" | "updated_at" | "slug" | "categories" | "sort_id"
       > = {
         ...rest,
       };
-      if (logoFile?.[0]) fData.logoUrl = logoFile[0];
-      if (coverFile?.[0]) fData.coverUrl = coverFile[0];
+      if (logoFile?.[0]) fData.logo_url = logoFile[0];
+      if (coverFile?.[0]) fData.cover_url = coverFile[0];
 
       const fields =
-        "id,name,slug,nameAr,description,descriptionAr,logoUrl,coverUrl,isActive,isDeleted,isPopular,products=id-name-nameAr-images,createdAt,categories=id-category=id-name-nameAr-iconUrl";
+        "id,name,slug,name_ar,description,description_ar,logo_url,cover_url,is_active,is_popular,products=id-name-name_ar-images,created_at,categories=id-category=id-name-name_ar-icon_url";
 
       const { data } = await axios({
         method: brand ? "PUT" : "POST",
@@ -236,9 +236,9 @@ const AddOrEditBrand = ({
             />
             <OutlineInput
               id="brand-name-ar"
-              {...register("nameAr")}
+              {...register("name_ar")}
               label={t("nameAr")}
-              error={errors?.nameAr?.message as string}
+              error={errors?.name_ar?.message as string}
             />
             <OutlineTextArea
               id="description"
@@ -250,12 +250,12 @@ const AddOrEditBrand = ({
             <OutlineTextArea
               id="descriptionAr"
               label={t("descriptionAr")}
-              error={errors.descriptionAr?.message as string}
-              {...register("descriptionAr")}
+              error={errors.description_ar?.message as string}
+              {...register("description_ar")}
               rows={6}
             />
             <div className="col-span-2">
-              <FetchSelect<Pick<Category, "id" | "name" | "nameAr" | "iconUrl">>
+              <FetchSelect<Pick<Category, "id" | "name" | "name_ar" | "icon_url">>
                 fieldForm={"categories"}
                 multiple
                 label={t("category")}
@@ -271,10 +271,10 @@ const AddOrEditBrand = ({
                 }
                 getOptionValue={(item) => item.id}
                 getOptionDisplayText={(item) =>
-                  locale === "ar" ? item.nameAr : item.name
+                  locale === "ar" ? item.name_ar : item.name
                 }
                 getOptionLabel={(item) =>
-                  locale === "ar" ? item.nameAr : item.name
+                  locale === "ar" ? item.name_ar : item.name
                 }
                 placeholder={t("selectCategories")}
                 // className="w-full"
@@ -288,8 +288,8 @@ const AddOrEditBrand = ({
                         return {
                           id: cat.category.id ?? 0,
                           name: cat.category.name ?? "",
-                          nameAr: cat.category.nameAr ?? "",
-                          iconUrl: cat.category.iconUrl ?? "",
+                          name_ar: cat.category.name_ar ?? "",
+                          icon_url: cat.category.icon_url ?? "",
                         };
                       })
                     : []
@@ -300,11 +300,11 @@ const AddOrEditBrand = ({
             <div className="flex items-center gap-2">
               <Controller
                 control={control}
-                name="isActive"
+                name="is_active"
                 render={({ field }) => (
                   <Checkbox
                     id="brand-isActive"
-                    defaultChecked={brand?.isActive ?? true}
+                    defaultChecked={brand?.is_active ?? true}
                     onCheckedChange={(checked) => field.onChange(checked)}
                     checked={field.value}
                   />
@@ -320,11 +320,11 @@ const AddOrEditBrand = ({
             <div className="flex items-center gap-2">
               <Controller
                 control={control}
-                name="isPopular"
+                name="is_popular"
                 render={({ field }) => (
                   <Checkbox
                     id="brand-isPopular"
-                    defaultChecked={brand?.isPopular ?? false}
+                    defaultChecked={brand?.is_popular ?? false}
                     onCheckedChange={(checked) => field.onChange(checked)}
                     checked={field.value}
                   />
@@ -338,7 +338,7 @@ const AddOrEditBrand = ({
               </label>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <Controller
                 control={control}
                 name="isDeleted"
@@ -357,7 +357,7 @@ const AddOrEditBrand = ({
               >
                 {t("isDeleted")}
               </label>
-            </div>
+            </div> */}
           </div>
           <div className="px-3 py-1.5 border-t">
             <Button className="w-full" disabled={isSubmitting} type="submit">

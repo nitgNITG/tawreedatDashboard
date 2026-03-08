@@ -6,23 +6,6 @@ import Brands from "@/components/brands/Brands";
 import { Product } from "../products/productsData";
 import { Category } from "../categories/categoriesData";
 
-const page = ({
-  searchParams,
-  params: { locale },
-}: {
-  searchParams: SearchParams;
-  params: { locale: string };
-}) => {
-  const key = JSON.stringify(searchParams);
-  return (
-    <div className="p-container space-y-10">
-      <Suspense key={key} fallback={<LoadingTable />}>
-        <BrandsData locale={locale} searchParams={searchParams} />
-      </Suspense>
-    </div>
-  );
-};
-
 export interface Brand {
   id: number;
   name: string;
@@ -76,15 +59,15 @@ const fetchBrands = async (
       queryParams.append("skip", searchParams.skip.toString());
     if (searchParams.keyword)
       queryParams.append("keyword", searchParams.keyword.toString());
-    if (searchParams["createdAt[gte]"])
+    if (searchParams["created_at[gte]"])
       queryParams.append(
         "created_at[gte]",
-        searchParams["createdAt[gte]"].toString(),
+        searchParams["created_at[gte]"].toString(),
       );
-    if (searchParams["createdAt[lte]"])
+    if (searchParams["created_at[lte]"])
       queryParams.append(
         "created_at[lte]",
-        searchParams["createdAt[lte]"].toString(),
+        searchParams["created_at[lte]"].toString(),
       );
 
     const res = await fetch(
@@ -133,4 +116,20 @@ const BrandsData = async ({
   );
 };
 
+const page = ({
+  searchParams,
+  params: { locale },
+}: {
+  searchParams: SearchParams;
+  params: { locale: string };
+}) => {
+  const key = JSON.stringify(searchParams);
+  return (
+    <div className="p-container space-y-10">
+      <Suspense key={key} fallback={<LoadingTable />}>
+        <BrandsData locale={locale} searchParams={searchParams} />
+      </Suspense>
+    </div>
+  );
+};
 export default page;

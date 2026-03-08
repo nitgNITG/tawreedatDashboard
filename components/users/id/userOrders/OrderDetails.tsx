@@ -68,7 +68,7 @@ const OrderDetails = ({
                     </td>
                     <td className="px-4 py-3 font-bold">
                       {locale === "ar"
-                        ? item?.product?.nameAr ?? item?.product?.name
+                        ? item?.product?.name_ar ?? item?.product?.name
                         : item?.product?.name || "-"}
                     </td>
                     <td className="px-4 py-3">{item?.price ?? "-"}</td>
