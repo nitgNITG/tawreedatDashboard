@@ -57,15 +57,15 @@ const AddOnBoarding = ({
       // Add file if exists
       const file = fileInputRef.current?.files?.[0];
       if (file) {
-        formdata.append("imageUrl", file);
+        formdata.append("image_url", file);
       }
 
       formdata.append("title", formData.title);
-      formdata.append("titleAr", formData.titleAr);
+      formdata.append("title_ar", formData.title_ar);
       formdata.append("subtitle", formData.subtitle);
-      formdata.append("subtitleAr", formData.subtitleAr);
+      formdata.append("subtitle_ar", formData.subtitle_ar);
       formdata.append("content", formData.content);
-      formdata.append("contentAr", formData.contentAr);
+      formdata.append("content_ar", formData.content_ar);
 
       if (board) {
         // Edit existing onboarding
@@ -165,7 +165,7 @@ const AddOnBoarding = ({
                   {board ? (
                     <div className="group relative w-full h-full flex justify-center items-center">
                       <ImageApi
-                        src={board?.imageUrl}
+                        src={board?.image_url}
                         alt="image"
                         height={1000}
                         width={1000}
@@ -198,14 +198,14 @@ const AddOnBoarding = ({
         </div>
         <div>
           <input
-            {...register("titleAr", {
-              value: board?.titleAr,
+            {...register("title_ar", {
+              value: board?.title_ar,
             })}
             type="text"
             className="border py-3 px-2 w-full outline-none"
             placeholder={t("titleArPlaceholder")}
           />
-          <ErrorMsg message={errors?.titleAr?.message as string} />
+          <ErrorMsg message={errors?.title_ar?.message as string} />
         </div>
         <div>
           <input
@@ -220,14 +220,14 @@ const AddOnBoarding = ({
         </div>
         <div>
           <input
-            {...register("subtitleAr", {
-              value: board?.subtitleAr,
+            {...register("subtitle_ar", {
+              value: board?.subtitle_ar,
             })}
             type="text"
             className="border py-3 px-2 w-full outline-none"
             placeholder={t("subtitleArPlaceholder")}
           />
-          <ErrorMsg message={errors?.subtitleAr?.message as string} />
+          <ErrorMsg message={errors?.subtitle_ar?.message as string} />
         </div>
         <div>
           <textarea
@@ -242,12 +242,12 @@ const AddOnBoarding = ({
         <div>
           <textarea
             {...register("contentAr", {
-              value: board?.contentAr,
+              value: board?.content_ar,
             })}
             className="border py-3 px-2 w-full outline-none h-20"
             placeholder={t("contentArPlaceholder")}
           />
-          <ErrorMsg message={errors?.contentAr?.message as string} />
+          <ErrorMsg message={errors?.content_ar?.message as string} />
         </div>
         <div className="w-full">
           <button

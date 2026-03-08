@@ -25,7 +25,7 @@ const AddArticle: React.FC<AddArticleProps> = ({
   setArticles,
   setArticle,
 }) => {
-  const [previewImage, setPreviewImage] = useState(article?.coverImage ?? "");
+  const [previewImage, setPreviewImage] = useState(article?.cover_image ?? "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -86,10 +86,10 @@ const AddArticle: React.FC<AddArticleProps> = ({
       title: article?.title || "",
       slug: article?.slug || undefined,
       content: article?.content || "",
-      coverImage: article?.coverImage || "",
+      cover_image: article?.cover_image || "",
       summary: article?.summary || "",
-      publishedAt: article?.publishedAt
-        ? new Date(article.publishedAt).toISOString().split("T")[0]
+      published_at: article?.published_at
+        ? new Date(article.published_at).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0], // Default to today's date
       author: article?.author || "",
       keywords: article?.keywords || [],
@@ -155,12 +155,12 @@ const AddArticle: React.FC<AddArticleProps> = ({
       submitFormData.append("summary", formData.summary || "");
       submitFormData.append("keywords", JSON.stringify(keywords));
       submitFormData.append(
-        "publishedAt",
-        formData.publishedAt ? new Date(formData.publishedAt).toISOString() : ""
+        "published_at",
+        formData.published_at ? new Date(formData.published_at).toISOString() : ""
       );
       submitFormData.append("author", formData.author || "");
       if (imageFile) {
-        submitFormData.append("imageUrl", imageFile);
+        submitFormData.append("cover_image", imageFile);
       }
       if (formData.slug) {
         submitFormData.append("slug", formData.slug);
@@ -298,7 +298,7 @@ const AddArticle: React.FC<AddArticleProps> = ({
 
       <div className="relative">
         <OutlineInput
-          {...register("publishedAt", {
+          {...register("published_at", {
             required: t("error.publishedAt_required"),
           })}
           label={t("publishedAt")}
@@ -321,7 +321,7 @@ const AddArticle: React.FC<AddArticleProps> = ({
               </button>
             ),
           }}
-          error={errors.publishedAt?.message as string}
+          error={errors.published_at?.message as string}
         />
       </div>
 

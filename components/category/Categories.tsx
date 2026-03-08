@@ -149,7 +149,7 @@ const Categories: React.FC<CategoriesProps> = ({
 
     const updatedCategories = newOrder.map((cat, i) => ({
       ...cat,
-      sortId: i + 1,
+      sort_id: i + 1,
     }));
     dispatch(setCategories(updatedCategories));
 
@@ -190,7 +190,7 @@ const Categories: React.FC<CategoriesProps> = ({
       setLoading(true);
       const body = categories.map((c) => ({
         id: c.id,
-        sortId: c.sortId,
+        sort_id: c.sort_id,
       }));
 
       await fetch(
@@ -236,7 +236,7 @@ const Categories: React.FC<CategoriesProps> = ({
           <FilterDropdown options={filterOptions} placeholder="filter" />
           <SortDropdown
             options={[
-              { label: t("sortId"), value: "sortId" },
+              { label: t("sortId"), value: "sort_id" },
               { label: t("name"), value: "name" },
               { label: t("nameAr"), value: "nameAr" },
               { label: t("createdAt"), value: "createdAt" },
@@ -276,7 +276,7 @@ const Categories: React.FC<CategoriesProps> = ({
                       <>
                         <div className="w-full flex flex-col items-start px-2">
                           <CardTitle className="text-base font-bold mb-1 truncate w-full">
-                            {locale === "ar" ? category.nameAr : category.name}
+                            {locale === "ar" ? category.name_ar : category.name}
                           </CardTitle>
                           <CardDescription className="text-[0.7rem] text-gray-500 flex gap-2 items-center justify-center">
                             <span>
@@ -301,10 +301,10 @@ const Categories: React.FC<CategoriesProps> = ({
                               href={`/categories/${
                                 categoryPath
                                   ? categoryPath
-                                      .map((cat) => cat.replace(/ /g, "-"))
+                                      .map((cat) => cat.replaceAll(' ', "-"))
                                       .join("/") + "/"
                                   : ""
-                              }${category.name.replace(/ /g, "-")}`}
+                              }${category.name.replaceAll(' ', "-")}`}
                               aria-label={t("viewCategory")}
                             >
                               <EyeIcon className="size-4 text-primary hover:text-gray-700" />
@@ -334,7 +334,7 @@ const Categories: React.FC<CategoriesProps> = ({
                     }
                     image={{
                       alt: category.name,
-                      url: category.imageUrl,
+                      url: category.image_url,
                     }}
                   />
                 </SortableCard>
@@ -350,7 +350,7 @@ const Categories: React.FC<CategoriesProps> = ({
         className="bg-transparent px-0"
         downloadButton={
           <DownloadButton<Category>
-            fields={["id", locale === "ar" ? "nameAr" : "name", "createdAt"]}
+            fields={["id", locale === "ar" ? "name_ar" : "name", "created_at"]}
             model="Category"
           />
         }

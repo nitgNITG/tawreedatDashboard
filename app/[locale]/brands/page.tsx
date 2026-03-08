@@ -26,26 +26,26 @@ const page = ({
 export interface Brand {
   id: number;
   name: string;
-  nameAr?: string;
+  name_ar?: string;
   description?: string;
-  descriptionAr?: string;
-  coverUrl?: string;
-  logoUrl?: string;
-  createdAt: string;
-  updatedAt: string;
+  description_ar?: string;
+  cover_url?: string;
+  logo_url?: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
   slug: string;
   products?: {
     id: number;
-    product: Pick<Product, "id" | "name" | "nameAr" | "images">;
+    product: Pick<Product, "id" | "name" | "name_ar" | "images">;
   }[];
   categories?: {
     id?: number;
-    category: Pick<Category, "id" | "name" | "nameAr" | "iconUrl">;
+    category: Pick<Category, "id" | "name" | "name_ar" | "icon_url">;
   }[];
-  isDeleted: boolean;
-  isActive: boolean;
-  isPopular: boolean;
-  sortId: number;
+  is_active: boolean;
+  is_popular: boolean;
+  sort_id: number;
 }
 
 interface BrandsApiResponse {
@@ -56,7 +56,7 @@ interface BrandsApiResponse {
 
 const fetchBrands = async (
   searchParams: SearchParams,
-  lang: "en" | "ar"
+  lang: "en" | "ar",
 ): Promise<{
   data: BrandsApiResponse | null;
   error: string | null;
@@ -67,9 +67,9 @@ const fetchBrands = async (
 
     const queryParams = new URLSearchParams({
       limit: searchParams.limit?.toString() ?? "10",
-      sort: searchParams.sort?.toString() ?? "sortId",
+      sort: searchParams.sort?.toString() ?? "sort_id",
       fields:
-        "id,name,slug,nameAr,description,descriptionAr,logoUrl,coverUrl,isActive,sortId,isDeleted,isPopular,products=id-name-nameAr-images,createdAt,categories=id-category=id-name-nameAr-iconUrl",
+        "id,name,slug,name_ar,description,description_ar,logo_url,cover_url,is_active,sort_id,deleted_at,is_popular,products=id-name-name_ar-images,created_at,categories=id-category=id-name-name_ar-icon_url",
     });
 
     if (searchParams.skip)
@@ -78,13 +78,13 @@ const fetchBrands = async (
       queryParams.append("keyword", searchParams.keyword.toString());
     if (searchParams["createdAt[gte]"])
       queryParams.append(
-        "createdAt[gte]",
-        searchParams["createdAt[gte]"].toString()
+        "created_at[gte]",
+        searchParams["createdAt[gte]"].toString(),
       );
     if (searchParams["createdAt[lte]"])
       queryParams.append(
-        "createdAt[lte]",
-        searchParams["createdAt[lte]"].toString()
+        "created_at[lte]",
+        searchParams["createdAt[lte]"].toString(),
       );
 
     const res = await fetch(
@@ -96,7 +96,7 @@ const fetchBrands = async (
         },
         // cache: "force-cache",
         // next: { tags: ["brands", `${JSON.stringify(searchParams)}`] },
-      }
+      },
     );
     if (!res.ok) {
       throw new Error(`Failed to fetch brands: ${res.statusText}`);
@@ -119,7 +119,7 @@ const BrandsData = async ({
 }) => {
   const { data, error } = await fetchBrands(
     searchParams,
-    locale as "en" | "ar"
+    locale as "en" | "ar",
   );
 
   if (error) return <div className="text-red-500">Error: {error}</div>;

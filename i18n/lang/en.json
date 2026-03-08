@@ -90,6 +90,7 @@
     "userRoles": "User Roles"
   },
   "orders": {
+    "PARTIALLY_REFUNDED": "Partially Refunded",
     "no data yet": "No data to be Shown",
     "updatedSuccessfully": "Order updated successfully",
     "failedToUpdate": "Failed to update order",

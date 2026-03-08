@@ -49,7 +49,7 @@ const NotificationHandler = ({
           totalNotifications,
           totalPages,
           unreadCount,
-        })
+        }),
       );
     }
   }, [notifications, totalNotifications, totalPages, dispatch]);
@@ -68,7 +68,7 @@ const NotificationHandler = ({
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            }
+            },
           );
         }
       } catch (error) {

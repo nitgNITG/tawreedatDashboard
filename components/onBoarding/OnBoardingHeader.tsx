@@ -85,7 +85,7 @@ const OnBoardingHeader = ({ data }: { data: any }) => {
             {/* Image */}
             <div className="aspect-video relative">
               <Image
-                src={board.imageUrl}
+                src={board.image_url}
                 alt={board.title}
                 fill
                 className="object-cover"
@@ -95,13 +95,13 @@ const OnBoardingHeader = ({ data }: { data: any }) => {
             {/* Content */}
             <div className="p-4">
               <h3 className="font-semibold text-lg mb-2">
-                {locale === "ar" ? board.titleAr ?? board.title : board.title}
+                {locale === "ar" ? board.title_ar ?? board.title : board.title}
               </h3>
               <h5 className="text-gray-600 text-sm">
-                {locale === "ar" ? board.subtitleAr : board.subtitle ?? "----"}
+                {locale === "ar" ? board.subtitle_ar : board.subtitle ?? "----"}
               </h5>
               <p className="text-gray-600 text-sm">
-                {locale === "ar" ? board.contentAr : board.content ?? "----"}
+                {locale === "ar" ? board.content_ar : board.content ?? "----"}
               </p>
             </div>
 

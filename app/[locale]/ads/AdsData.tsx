@@ -4,7 +4,7 @@ import AdsList from "@/components/ads/AdsList";
 import { getLocale } from "next-intl/server";
 import { SearchParams } from "@/types/common";
 
-interface BadgeApiResponse {
+interface AdsApiResponse {
   ads: Ad[];
   totalCount: number;
   totalPages: number;
@@ -13,14 +13,14 @@ interface BadgeApiResponse {
 const fetchAds = async (
   searchParams: SearchParams,
   lang: "en" | "ar" = "ar"
-): Promise<{ data: BadgeApiResponse | null; error: string | null }> => {
+): Promise<{ data: AdsApiResponse | null; error: string | null }> => {
   try {
     const token = cookies().get("token")?.value;
     if (!token) return { data: null, error: "No token provided" };
 
     const queryParams = new URLSearchParams({
       fields:
-        "id,title,titleAr,description,descriptionAr,imageUrl,targetUrl,mobileScreen,startDate,endDate,priority,status,adType,timing,displayDuration,createdAt,closable",
+        "id,title,title_ar,description,description_ar,image_url,target_url,mobile_screen,start_date,end_date,priority,status,ad_type,duration_seconds,created_at,closable",
       limit: searchParams.limit?.toString() ?? "10",
       sort: searchParams.sort?.toString() ?? "priority",
       skip: searchParams.skip?.toString() ?? "0",

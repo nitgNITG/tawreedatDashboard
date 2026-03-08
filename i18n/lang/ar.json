@@ -129,6 +129,7 @@
     "url": "رابط"
   },
   "orders": {
+    "PARTIALLY_REFUNDED": "استرداد جزء",
     "no data yet": "لا توجد بيانات للعرض",
     "updatedSuccessfully": "تم تحديث الطلب بنجاح",
     "failedToUpdate": "فشل في تحديث الطلب",

@@ -5,10 +5,11 @@ import { SearchParams } from "@/types/common";
 import { Brand } from "../brands/page";
 
 export const PRODUCTS_FIELDS =
-  "id,sortId,name,nameAr,description,descriptionAr,attributes,images,price,stock,createdAt,isActive,isFeatured,offer,offerValidFrom,offerValidTo,rating,totalReviews,category=id-name-nameAr-productAttributes,brand=id-name-nameAr-logoUrl" as const;
+  "id,sort_id,name,name_ar,description,description_ar,attributes,images,price,stock,created_at,is_active,is_featured,offer,offer_valid_from,offer_valid_to,rating,total_reviews,category=id-name-name_ar-product_attributes,brand=id-name-name_ar-logo_url" as const;
 interface AttributesItem {
   key: string;
   value: string;
+  value_ar: string;
   id: number;
 }
 
@@ -26,40 +27,40 @@ export interface Review {
 export interface Product {
   id: number;
   name: string;
-  nameAr?: string;
+  name_ar?: string;
   description?: string;
-  descriptionAr?: string;
+  description_ar?: string;
   images?: string[];
   price: number;
-  costPrice?: number;
+  cost_price?: number;
   offer: number;
-  offerValidFrom?: string;
-  offerValidTo?: string;
+  offer_valid_from?: string;
+  offer_valid_to?: string;
   stock: number;
-  minStock?: number;
+  min_stock?: number;
   sku: string;
   barcode?: string;
   weight?: number;
   dimensions?: string;
-  isActive: boolean;
+  is_active: boolean;
   category?: Partial<Category>;
-  brand?: Pick<Brand, "id" | "name" | "nameAr" | "logoUrl">;
-  createdAt: string;
-  updatedAt?: string;
-  categoryId: number;
-  brandId?: number;
-  isFeatured: boolean;
-  supplierId?: number;
+  brand?: Pick<Brand, "id" | "name" | "name_ar" | "logo_url">;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+  category_id: number;
+  brand_id?: number;
+  is_featured: boolean;
+  supplier_id?: number;
   supplier?: any;
-  orderItems?: OrderItem[];
-  cartItems?: any[];
+  order_items?: OrderItem[];
+  cart_items?: any[];
   rating: number;
-  totalReviews: number;
+  total_reviews: number;
   reviews?: Review[];
   wishlist?: any[];
-  bookDetails?: any;
   attributes?: AttributesItem[];
-  sortId: number;
+  sort_id: number;
 }
 
 interface ProductApiResponse {
@@ -71,7 +72,7 @@ interface ProductApiResponse {
 export const fetchProducts = async (
   searchParams: SearchParams,
   locale: string,
-  categoryName?: string
+  categoryName?: string,
 ): Promise<{
   data: ProductApiResponse | null;
   error: string | null;
@@ -85,7 +86,7 @@ export const fetchProducts = async (
       sort:
         (categoryName
           ? searchParams.sortArchive?.toString()
-          : searchParams.sort?.toString()) ?? "sortId",
+          : searchParams.sort?.toString()) ?? "sort_id",
       fields: PRODUCTS_FIELDS,
     });
 
@@ -96,24 +97,24 @@ export const fetchProducts = async (
     if (categoryName)
       queryParams.append(
         "category[name]",
-        decodeURIComponent(categoryName.trim())
+        decodeURIComponent(categoryName.trim()),
       );
     if (searchParams.skipArchive && categoryName)
       queryParams.append("skip", searchParams.skipArchive.toString());
     if (searchParams.keywordArchive && categoryName)
       queryParams.append("keyword", searchParams.keywordArchive.toString());
     if (searchParams.isFeatured && !categoryName)
-      queryParams.append("isFeatured", searchParams.isFeatured.toString());
+      queryParams.append("is_featured", searchParams.isFeatured.toString());
     if (searchParams.isActive && !categoryName)
-      queryParams.append("isActive", searchParams.isActive.toString());
+      queryParams.append("is_active", searchParams.isActive.toString());
 
     if (searchParams.isFeaturedArchive && !categoryName)
       queryParams.append(
-        "isFeatured",
-        searchParams.isFeaturedArchive.toString()
+        "is_featured",
+        searchParams.isFeaturedArchive.toString(),
       );
     if (searchParams.isActiveArchive && !categoryName)
-      queryParams.append("isActive", searchParams.isActiveArchive.toString());
+      queryParams.append("is_active", searchParams.isActiveArchive.toString());
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?${queryParams}`,
@@ -125,7 +126,7 @@ export const fetchProducts = async (
         headers: {
           "accept-language": locale,
         },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -151,7 +152,7 @@ const ProductsData = async ({
   const { data, error } = await fetchProducts(
     searchParams,
     locale,
-    categoryName
+    categoryName,
   );
 
   if (error) return <div className="text-red-500">Error: {error}</div>;

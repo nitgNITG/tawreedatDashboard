@@ -36,12 +36,12 @@ const AdsList = ({
     {
       name: "title",
       sortable: true,
-      key: locale === "en" ? "title" : "titleAr",
+      key: locale === "en" ? "title" : "title_ar",
     },
     { name: "logo" },
-    { name: "viewType", sortable: true, key: "adType" },
-    { name: "startDate", sortable: true, key: "startDate" },
-    { name: "endDate", sortable: true, key: "endDate" },
+    { name: "viewType", sortable: true, key: "ad_type" },
+    { name: "startDate", sortable: true, key: "start_date" },
+    { name: "endDate", sortable: true, key: "end_date" },
     { name: "actions", className: "flex justify-center" },
   ];
 
@@ -73,10 +73,10 @@ const AdsList = ({
               <DownloadButton<Ad>
                 fields={[
                   "id",
-                  locale === "en" ? "title" : "titleAr",
-                  "adType",
+                  locale === "en" ? "title" : "title_ar",
+                  "ad_type",
                   "budget",
-                  "createdAt",
+                  "created_at",
                 ]}
                 model="ads"
               />
@@ -103,15 +103,15 @@ const AdsList = ({
             <td scope="row" className="px-6 py-4 whitespace-nowrap">
               {locale === "en"
                 ? ad.title
-                : ad.titleAr === "" || ad.titleAr === undefined
+                : ad.title_ar === "" || ad.title_ar === undefined
                 ? ad.title
-                : ad.titleAr}
+                : ad.title_ar}
             </td>
 
             <td scope="row" className="px-6 py-4 whitespace-nowrap">
               <div className="size-16">
                 <ImageApi
-                  src={ad.imageUrl}
+                  src={ad.image_url}
                   alt="ad"
                   className="size-full rounded-full object-cover border-2"
                   width={200}
@@ -119,12 +119,12 @@ const AdsList = ({
                 />
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap">{ad.adType}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{ad.ad_type}</td>
             <td className="px-6 py-4 whitespace-nowrap">
-              {DateToText(ad.startDate.toString(), locale)}
+              {DateToText(ad.start_date.toString(), locale)}
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
-              {DateToText(ad.endDate.toString(), locale)}
+              {DateToText(ad.end_date.toString(), locale)}
             </td>
             <td className="px-6 py-4">
               <div className="flex gap-2 items-center justify-center">

@@ -86,8 +86,8 @@ const Articles: React.FC<ArticlesProps> = ({
           <SortDropdown
             options={[
               { label: t("title"), value: "title" },
-              { label: t("createdAt"), value: "createdAt" },
-              { label: t("publishedAt"), value: "publishedAt" },
+              { label: t("createdAt"), value: "created_at" },
+              { label: t("publishedAt"), value: "published_at" },
             ]}
           />
           <button
@@ -149,7 +149,7 @@ const Articles: React.FC<ArticlesProps> = ({
               }
               image={{
                 alt: article.title,
-                url: article.coverImage,
+                url: article.cover_image,
               }}
             />
           ))}
@@ -167,9 +167,9 @@ const Articles: React.FC<ArticlesProps> = ({
               "title",
               "summary",
               "keywords",
-              "publishedAt",
+              "published_at",
               "author",
-              "createdAt",
+              "created_at",
             ]}
             model="Article"
           />

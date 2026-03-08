@@ -48,6 +48,7 @@ const OrderRows = ({
     "PAID",
     "FAILED",
     "REFUNDED",
+    "PARTIALLY_REFUNDED",
   ];
   const orderStatusOptions: OrderStatus[] = [
     "PENDING",
@@ -109,7 +110,7 @@ const OrderRows = ({
             Authorization: `Bearer ${token}`,
             "accept-language": lang,
           },
-        }
+        },
       );
       toast.success(t("updatedSuccessfully"));
       setOrders((prev) =>
@@ -122,8 +123,8 @@ const OrderRows = ({
                   paymentStatus: order.paymentStatus,
                 },
               }
-            : order
-        )
+            : order,
+        ),
       );
     } catch (error) {
       console.error("Error updating order:", error);
@@ -147,6 +148,7 @@ const OrderRows = ({
         return "bg-orange-500 text-white ring-offset-orange-500 focus:ring-orange-500";
       case "CANCELLED":
       case "FAILED":
+      case "PARTIALLY_REFUNDED":
       case "REFUNDED":
         return "bg-red-500 text-white ring-offset-red-500 focus:ring-red-500";
       default:

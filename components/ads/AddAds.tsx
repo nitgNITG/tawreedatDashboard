@@ -19,7 +19,6 @@ import PrioritySelect from "./PrioritySelect";
 import { fetchBrands } from "@/lib/fetchBrands";
 import FetchSelect from "../FetchSelect";
 import { Brand } from "@/app/[locale]/brands/page";
-import { isArray } from "lodash";
 import { Switch } from "../ui/switch";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
@@ -39,29 +38,29 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
   useEffect(() => {
     reset({
       title: ad?.title ?? "",
-      titleAr: ad?.titleAr ?? "",
+      title_ar: ad?.title_ar ?? "",
       description: ad?.description ?? "",
-      descriptionAr: ad?.descriptionAr ?? "",
+      description_ar: ad?.description_ar ?? "",
       status: ad?.status ?? "Active",
-      startDate: ad?.startDate
-        ? new Date(ad.startDate).toISOString().split("T")[0]
+      start_date: ad?.start_date
+        ? new Date(ad.start_date).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
-      endDate: ad?.endDate
-        ? new Date(ad.endDate).toISOString().split("T")[0]
+      end_date: ad?.end_date
+        ? new Date(ad.end_date).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
-      targetUrl: ad?.targetUrl ?? undefined,
-      mobileScreen: ad?.mobileScreen ?? undefined,
-      adType: ad?.adType ?? AdsType.Home,
-      displayDuration: ad?.displayDuration ?? 24,
+      target_url: ad?.target_url ?? undefined,
+      mobile_screen: ad?.mobile_screen ?? undefined,
+      adType: ad?.ad_type ?? AdsType.INTERNAL,
+      duration_seconds: ad?.duration_seconds ?? 24,
       priority: ad?.priority?.toString() ?? "",
       imageFile: undefined,
       closable: ad ? ad?.closable : true,
     });
-    setImage(ad?.imageUrl ?? null);
+    setImage(ad?.image_url ?? null);
   }, [ad, reset]);
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState<string | null>(ad?.imageUrl ?? null);
+  const [image, setImage] = useState<string | null>(ad?.image_url ?? null);
   const { token } = useAppContext();
   const dispatch = useAppDispatch();
   const lang = useLocale() as "en" | "ar";
@@ -71,10 +70,10 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
       setLoading(true);
       let adData = { ...formData };
       if (formData.startDate > formData.endDate) {
-        setError("startDate", {
+        setError("start_date", {
           message: t("startDateShouldBeLessThanEndDate"),
         });
-        setError("endDate", {
+        setError("end_date", {
           message: t("endDateShouldBeGreaterThanStartDate"),
         });
         setLoading(false);
@@ -84,7 +83,7 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
       if (Array.isArray(formData.userTypes))
         adData.userTypes = formData.userTypes.join(",");
 
-      if (formData.imageFile) adData.imageUrl = formData.imageFile[0];
+      if (formData.imageFile) adData.image_url = formData.imageFile[0];
       delete adData.imageFile;
 
       const method = ad ? "put" : "post";
@@ -131,11 +130,11 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
           />
           <UserInput
             errors={errors}
-            roles={{ value: ad?.titleAr, required: t("titleRequired") }}
+            roles={{ value: ad?.title_ar, required: t("titleRequired") }}
             fieldForm="titleAr"
             register={register}
             label={t("titleAr")}
-            defaultValue={ad?.titleAr}
+            defaultValue={ad?.title_ar}
           />
 
           <div className="grid items-center grid-cols-1 h-min gap-y-2">
@@ -161,9 +160,9 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
               {t("descriptionAr")}:
             </label>
             <textarea
-              defaultValue={ad?.descriptionAr}
+              defaultValue={ad?.description_ar}
               {...register("descriptionAr", {
-                value: ad?.descriptionAr,
+                value: ad?.description_ar,
               })}
               id="descriptionAr"
               className={clsx(
@@ -194,8 +193,8 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
             fieldForm="startDate"
             label={t("startDate")}
             defaultValue={
-              ad?.startDate
-                ? new Date(ad.startDate).toISOString().split("T")[0]
+              ad?.start_date
+                ? new Date(ad.start_date).toISOString().split("T")[0]
                 : new Date().toISOString().split("T")[0]
             }
             control={control}
@@ -206,8 +205,8 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
             fieldForm="endDate"
             label={t("endDate")}
             defaultValue={
-              ad?.endDate
-                ? new Date(ad.endDate).toISOString().split("T")[0]
+              ad?.end_date
+                ? new Date(ad.end_date).toISOString().split("T")[0]
                 : new Date().toISOString().split("T")[0]
             }
             control={control}
@@ -229,8 +228,8 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
           <UserInput
             fieldForm="targetUrl"
             register={register}
-            roles={{ value: ad?.targetUrl || undefined, required: false }}
-            defaultValue={ad?.targetUrl || undefined}
+            roles={{ value: ad?.target_url || undefined, required: false }}
+            defaultValue={ad?.target_url || undefined}
             errors={errors}
             label={t("targetUrl")}
           />
@@ -240,11 +239,11 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
             </label>
             <div className="relative">
               <textarea
-                defaultValue={ad?.mobileScreen}
+                defaultValue={ad?.mobile_screen}
                 readOnly
                 rows={5}
                 {...register("mobileScreen", {
-                  value: ad?.mobileScreen,
+                  value: ad?.mobile_screen,
                 })}
                 id="mobileScreen"
                 className={clsx(
@@ -270,11 +269,11 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
                 Brand,
                 | "id"
                 | "name"
-                | "nameAr"
-                | "logoUrl"
-                | "coverUrl"
+                | "name_ar"
+                | "logo_url"
+                | "cover_url"
                 | "description"
-                | "descriptionAr"
+                | "description_ar"
               >
             >
               fieldForm={"brand"}
@@ -293,7 +292,7 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
               //   lang === "ar" ? item.nameAr : item.name
               // }
               getOptionLabel={(item) =>
-                lang === "ar" ? item.nameAr : item.name
+                lang === "ar" ? item.name_ar : item.name
               }
               placeholder={t("selectBrand")}
               className="w-full"
@@ -305,11 +304,11 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
                     `tawreedat://products?id=${
                       brand.id || null
                     }&isBrand=true&name=${brand.name || null}&nameAr=${
-                      brand.nameAr || null
-                    }&imageUrl=${brand.coverUrl || null}&iconUrl=${
-                      brand.logoUrl || null
+                      brand.name_ar || null
+                    }&imageUrl=${brand.cover_url || null}&iconUrl=${
+                      brand.logo_url || null
                     }&description=${brand.description || null}&descriptionAr=${
-                      brand.descriptionAr || null
+                      brand.description_ar || null
                     }`
                   );
                 }
@@ -323,8 +322,8 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
             label={t("adType")}
             register={register}
             placeholder={t("selectAdType")}
-            roles={{ value: ad?.adType, required: t("adTypeRequired") }}
-            defaultValue={ad?.adType ?? AdsType.Home}
+            roles={{ value: ad?.ad_type, required: t("adTypeRequired") }}
+            defaultValue={ad?.ad_type ?? AdsType.INTERNAL}
             options={Object.values(AdsType).map((type) => ({
               value: type,
               label: t(type),
@@ -334,10 +333,10 @@ const AddAds = ({ handleClose, ad }: { handleClose: () => void; ad?: Ad }) => {
             fieldForm="displayDuration"
             register={register}
             roles={{
-              value: ad?.displayDuration ?? 24,
+              value: ad?.duration_seconds ?? 24,
               required: t("displayDurationRequired"),
             }}
-            defaultValue={ad?.displayDuration}
+            defaultValue={ad?.duration_seconds}
             errors={errors}
             type="number"
             min={1}

@@ -83,7 +83,7 @@ const Brands = ({
     {
       name: "sortId",
       sortable: true,
-      key: "sortId",
+      key: "sort_id",
       className: "!px-3 !py-2 flex justify-center",
     },
     { name: "image", className: "!px-3 !py-2" },
@@ -91,13 +91,13 @@ const Brands = ({
       name: "name",
       className: "!px-3 !py-2",
       sortable: true,
-      key: locale === "en" ? "name" : "nameAr",
+      key: locale === "en" ? "name" : "name_ar",
     },
     {
       name: "createdAt",
       className: "!px-3 !py-2",
       sortable: true,
-      key: "createdAt",
+      key: "created_at",
     },
     { name: "action", className: "!px-3 !py-2 flex justify-center" },
   ];
@@ -115,7 +115,7 @@ const Brands = ({
     const newIndex = brands.findIndex((b) => b.id === over.id);
 
     const newOrder = arrayMove(brands, oldIndex, newIndex);
-    const updatedBrands = newOrder.map((b, i) => ({ ...b, sortId: i + 1 }));
+    const updatedBrands = newOrder.map((b, i) => ({ ...b, sort_id: i + 1 }));
     setBrands(updatedBrands);
 
     const newOrderIds = updatedBrands.map((b) => b.id);
@@ -125,7 +125,7 @@ const Brands = ({
   async function handleSaveOrder() {
     try {
       setLoading(true);
-      const body = brands.map((b) => ({ id: b.id, sortId: b.sortId }));
+      const body = brands.map((b) => ({ id: b.id, sort_id: b.sort_id }));
 
       await axios.post(
         "/api/brands/reorder",
@@ -229,7 +229,7 @@ const Brands = ({
                 downloadButton={
                   <DownloadButton<Brand>
                     model="brand"
-                    fields={["name", "description", "createdAt"]}
+                    fields={["name", "description", "created_at"]}
                     items={["name", "description"]}
                   />
                 }
@@ -252,19 +252,19 @@ const Brands = ({
                 mode="table"
                 id={brand.id}
                 key={brand.id}
-                sortId={brand.sortId}
+                sortId={brand.sort_id}
                 className={clsx(
                   "odd:bg-white even:bg-[#F0F2F5] border-b",
-                  brand.isDeleted && "!text-red-500 font-bold"
+                  brand.deleted_at && "!text-red-500 font-bold"
                 )}
               >
                 {/* <td className="px-3 py-2 cursor-grab font-bold">
-                  {brand.sortId}
+                  {brand.sort_id}
                 </td> */}
                 <td className="px-3 py-2 whitespace-nowrap">
                   <div className="relative w-12 h-12">
                     <ImageApi
-                      src={brand.logoUrl ?? "/imgs/notfound.png"}
+                      src={brand.logo_url ?? "/imgs/notfound.png"}
                       alt={brand.name}
                       fill
                       className="object-cover rounded-lg"
@@ -272,13 +272,13 @@ const Brands = ({
                   </div>
                 </td>
                 <td className="px-3 py-2">
-                  {locale === "en" ? brand.name : brand.nameAr ?? brand.name}
+                  {locale === "en" ? brand.name : brand.name_ar ?? brand.name}
                 </td>
                 <td className="px-3 py-2">
-                  {DateToText(brand.createdAt ?? "", locale)}
+                  {DateToText(brand.created_at ?? "", locale)}
                 </td>
                 <td className="px-3 py-2 flex justify-center gap-2">
-                  {brand.isDeleted ? (
+                  {brand.deleted_at ? (
                     <Button
                       onClick={() => handelRestore(brand.id)}
                       variant="ghost"
@@ -345,14 +345,14 @@ const Brands = ({
           name:
             locale === "en"
               ? deleteBrand?.name
-              : deleteBrand?.nameAr ?? deleteBrand?.name,
+              : deleteBrand?.name_ar ?? deleteBrand?.name,
         })}
         title={t("archiveBrand")}
         description={t("archiveBrandMessage", {
           name:
             locale === "en"
               ? deleteBrand?.name
-              : deleteBrand?.nameAr ?? deleteBrand?.name,
+              : deleteBrand?.name_ar ?? deleteBrand?.name,
         })}
       />
       <Dialog open={confirmSave} onOpenChange={setConfirmSave}>

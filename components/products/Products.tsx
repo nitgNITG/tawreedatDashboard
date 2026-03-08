@@ -130,7 +130,7 @@ const Products = ({
 
     const updatedProducts = newOrder.map((prod, i) => ({
       ...prod,
-      sortId: i + 1,
+      sort_id: i + 1,
     }));
     dispatch(setProducts(updatedProducts));
     // Detect change from initial
@@ -142,7 +142,7 @@ const Products = ({
       setLoading(true);
       const body = products.map((c) => ({
         id: c.id,
-        sortId: c.sortId,
+        sort_id: c.sort_id,
       }));
 
       await axios.post(
@@ -186,9 +186,9 @@ const Products = ({
           <SortDropdown
             archive={!!categoryName}
             options={[
-              { label: t("sortId"), value: "sortId" },
-              { label: t("name"), value: locale === "ar" ? "nameAr" : "name" },
-              { label: t("createdAt"), value: "createdAt" },
+              { label: t("sortId"), value: "sort_id" },
+              { label: t("name"), value: locale === "ar" ? "name_ar" : "name" },
+              { label: t("createdAt"), value: "created_at" },
               { label: t("price"), value: "price" },
             ]}
           />
@@ -229,11 +229,11 @@ const Products = ({
                       <>
                         <div className="flex flex-col items-start w-9/12">
                           <div className="text-sm font-bold truncate w-full">
-                            {locale === "ar" ? product.nameAr : product.name}
+                            {locale === "ar" ? product.name_ar : product.name}
                           </div>
                           <div className="text-[0.7rem] truncate max-w-[100px] text-gray-500 flex gap-2 items-center justify-center">
                             {locale === "ar"
-                              ? product.descriptionAr
+                              ? product.description_ar
                               : product.description}
                           </div>
                         </div>
@@ -247,7 +247,7 @@ const Products = ({
                         <div className="flex items-center gap-1 text-yellow-500">
                           <Star className="size-4" />
                           <span className="text-sm font-medium flex items-center">
-                            {product.rating.toFixed(1)} ({product.totalReviews})
+                            {product.rating.toFixed(1)} ({product.total_reviews})
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
@@ -296,10 +296,10 @@ const Products = ({
           <DownloadButton<Product>
             fields={[
               "id",
-              locale === "ar" ? "nameAr" : "name",
+              locale === "ar" ? "name_ar" : "name",
               "price",
               "stock",
-              "createdAt",
+              "created_at",
             ]}
             model="Product"
           />

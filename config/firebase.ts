@@ -64,7 +64,7 @@ const registerServiceWorker = async () => {
       {
         scope: "/",
         updateViaCache: "none",
-      }
+      },
     );
     return registration;
   } catch (error) {

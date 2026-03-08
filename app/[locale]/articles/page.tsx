@@ -26,14 +26,16 @@ export interface Article {
   id: number;
   title: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
   slug: string;
   summary: string;
-  coverImage: string;
+  cover_image: string;
   keywords: string[];
-  publishedAt: string;
+  published_at: string;
   author: string;
+  is_active: boolean;
+  sort_id: number;
 }
 
 interface ArticlesApiResponse {
@@ -44,7 +46,7 @@ interface ArticlesApiResponse {
 
 const fetchArticles = async (
   searchParams: SearchParams,
-  lang: "en" | "ar"
+  lang: "en" | "ar",
 ): Promise<{
   data: ArticlesApiResponse | null;
   error: string | null;
@@ -55,22 +57,22 @@ const fetchArticles = async (
 
     const queryParams = new URLSearchParams({
       limit: searchParams.limit?.toString() ?? "10",
-      sort: searchParams.sort?.toString() ?? "-createdAt",
+      sort: searchParams.sort?.toString() ?? "-created_at",
     });
 
     if (searchParams.skip)
       queryParams.append("skip", searchParams.skip.toString());
     if (searchParams.keyword)
       queryParams.append("keyword", searchParams.keyword.toString());
-    if (searchParams["createdAt[gte]"])
+    if (searchParams["created_at[gte]"])
       queryParams.append(
-        "createdAt[gte]",
-        searchParams["createdAt[gte]"].toString()
+        "created_at[gte]",
+        searchParams["created_at[gte]"].toString(),
       );
-    if (searchParams["createdAt[lte]"])
+    if (searchParams["created_at[lte]"])
       queryParams.append(
-        "createdAt[lte]",
-        searchParams["createdAt[lte]"].toString()
+        "created_at[lte]",
+        searchParams["created_at[lte]"].toString(),
       );
 
     const { data } = await axios.get<ArticlesApiResponse>(
@@ -80,7 +82,7 @@ const fetchArticles = async (
           Authorization: `Bearer ${token}`,
           "accept-language": lang,
         },
-      }
+      },
     );
 
     return { data, error: null };
@@ -99,7 +101,7 @@ const ArticlesData = async ({
 }) => {
   const { data, error } = await fetchArticles(
     searchParams,
-    locale as "en" | "ar"
+    locale as "en" | "ar",
   );
 
   if (error) return <div className="text-red-500">Error: {error}</div>;

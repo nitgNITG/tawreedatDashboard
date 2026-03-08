@@ -107,7 +107,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
         {/* Header Image */}
         <div className="relative h-80 w-full">
           <ImageApi
-            src={currentArticle.coverImage}
+            src={currentArticle.cover_image}
             alt={currentArticle.title}
             className="w-full h-full object-cover"
             width={800}
@@ -148,7 +148,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
             </div>
             <div className="flex items-center gap-2">
               <CalendarDays className="size-4" />
-              <span>{DateToText(currentArticle.publishedAt, locale)}</span>
+              <span>{DateToText(currentArticle.published_at, locale)}</span>
             </div>
             <div className="flex items-center gap-2">
               <Eye className="size-4" />
@@ -196,12 +196,12 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
           <div className="border-t pt-6 mt-8">
             <div className="flex items-center justify-between text-sm text-gray-500">
               <span>
-                {t("createdAt")}: {DateToText(currentArticle.createdAt, locale)}
+                {t("createdAt")}: {DateToText(currentArticle.created_at, locale)}
               </span>
-              {currentArticle.updatedAt !== currentArticle.createdAt && (
+              {currentArticle.updated_at !== currentArticle.created_at && (
                 <span>
                   {t("updatedAt")}:{" "}
-                  {DateToText(currentArticle.updatedAt, locale)}
+                  {DateToText(currentArticle.updated_at, locale)}
                 </span>
               )}
             </div>

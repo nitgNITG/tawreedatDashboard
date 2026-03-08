@@ -12,7 +12,7 @@ export type OrderStatus =
   | "DELIVERED"
   | "CANCELLED";
 
-export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "REFUNDED";
+export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
 export type PaymentMethod = "CASH" | "CARD";
 export interface OrderItem {
   id: string;
@@ -69,7 +69,7 @@ const fetchOrders = async (
       limit: searchParams.limit?.toString() ?? "10",
       sort: searchParams.sort?.toString() ?? "-createdAt",
       fields:
-        "id,orderNumber,totalAmount,shippingCost,discount,taxAmount,status,paymentMethod,paymentStatus,shippingAddress,notes,createdAt,customer=id-full_name-image_url,items=id-quantity-price-product=id-name-nameAr-images",
+        "id,orderNumber,totalAmount,shippingCost,discount,taxAmount,status,paymentMethod,paymentStatus,shippingAddress,notes,createdAt,customer=id-full_name-image_url,items=id-quantity-price-product=id-name-name_ar-images",
     });
     if (searchParams.keyword)
       queryParams.append("keyword", searchParams.keyword.toString());
@@ -123,7 +123,7 @@ const OrdersData = async ({
     return (
       <div className="text-red-500">Error: {error ?? "An error occurred"}</div>
     );
-
+    
   return (
     <OrderRows
       orders={

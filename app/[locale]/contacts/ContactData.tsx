@@ -15,7 +15,7 @@ const fetchContact = async (
 
     const queryParams = new URLSearchParams({
       limit: searchParams.limit?.toString() ?? "10",
-      sort: searchParams.sort?.toString() ?? "-createdAt,-name",
+      sort: searchParams.sort?.toString() ?? "-created_at,-name",
     });
 
     if (searchParams.skip)

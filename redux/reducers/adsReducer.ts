@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-enum AdsStatus {
-  Active = "Active",
-  Inactive = "Inactive",
-}
+type AdsStatus = "DRAFT" | "ACTIVE" | "PAUSED" | "EXPIRED";
 
 export enum AdsPlacement {
   Top = "Top",
@@ -11,10 +8,7 @@ export enum AdsPlacement {
   Bottom = "Bottom",
 }
 
-export enum AdsType {
-  Home = "Home",
-  Popup = "Popup",
-}
+export enum AdsType { "EXTERNAL" , "INTERNAL"}
 
 export enum AdsFrequency {
   Once = "Once",
@@ -25,24 +19,24 @@ export enum AdsFrequency {
 export type Ad = {
   id: number;
   title: string;
-  titleAr: string;
+  title_ar: string;
   description?: string;
-  descriptionAr?: string;
-  imageUrl: string;
-  targetUrl?: string;
-  mobileScreen?: string;
-  startDate: Date;
-  endDate: Date;
+  description_ar?: string;
+  image_url: string;
+  target_url?: string;
+  mobile_screen?: string;
+  start_date: Date;
+  end_date: Date;
   budget: number;
   priority: number;
   status: AdsStatus;
   placement?: AdsPlacement;
-  adType: AdsType;
+  ad_type: AdsType;
   frequency?: AdsFrequency;
   timing: number;
   closable?: boolean;
-  displayDuration: number;
-  createdAt?: Date;
+  duration_seconds: number;
+  created_at?: Date;
 };
 
 type InitialStateType = {
@@ -91,4 +85,5 @@ export const adsSlice = createSlice({
   },
 });
 
-export const { setAds, addAds, updateAds, deleteAds, setSelectedAd } = adsSlice.actions;
+export const { setAds, addAds, updateAds, deleteAds, setSelectedAd } =
+  adsSlice.actions;

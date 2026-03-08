@@ -3,9 +3,10 @@ export interface Contact {
   name: string;
   email: string;
   message: string;
-  createdAt: string;
-  updatedAt: string;
-  readed: boolean;
+  created_at: string;
+  updated_at: string;
+  read: boolean;
+  read_at: string;
   response?: string;
 }
 

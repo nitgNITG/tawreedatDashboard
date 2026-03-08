@@ -69,7 +69,7 @@ const Contact = ({ contacts, totalPages, totalCount }: ContactState) => {
             downloadButton={
               <DownloadButton<IContact>
                 model="contactUs"
-                fields={["id", "name", "email", "createdAt", "message"]}
+                fields={["id", "name", "email", "created_at", "message"]}
               />
             }
           />
@@ -91,10 +91,10 @@ const Contact = ({ contacts, totalPages, totalCount }: ContactState) => {
             key={contact.id}
             className={clsx(
               "border-b",
-              contact.readed ? "bg-[#e8f5f5]" : "bg-white "
+              contact.read ? "bg-[#e8f5f5]" : "bg-white "
             )}
           >
-            <td className="px-6 py-4">{DateToText(contact.createdAt ?? "", locale)}</td>
+            <td className="px-6 py-4">{DateToText(contact.created_at ?? "", locale)}</td>
             <td className="px-6 py-4 whitespace-nowrap">{contact.name}</td>
             <td className="px-6 py-4 whitespace-nowrap">{contact.email}</td>
             <td className="px-6 py-4 whitespace-nowrap max-w-xs overflow-hidden text-ellipsis font-bold">
@@ -102,7 +102,7 @@ const Contact = ({ contacts, totalPages, totalCount }: ContactState) => {
             </td>
             <td className="px-6 py-4">
               <div className="flex gap-2 justify-center items-center">
-                {!contact.readed && (
+                {!contact.read && (
                   <button
                     type="button"
                     onClick={() => {
